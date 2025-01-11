@@ -28,6 +28,7 @@ public class PlayerMovement : MonoBehaviour
 	[Space]
 
 	public UnityEvent OnLandEvent;
+	public UnityEvent OnJumpEvent;
 
 	[System.Serializable]
 	public class BoolEvent : UnityEvent<bool> { }
@@ -39,6 +40,9 @@ public class PlayerMovement : MonoBehaviour
 
 		if (OnLandEvent == null)
 			OnLandEvent = new UnityEvent();
+
+		if (OnJumpEvent == null)
+			OnJumpEvent = new UnityEvent();
 	}
 
 
@@ -105,7 +109,8 @@ public class PlayerMovement : MonoBehaviour
 			rb.velocity = new Vector2(rb.velocity.x, 0);	//Reset player veritcal velocity when jumping to prevent irregular jump heights
 			rb.AddForce(new Vector2(0f, jumpForce));
 
-			coyoteTimeCounter = 0f;
+			OnJumpEvent.Invoke();
+			coyoteTimeCounter = 0f;	//No coyote time after jumping
 		}
 	}
 
