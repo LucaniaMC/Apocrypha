@@ -17,6 +17,7 @@ public class HealthSystem : MonoBehaviour
 
     public UnityEvent OnDamageEvent;
 	public UnityEvent OnDeathEvent;
+    public UnityEvent OnHealEvent;
 
 
 	[System.Serializable] 
@@ -27,13 +28,16 @@ public class HealthSystem : MonoBehaviour
     //It'll need another script specific to each object to call the functions and add in events
 
 
-    void Start() //Not sure why it's here, but it's from Brackey's character controller 2D
+    void Start() //Not sure why
     {
         if (OnDeathEvent == null)
 			OnDeathEvent = new UnityEvent();
 
         if (OnDamageEvent == null)
 			OnDamageEvent = new UnityEvent();
+
+        if (OnHealEvent == null)
+			OnHealEvent = new UnityEvent();
     }
 
 
@@ -45,9 +49,20 @@ public class HealthSystem : MonoBehaviour
     }
 
 
+    //Heal function
+    public void Heal(int healAmount)
+    {
+        health -= (int)(healAmount);
+        OnHealEvent.Invoke();
+    }
+
+
     //Death function
     void Update()
     {
+        //Clamp health amount
+        health = Mathf.Clamp(health, 0, maxHealth);
+
         if (health <= 0 && isDead == false) 
         {
             isDead = true;
