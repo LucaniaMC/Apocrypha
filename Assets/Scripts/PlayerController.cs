@@ -31,8 +31,7 @@ public class PlayerController : MonoBehaviour
         //Animator parameters
         animator.SetFloat("Speed", Mathf.Abs(horizontalMove));
         animator.SetBool("IsGrounded", movement.grounded);
-        animator.SetFloat("VerticalVelocity", movement.rb.velocity.y); //There's an issue with the heavy landing animation not playing when it should
-
+        animator.SetFloat("FallTime", movement.fallTime);
 
         //Jump
         if (Input.GetButtonDown("Jump") && movement.coyoteTimeCounter > 0f) 

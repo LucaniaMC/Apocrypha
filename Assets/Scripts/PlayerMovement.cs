@@ -23,6 +23,8 @@ public class PlayerMovement : MonoBehaviour
 	private Vector3 velocity = Vector3.zero;
 	const float limitVelocity = 25f;	//Limit fall velocity
 
+	[HideInInspector] public float fallTime = 0f;
+
 
 	[Header("Events")]
 	[Space]
@@ -60,10 +62,13 @@ public class PlayerMovement : MonoBehaviour
 			if (colliders[i].gameObject != gameObject)
 			{
 				grounded = true;
+
 				if (!wasGrounded) 
 				{
 					OnLandEvent.Invoke();
-				}	
+				}
+
+				//Reset fall time when grounded
 			}
 		}
 
@@ -79,7 +84,23 @@ public class PlayerMovement : MonoBehaviour
 		{
 			coyoteTimeCounter = Mathf.Clamp(coyoteTimeCounter - Time.deltaTime, 0f, coyoteTime);	//decrease coyote time when airborne, clamp value
 		}
+
+		//Fall time counter
+		if (!grounded && rb.velocity.y < 0) 
+		{
+			fallTime += Time.deltaTime;
+		} 
     }
+
+
+	//Reset fall time when grounded
+	void LateUpdate() 
+	{
+		if (grounded) 
+		{
+			fallTime = 0f;
+		}
+	}
 
 
     //Move function
