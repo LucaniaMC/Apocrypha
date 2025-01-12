@@ -14,7 +14,7 @@ public class PlayerMovement : MonoBehaviour
 
 	//None of these should show up in inspector
     const float groundedRadius = .2f;					// Radius of the overlap circle to determine if grounded
-	[HideInInspector] public bool grounded;				// Whether or not the player is grounded.
+	[HideInInspector] public bool grounded = false;				// Whether or not the player is grounded.
 	[HideInInspector] public bool facingRight = true;	// For determining which way the player is currently facing.
 	[HideInInspector] public Rigidbody2D rb;
 
@@ -60,10 +60,13 @@ public class PlayerMovement : MonoBehaviour
 			if (colliders[i].gameObject != gameObject)
 			{
 				grounded = true;
-				if (!wasGrounded)
+				if (!wasGrounded) 
+				{
 					OnLandEvent.Invoke();
+				}	
 			}
 		}
+
 
 		//Limit fall velocity
 		rb.velocity = Vector3.ClampMagnitude(rb.velocity, limitVelocity);
@@ -105,7 +108,6 @@ public class PlayerMovement : MonoBehaviour
 		if (coyoteTimeCounter > 0f && jump)	//Replaced grounded state check with coyote timer
 		{
 			// Add a vertical force to the player.
-			grounded = false;
 			rb.velocity = new Vector2(rb.velocity.x, 0);	//Reset player veritcal velocity when jumping to prevent irregular jump heights
 			rb.AddForce(new Vector2(0f, jumpForce));
 
