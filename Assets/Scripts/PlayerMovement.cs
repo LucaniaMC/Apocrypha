@@ -67,9 +67,8 @@ public class PlayerMovement : MonoBehaviour
 			}
 		}
 
-
-		//Limit fall velocity
-		rb.velocity = Vector3.ClampMagnitude(rb.velocity, limitVelocity);
+		//Limit fall velocity by clambing the lower bound
+		rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(rb.velocity.y, -limitVelocity));
 
 		//Coyote time countdown
 		if (grounded) 
