@@ -5,6 +5,7 @@ public class PlayerController : MonoBehaviour
     [Header("Parameters")]
 
     [SerializeField] private float runSpeed = 500f;
+    [SerializeField] private float jumpBuffer = 0.1f; //time allowed for player jump input
 
 
     [Header("References")]
@@ -21,6 +22,8 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public bool wallJump = false;
     [HideInInspector] public bool sit = false;
 
+    float jumpBufferCounter = 0f; //Countdown timer for jump buffering
+
     private bool altAttack = false; //Choose which random attack animation to play
 
 
@@ -36,19 +39,33 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat("VerticalVelocity", movement.rb.velocity.y);
         animator.SetBool("OnWall", movement.onWall);
 
+        //Jump buffer timer
+        if (Input.GetButtonDown("Jump")) 
+        {
+            jumpBufferCounter = jumpBuffer;
+        } 
+        else 
+        {   //Same as coyote time counter
+            jumpBufferCounter = Mathf.Clamp(jumpBufferCounter - Time.deltaTime, 0f, jumpBuffer);
+        }
+
         //Jump
-        if (Input.GetButtonDown("Jump") && movement.coyoteTimeCounter > 0f) 
+        if (jumpBufferCounter > 0f && movement.coyoteTimeCounter > 0f)
         //Additional ground check so the animator trigger won't be triggered in midair, it stops working when it happens. 
         //There's also a grounded condition check in the animator from any state to jump to fix the issue. 
-        //Edit: Replaced grounded check with coyote timer
+        //Edit: Replaced grounded check with coyote timer, and replaced jump button with jump buffer counter
         {
             jump = true; //The actual jump part is in FixedUpdate because tutorial said so
             animator.SetTrigger("Jump");
-        } else
-        if (Input.GetButtonDown("Jump") && movement.wallCoyoteTimeCounter > 0f && movement.grounded == false) //Wall jump
+
+            jumpBufferCounter = 0f; //reset jump buffer time immediately after jumping
+        } 
+        else if ((jumpBufferCounter > 0f) && movement.wallCoyoteTimeCounter > 0f && movement.grounded == false) //Wall jump
         {
             wallJump = true;
             animator.SetTrigger("Jump");
+
+            jumpBufferCounter = 0f; //reset
         }
 
 

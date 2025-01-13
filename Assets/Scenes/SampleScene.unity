@@ -3306,11 +3306,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   runSpeed: 500
+  jumpBuffer: 0.15
   animator: {fileID: 1119788021}
   movement: {fileID: 2121693410}
   attack: {fileID: 640175522}
   trailAnimator: {fileID: 640175519}
   jump: 0
+  wallJump: 0
   sit: 0
 --- !u!114 &2121693410
 MonoBehaviour:
