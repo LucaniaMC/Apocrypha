@@ -7,20 +7,28 @@ public class PlayerMovement : MonoBehaviour
 	
     [SerializeField] private float jumpForce = 500f;			// Amount of force added when the player jumps.
 	[SerializeField] private float movementSmoothing = .05f;	// How much to smooth out the movement
-	[SerializeField] private float coyoteTime = 0.2f;			// Time allowed for player to jump after leaving the ground
+	[SerializeField] private float coyoteTime = 0.1f;			// Time allowed for player to jump after leaving the ground
+	[SerializeField] private float wallCoyoteTime = 0.2f;		// Coyote time for wall jump
 	[Space]
 	[SerializeField] private LayerMask groundLayer;				// A mask determining what is ground to the character
 	[SerializeField] private Transform groundCheck;				// A position marking where to check if the player is grounded.
 
+	[SerializeField] private LayerMask wallLayer;				// A mask determining what is wall to the character
+	[SerializeField] private Transform wallCheck;				// A position marking where to check if the player is on wall.
+
 	//None of these should show up in inspector
     Vector2 groundCheckSize = new Vector2(.48f, .1f);					//Dimensions of the ground check box size. .48 is the biggest size to not touching walls
+	Vector2 wallCheckSize = new Vector2(.1f, 1.5f);						//Dimensions of the wall check box size.
 	[HideInInspector] public bool grounded = false;				// Whether or not the player is grounded.
+	[HideInInspector] public bool onWall = false;				//Whether the player is on wall.
 	[HideInInspector] public bool facingRight = true;	// For determining which way the player is currently facing.
 	[HideInInspector] public Rigidbody2D rb;
 
 	[HideInInspector] public float coyoteTimeCounter = 0f;	//Countdown timer for coyote time
+	[HideInInspector] public float wallCoyoteTimeCounter = 0f;	//Countdown timer for wall time
 	
 	private Vector3 velocity = Vector3.zero;
+	const float slideVelocity = -5f;	//Wall slide speed
 	const float limitVelocity = 25f;	//Limit fall velocity
 
 	[HideInInspector] public float fallTime = 0f;	//Used by player's animator for landing animation variations
@@ -70,6 +78,19 @@ public class PlayerMovement : MonoBehaviour
 			}
 		}
 
+		//Wall check, same mechanics as ground check
+		onWall = false;
+
+		Collider2D[] collidersWall = Physics2D.OverlapBoxAll(wallCheck.position, wallCheckSize, 0, wallLayer);
+		for (int i = 0; i < collidersWall.Length; i++)
+		{
+			if (collidersWall[i].gameObject != gameObject)
+			{
+				onWall = true;
+			}
+		}
+
+
 		//Limit fall velocity by clambing the lower bound
 		rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(rb.velocity.y, -limitVelocity));
 
@@ -83,11 +104,33 @@ public class PlayerMovement : MonoBehaviour
 			coyoteTimeCounter = Mathf.Clamp(coyoteTimeCounter - Time.deltaTime, 0f, coyoteTime);	//decrease coyote time when airborne, clamp value
 		}
 
+		//Wall coyote time countdown
+		if (onWall) 
+		{
+			wallCoyoteTimeCounter = wallCoyoteTime;	//reset coyote time when grounded
+		} 
+		else 
+		{
+			wallCoyoteTimeCounter = Mathf.Clamp(wallCoyoteTimeCounter - Time.deltaTime, 0f, wallCoyoteTime);
+		}
+
 		//Fall time counter
 		if (!grounded && rb.velocity.y < 0) 
 		{
 			fallTime += Time.deltaTime;
 		} 
+
+		//Reset coyote timer if the player hits a wall to avoid triggering both wall jump and coyote time jump. Wall jump should have priority.
+		if (onWall && !grounded) 
+		{
+			coyoteTimeCounter = 0f;
+		}
+
+		//Wall slide
+		if (onWall) 
+		{
+			rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(rb.velocity.y, slideVelocity));
+		}
     }
 
 
@@ -102,7 +145,7 @@ public class PlayerMovement : MonoBehaviour
 
 
     //Move function
-    public void Move(float move, bool jump)
+    public void Move(float move, bool jump, bool wallJump)
 	{
 		// Move the character by finding the target velocity
 		Vector3 targetVelocity = new Vector2(move, rb.velocity.y);
@@ -131,6 +174,13 @@ public class PlayerMovement : MonoBehaviour
 
 			OnJumpEvent.Invoke();
 			coyoteTimeCounter = 0f;	//No coyote time after jumping
+		}
+
+		//Wall jump
+		if (wallCoyoteTimeCounter > 0f && wallJump)
+		{
+			rb.velocity = new Vector2(rb.velocity.x, 0);	//Reset player veritcal velocity
+			rb.AddForce(new Vector2(0, jumpForce));
 		}
 	}
 

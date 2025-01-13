@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     //Variables
     float horizontalMove = 0f;
 	[HideInInspector] public bool jump = false;
+    [HideInInspector] public bool wallJump = false;
     [HideInInspector] public bool sit = false;
 
     private bool altAttack = false; //Choose which random attack animation to play
@@ -32,6 +33,8 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat("Speed", Mathf.Abs(horizontalMove));
         animator.SetBool("IsGrounded", movement.grounded);
         animator.SetFloat("FallTime", movement.fallTime);
+        animator.SetFloat("VerticalVelocity", movement.rb.velocity.y);
+        animator.SetBool("OnWall", movement.onWall);
 
         //Jump
         if (Input.GetButtonDown("Jump") && movement.coyoteTimeCounter > 0f) 
@@ -41,7 +44,13 @@ public class PlayerController : MonoBehaviour
         {
             jump = true; //The actual jump part is in FixedUpdate because tutorial said so
             animator.SetTrigger("Jump");
+        } else
+        if (Input.GetButtonDown("Jump") && movement.wallCoyoteTimeCounter > 0f && movement.grounded == false) //Wall jump
+        {
+            wallJump = true;
+            animator.SetTrigger("Jump");
         }
+
 
         //Sit
         if(Input.anyKeyDown && movement.grounded == true) //Put everything inside anykeydown and make exceptions, otherwise it's janky
@@ -86,7 +95,8 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         //Move player
-        movement.Move(horizontalMove * Time.fixedDeltaTime, jump);
+        movement.Move(horizontalMove * Time.fixedDeltaTime, jump, wallJump);
         jump = false; //Reset jump after jumped
+        wallJump = false; //reset wall jump
     }
 }
