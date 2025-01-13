@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
 	[SerializeField] private Transform groundCheck;				// A position marking where to check if the player is grounded.
 
 	//None of these should show up in inspector
-    const float groundedRadius = .2f;					// Radius of the overlap circle to determine if grounded
+    Vector2 groundCheckSize = new Vector2(.48f, .1f);					//Dimensions of the ground check box size. .48 is the biggest size to not touching walls
 	[HideInInspector] public bool grounded = false;				// Whether or not the player is grounded.
 	[HideInInspector] public bool facingRight = true;	// For determining which way the player is currently facing.
 	[HideInInspector] public Rigidbody2D rb;
@@ -23,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
 	private Vector3 velocity = Vector3.zero;
 	const float limitVelocity = 25f;	//Limit fall velocity
 
-	[HideInInspector] public float fallTime = 0f;
+	[HideInInspector] public float fallTime = 0f;	//Used by player's animator for landing animation variations
 
 
 	[Header("Events")]
@@ -56,7 +56,7 @@ public class PlayerMovement : MonoBehaviour
 
 		// The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
 		// This can be done using layers instead but Sample Assets will not overwrite your project settings.
-		Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheck.position, groundedRadius, groundLayer);
+		Collider2D[] colliders = Physics2D.OverlapBoxAll(groundCheck.position, groundCheckSize, 0, groundLayer);
 		for (int i = 0; i < colliders.Length; i++)
 		{
 			if (colliders[i].gameObject != gameObject)
@@ -67,8 +67,6 @@ public class PlayerMovement : MonoBehaviour
 				{
 					OnLandEvent.Invoke();
 				}
-
-				//Reset fall time when grounded
 			}
 		}
 
@@ -93,7 +91,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
-	//Reset fall time when grounded
+	//Reset fall time when grounded, in LateUpdate so the animator can process it properly before resetting
 	void LateUpdate() 
 	{
 		if (grounded) 
