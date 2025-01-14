@@ -17,7 +17,7 @@ public class PlayerAttack : MonoBehaviour
     public CapsuleCollider2D attackCollider;
 
 
-    void Awake() 
+    void Start() 
     {
         attackCollider.enabled = false;
     }

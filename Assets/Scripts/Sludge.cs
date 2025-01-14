@@ -17,9 +17,8 @@ public class Sludge : MonoBehaviour
 
     public void onDamage()
     {
-        Instantiate(spark, new Vector3(sprite.transform.position.x , sprite.transform.position.y , -2), Quaternion.identity); //-2 on Z axis to put the effect in front
+        Instantiate(spark, new Vector3(sprite.transform.position.x , sprite.transform.position.y , 0), Quaternion.identity); 
     }
-
 
     public void Death()
     {
