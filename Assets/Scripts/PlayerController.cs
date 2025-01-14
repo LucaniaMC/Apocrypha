@@ -70,7 +70,8 @@ public class PlayerController : MonoBehaviour
 
 
         //Variable jump, lower vertical velocity if the player releases jump button early
-        if (Input.GetButtonUp("Jump") && movement.rb.velocity.y > 0f) 
+        //If the player jumped only in buffer time and isn't holding down the jump key, also lower vertical velocity
+        if (Input.GetButtonUp("Jump") && movement.rb.velocity.y > 0f || !Input.GetButton("Jump") && movement.rb.velocity.y > 0f)
         {
             movement.VariableJump();
         }
