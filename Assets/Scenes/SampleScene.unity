@@ -1086,6 +1086,7 @@ MonoBehaviour:
   attackDamage: 10
   attacking: 0
   attackCollider: {fileID: 640175521}
+  movement: {fileID: 2121693410}
 --- !u!1 &676118286
 GameObject:
   m_ObjectHideFlags: 0

@@ -15,6 +15,7 @@ public class PlayerAttack : MonoBehaviour
     [Header("References")]
 
     public CapsuleCollider2D attackCollider;
+    public PlayerMovement movement;
 
 
     void Start() 
@@ -22,6 +23,18 @@ public class PlayerAttack : MonoBehaviour
         attackCollider.enabled = false;
     }
 
+    //Flip attack if the player is on wall
+    void Update() 
+    {
+        if (movement.onWall == true && movement.grounded == false) 
+        {
+            transform.localScale = new Vector3(-1f, transform.localScale.y, transform.localScale.z);
+        } 
+        else 
+        {
+            transform.localScale = new Vector3(1f, transform.localScale.y, transform.localScale.z);
+        }
+    }
 
     //attack, turn on attack hitbox for a bit
     public IEnumerator Attack() 
