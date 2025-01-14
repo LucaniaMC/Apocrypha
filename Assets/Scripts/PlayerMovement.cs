@@ -184,6 +184,12 @@ public class PlayerMovement : MonoBehaviour
 		}
 	}
 
+	//lower vertical velocity if the player releases jump button early, called in PlayerController
+	public void VariableJump() 
+	{
+		rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
+	}
+
 
 	private void Flip()
 	{

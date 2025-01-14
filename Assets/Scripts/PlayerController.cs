@@ -69,6 +69,13 @@ public class PlayerController : MonoBehaviour
         }
 
 
+        //Variable jump, lower vertical velocity if the player releases jump button early
+        if (Input.GetButtonUp("Jump") && movement.rb.velocity.y > 0f) 
+        {
+            movement.VariableJump();
+        }
+
+
         //Sit
         if(Input.anyKeyDown && movement.grounded == true) //Put everything inside anykeydown and make exceptions, otherwise it's janky
         {       
