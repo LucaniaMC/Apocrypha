@@ -133,7 +133,7 @@ public class PlayerMovement : MonoBehaviour
 		//Wall slide
 		if (onWall) 
 		{
-			rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(rb.velocity.y, slideVelocity));
+			rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(rb.velocity.y, slideVelocity)); //limit downward y velocity to slide speed
 		}
     }
 

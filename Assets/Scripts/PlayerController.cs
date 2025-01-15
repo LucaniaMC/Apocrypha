@@ -149,11 +149,6 @@ public class PlayerController : MonoBehaviour
         {
             canDash = true;
         }
-        //Stops dashing if the player hits a wall
-        if (movement.onWall) 
-        {
-            dash = false;
-        }
     }
 
 
