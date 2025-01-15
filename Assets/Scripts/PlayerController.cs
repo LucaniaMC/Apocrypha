@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour
 {
@@ -6,6 +8,10 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private float runSpeed = 500f;
     [SerializeField] private float jumpBuffer = 0.1f; //time allowed for player jump input
+
+    private const float dashCooldown = 0.5f;    //Time between dash, so the player doesn't dash too much on ground
+    private const float dashTime = 0.1f;    //How long do dashes last
+    private const float dashBuffer = 0.1f; //time allowed for player input for dash
 
 
     [Header("References")]
@@ -24,12 +30,12 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public bool dash = false;
 
     float jumpBufferCounter = 0f; //Countdown timer for jump buffering
+    float dashBufferCounter = 0f;   //Same timer for dash
 
     private bool altAttack = false; //Choose which random attack animation to play
 
-    const float dashTime = 0.1f; //How long the player can dash
-    float dashTimer = 0f;   //Countdown time for dash
-    bool canDash = true;    //Is the player able to dash
+    bool isDashing = false; //Dash conditions
+    bool canDash = false;   //Can the player dash
 
 
     void Update()
@@ -121,34 +127,32 @@ public class PlayerController : MonoBehaviour
             altAttack = !altAttack;
         }
 
-        //Dash
-        if (Input.GetKeyDown(KeyCode.LeftShift) && canDash == true)
-            {
-                //Starts timer when dash key is pressed
-                dashTimer = dashTime;
-                canDash = false;
-            }
-        //Dash timer
-        dashTimer = Mathf.Clamp(dashTimer - Time.deltaTime, 0f, dashTime);
-        //Stops dash if the player touches wall
-        if (movement.onWall) 
+        //Dash buffer timer
+        if (Input.GetKeyDown(KeyCode.LeftShift)) 
         {
-            dashTimer = 0f;
-        }
-        //Sets dash
-        if(dashTimer > 0) 
-        {
-            dash = true;
+            dashBufferCounter = dashBuffer;
         } 
         else 
-        {
-            //Dash stops when the counter reached 0
-            dash = false;
+        {   //Same as coyote time counter
+            dashBufferCounter = Mathf.Clamp(dashBufferCounter - Time.deltaTime, 0f, dashBuffer);
         }
+
+        //Dash
+        if (dashBufferCounter > 0f && canDash == true && isDashing == false && movement.onWall == false) //No dash on wall
+            {
+                StartCoroutine(Dash());
+                dashBufferCounter = 0f; //reset
+                canDash = false;
+            }
         //Resets dash if grounded or on wall
         if (movement.grounded || movement.onWall)
         {
             canDash = true;
+        }
+        //Stops dashing if the player hits a wall
+        if (movement.onWall) 
+        {
+            dash = false;
         }
     }
 
@@ -159,5 +163,20 @@ public class PlayerController : MonoBehaviour
         movement.Move(horizontalMove * Time.fixedDeltaTime, jump, wallJump, dash);
         jump = false; //Reset jump after jumped
         wallJump = false; //reset wall jump
+    }
+
+
+    //Dash sequence
+    private IEnumerator Dash() 
+    {
+        if (isDashing == false && canDash == true) 
+        {
+            isDashing = true;
+            dash = true;
+            yield return new WaitForSeconds(dashTime);
+            dash = false;
+            yield return new WaitForSeconds(dashCooldown);
+            isDashing = false;
+        }  
     }
 }

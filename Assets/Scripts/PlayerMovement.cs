@@ -33,6 +33,8 @@ public class PlayerMovement : MonoBehaviour
 	const float slideVelocity = -5f;	//Wall slide speed
 	const float limitVelocity = 25f;	//Limit fall velocity
 
+	private float gravity = 4f;	//Gravity scale for dash, sets to 0 when dashing and back to 4
+
 	[HideInInspector] public float fallTime = 0f;	//Used by player's animator for landing animation variations
 
 
@@ -150,13 +152,23 @@ public class PlayerMovement : MonoBehaviour
     public void Move(float move, bool jump, bool wallJump, bool dash)
 	{
 		//Dash
-		if (dash && facingRight) //Dash towards the direction the player is facing
+		
+		if (dash) 
 		{
-			rb.velocity = new Vector2(dashSpeed, 0f);
+			if (facingRight) //Dash towards the direction the player is facing
+			{
+				rb.velocity = new Vector2(dashSpeed, 0f);
+				rb.gravityScale = 0f;
+			}
+			else if (!facingRight) 
+			{
+				rb.velocity = new Vector2(-dashSpeed, 0f);
+				rb.gravityScale = 0f;
+			}
 		}
-		else if (dash && !facingRight) 
+		else
 		{
-			rb.velocity = new Vector2(-dashSpeed, 0f);
+			rb.gravityScale = gravity;
 		}
 
 		//Only move and change directions if not dashing
