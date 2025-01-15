@@ -5,8 +5,10 @@ public class PlayerMovement : MonoBehaviour
 {
 	[Header("Parameters")]
 	
-    [SerializeField] private float jumpForce = 500f;			// Amount of force added when the player jumps.
+    [SerializeField] private float jumpForce = 850f;			// Amount of force added when the player jumps.
 	[SerializeField] private float movementSmoothing = .05f;	// How much to smooth out the movement
+	[SerializeField] private float dashSpeed = 25f;			//How fast the player can dash
+	[Space]
 	[SerializeField] private float coyoteTime = 0.1f;			// Time allowed for player to jump after leaving the ground
 	[SerializeField] private float wallCoyoteTime = 0.2f;		// Coyote time for wall jump
 	[Space]
@@ -145,24 +147,39 @@ public class PlayerMovement : MonoBehaviour
 
 
     //Move function
-    public void Move(float move, bool jump, bool wallJump)
+    public void Move(float move, bool jump, bool wallJump, bool dash)
 	{
-		// Move the character by finding the target velocity
-		Vector3 targetVelocity = new Vector2(move, rb.velocity.y);
-		// And then smoothing it out and applying it to the character
-		rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, movementSmoothing);
-
-		// If the input is moving the player right and the player is facing left...
-		if (move > 0 && !facingRight)
+		//Dash
+		if (dash && facingRight) //Dash towards the direction the player is facing
 		{
-			// ... flip the player.
-			Flip();
+			rb.velocity = new Vector2(dashSpeed, 0f);
 		}
-		// Otherwise if the input is moving the player left and the player is facing right...
-		else if (move < 0 && facingRight)
+		else if (dash && !facingRight) 
 		{
-			// ... flip the player.
-			Flip();
+			rb.velocity = new Vector2(-dashSpeed, 0f);
+		}
+
+		//Only move and change directions if not dashing
+		if (!dash)
+		{	
+			// Move
+			// Move the character by finding the target velocity
+			Vector3 targetVelocity = new Vector2(move, rb.velocity.y);
+			// And then smoothing it out and applying it to the character
+			rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, movementSmoothing);
+
+			// If the input is moving the player right and the player is facing left...
+			if (move > 0 && !facingRight)
+			{
+				// ... flip the player.
+				Flip();
+			}
+			// Otherwise if the input is moving the player left and the player is facing right...
+			else if (move < 0 && facingRight)
+			{
+				// ... flip the player.
+				Flip();
+			}
 		}
 		
 		// If the player should jump...

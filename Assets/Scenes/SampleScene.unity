@@ -14209,6 +14209,7 @@ MonoBehaviour:
   jump: 0
   wallJump: 0
   sit: 0
+  dash: 0
 --- !u!114 &2121693410
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14223,6 +14224,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jumpForce: 850
   movementSmoothing: 0.05
+  dashSpeed: 25
   coyoteTime: 0.1
   wallCoyoteTime: 0.2
   groundLayer:
@@ -14342,7 +14344,7 @@ TrailRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2121693403}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
