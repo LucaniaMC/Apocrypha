@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -22,6 +23,15 @@ public class PlayerController : MonoBehaviour
 	public PlayerAttack attack;
     public Animator animator;       //Animator for player sprite
 	public Animator trailAnimator;  //animator for attack trail
+
+    [Header("Events")]
+	[Space]
+
+	public UnityEvent OnDashEvent;	    //Functions to call when the player dashes
+	public UnityEvent OnDashEndingEvent;	//Functions to call when the dash ends
+
+    [System.Serializable]
+	public class BoolEvent : UnityEvent<bool> { }
 
 
     //Variables
@@ -178,8 +188,10 @@ public class PlayerController : MonoBehaviour
         {
             isDashing = true;
             dash = true;
+            OnDashEvent.Invoke();
             yield return new WaitForSeconds(dashTime);
             dash = false;
+            OnDashEndingEvent.Invoke();
             yield return new WaitForSeconds(dashCooldown);
             isDashing = false;
         }  
