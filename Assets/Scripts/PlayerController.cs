@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
 
 	public UnityEvent OnDashEvent;	    //Functions to call when the player dashes
 	public UnityEvent OnDashEndingEvent;	//Functions to call when the dash ends
+    public UnityEvent OnDashRefillEvent;	//Functions to call when the dash cooldown ends
 
     [System.Serializable]
 	public class BoolEvent : UnityEvent<bool> { }
@@ -194,6 +195,7 @@ public class PlayerController : MonoBehaviour
             OnDashEndingEvent.Invoke();
             yield return new WaitForSeconds(dashCooldown);
             isDashing = false;
+            OnDashRefillEvent.Invoke();
         }  
     }
 }

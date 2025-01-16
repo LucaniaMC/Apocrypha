@@ -23,10 +23,10 @@ public class HealthSystem : MonoBehaviour
 	[System.Serializable] 
 	public class BoolEvent : UnityEvent<bool> { }
 
+
     //This script is shared by the player and enemies to give them a health system, damage and death functions and events
     //Since they'll have different behaviors when damaged and dead
     //It'll need another script specific to each object to call the functions and add in events
-
 
     void Start() //Not sure why
     {
@@ -46,6 +46,7 @@ public class HealthSystem : MonoBehaviour
     {
         health -= (int)(damageAmount * damageModifier);
         OnDamageEvent.Invoke();
+        Check();
     }
 
 
@@ -54,15 +55,16 @@ public class HealthSystem : MonoBehaviour
     {
         health -= (int)(healAmount);
         OnHealEvent.Invoke();
+        Check();
     }
 
 
-    //Death function
-    void Update()
+    void Check()
     {
         //Clamp health amount
         health = Mathf.Clamp(health, 0, maxHealth);
 
+        //Death function
         if (health <= 0 && isDead == false) 
         {
             isDead = true;

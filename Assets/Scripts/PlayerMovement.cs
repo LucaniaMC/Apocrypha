@@ -33,6 +33,7 @@ public class PlayerMovement : MonoBehaviour
 
 	public UnityEvent OnLandEvent;	//Functions to call when the player lands
 	public UnityEvent OnJumpEvent;	//Functions to call when the player jumps
+	public UnityEvent OnFlipEvent;	//Functions to call when the player flips
 
 	[System.Serializable]
 	public class BoolEvent : UnityEvent<bool> { }
@@ -66,6 +67,9 @@ public class PlayerMovement : MonoBehaviour
 
 		if (OnJumpEvent == null)
 			OnJumpEvent = new UnityEvent();
+
+		if (OnFlipEvent == null)
+		OnFlipEvent = new UnityEvent();
 	}
 
 
@@ -108,6 +112,7 @@ public class PlayerMovement : MonoBehaviour
 		//Limit fall velocity by clambing the lower bound
 		rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(rb.velocity.y, -limitVelocity));
 
+
 		//Coyote time countdown
 		if (grounded) 
 		{
@@ -130,13 +135,6 @@ public class PlayerMovement : MonoBehaviour
 		}
 
 
-		//Fall time counter
-		if (!grounded && rb.velocity.y < 0) 
-		{
-			fallTime += Time.deltaTime;
-		} 
-
-
 		//Reset coyote timer if the player hits a wall to avoid triggering both wall jump and coyote time jump. Wall jump should have priority.
 		if (onWall && !grounded) 
 		{
@@ -149,6 +147,13 @@ public class PlayerMovement : MonoBehaviour
 		{
 			rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(rb.velocity.y, slideVelocity)); //limit downward y velocity to slide speed
 		}
+
+
+		//Fall time counter
+		if (!grounded && rb.velocity.y < 0) 
+		{
+			fallTime += Time.deltaTime;
+		} 
     }
 
 
@@ -241,7 +246,7 @@ public class PlayerMovement : MonoBehaviour
 	{
 		// Switch the way the player is labelled as facing.
 		facingRight = !facingRight;
-
+		OnFlipEvent.Invoke();
 		// Multiply the player's x local scale by -1.
 		Vector3 flipScale = transform.localScale;
 		flipScale.x *= -1;

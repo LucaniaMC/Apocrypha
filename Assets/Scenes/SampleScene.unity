@@ -18373,6 +18373,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slider: {fileID: 1945899841}
   effectSlider: {fileID: 225255908}
+  effectTimerCounter: 1
   health: {fileID: 2121693411}
 --- !u!1 &2021401080
 GameObject:
@@ -19081,6 +19082,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnDashRefillEvent:
+    m_PersistentCalls:
+      m_Calls: []
   jump: 0
   wallJump: 0
   sit: 0
@@ -19143,6 +19147,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnFlipEvent:
+    m_PersistentCalls:
+      m_Calls: []
   grounded: 0
   onWall: 0
   facingRight: 1
@@ -19181,6 +19188,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1945899842}
+        m_TargetAssemblyTypeName: Healthbar, Assembly-CSharp
+        m_MethodName: SliderUpdate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnDeathEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -19190,6 +19209,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1945899842}
         m_TargetAssemblyTypeName: Healthbar, Assembly-CSharp
         m_MethodName: ResetEffect
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1945899842}
+        m_TargetAssemblyTypeName: Healthbar, Assembly-CSharp
+        m_MethodName: SliderUpdate
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
