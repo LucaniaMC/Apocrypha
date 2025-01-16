@@ -14200,11 +14200,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a33db08b38842d4eb3ce89adad43a08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runSpeed: 500
+  dashBuffer: 0.1
   jumpBuffer: 0.15
-  animator: {fileID: 1119788021}
   movement: {fileID: 2121693410}
   attack: {fileID: 640175522}
+  animator: {fileID: 1119788021}
   trailAnimator: {fileID: 640175519}
   jump: 0
   wallJump: 0
@@ -14222,26 +14222,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c1813418e170b142aff22e2a9592346, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpForce: 850
+  runSpeed: 500
   movementSmoothing: 0.05
-  dashSpeed: 35
+  jumpForce: 850
+  dashSpeed: 30
   coyoteTime: 0.1
   wallCoyoteTime: 0.2
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
   groundCheck: {fileID: 753848053}
+  groundCheckSize: {x: 0.48, y: 0.1}
   wallLayer:
     serializedVersion: 2
     m_Bits: 64
   wallCheck: {fileID: 256341221}
-  grounded: 0
-  onWall: 0
-  facingRight: 1
-  rb: {fileID: 0}
-  coyoteTimeCounter: 0
-  wallCoyoteTimeCounter: 0
-  fallTime: 0
+  wallCheckSize: {x: 0.1, y: 1.5}
   OnLandEvent:
     m_PersistentCalls:
       m_Calls:
@@ -14272,6 +14268,13 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  grounded: 0
+  onWall: 0
+  facingRight: 1
+  fallTime: 0
+  coyoteTimeCounter: 0
+  wallCoyoteTimeCounter: 0
+  rb: {fileID: 0}
 --- !u!114 &2121693411
 MonoBehaviour:
   m_ObjectHideFlags: 0

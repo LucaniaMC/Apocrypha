@@ -6,20 +6,22 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Parameters")]
 
-    [SerializeField] private float runSpeed = 500f;
-    [SerializeField] private float jumpBuffer = 0.1f; //time allowed for player jump input
+    private const float dashCooldown = 0.5f;        //Time between dash, so the player doesn't dash too much on ground
+    private const float dashTime = 0.1f;            //How long do dashes last
+    [Space]
 
-    private const float dashCooldown = 0.5f;    //Time between dash, so the player doesn't dash too much on ground
-    private const float dashTime = 0.1f;    //How long do dashes last
-    private const float dashBuffer = 0.1f; //time allowed for player input for dash
+    [Header("Assists")]
 
+    [SerializeField] private float dashBuffer = 0.1f;   //time allowed for player input for dash
+    [SerializeField] private float jumpBuffer = 0.1f;   //time allowed for player jump input
+    [Space]
 
     [Header("References")]
 
-    public Animator animator;
 	public PlayerMovement movement;
 	public PlayerAttack attack;
-	public Animator trailAnimator; //animator for attack trail
+    public Animator animator;       //Animator for player sprite
+	public Animator trailAnimator;  //animator for attack trail
 
 
     //Variables
@@ -29,19 +31,22 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public bool sit = false;
     [HideInInspector] public bool dash = false;
 
+    //Timers
     float jumpBufferCounter = 0f; //Countdown timer for jump buffering
     float dashBufferCounter = 0f;   //Same timer for dash
 
-    private bool altAttack = false; //Choose which random attack animation to play
-
+    //States
     bool isDashing = false; //Dash conditions
     bool canDash = false;   //Can the player dash
+
+    private bool altAttack = false; //Choose which random attack animation to play
 
 
     void Update()
     {
-        //Get player Horizontal Movement
-        horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
+        //Get player Horizontal Movement, in Update function for percise input
+        horizontalMove = Input.GetAxisRaw("Horizontal");
+
 
         //Animator parameters
         animator.SetFloat("Speed", Mathf.Abs(horizontalMove));
@@ -50,6 +55,7 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat("VerticalVelocity", movement.rb.velocity.y);
         animator.SetBool("OnWall", movement.onWall);
         animator.SetBool("Dash", dash);
+
 
         //Jump buffer timer
         if (Input.GetButtonDown("Jump")) 
@@ -60,6 +66,7 @@ public class PlayerController : MonoBehaviour
         {   //Same as coyote time counter
             jumpBufferCounter = Mathf.Clamp(jumpBufferCounter - Time.deltaTime, 0f, jumpBuffer);
         }
+
 
         //Jump
         if (jumpBufferCounter > 0f && movement.coyoteTimeCounter > 0f)
@@ -114,6 +121,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+
 		//Attack
         if (Input.GetMouseButtonDown(0) && attack.attacking == false && dash == false) //No attack during dash
         {
@@ -127,6 +135,7 @@ public class PlayerController : MonoBehaviour
             altAttack = !altAttack;
         }
 
+
         //Dash buffer timer
         if (Input.GetKeyDown(KeyCode.LeftShift)) 
         {
@@ -136,6 +145,7 @@ public class PlayerController : MonoBehaviour
         {   //Same as coyote time counter
             dashBufferCounter = Mathf.Clamp(dashBufferCounter - Time.deltaTime, 0f, dashBuffer);
         }
+
 
         //Dash
         if (dashBufferCounter > 0f && canDash == true && isDashing == false && movement.onWall == false) //No dash on wall
