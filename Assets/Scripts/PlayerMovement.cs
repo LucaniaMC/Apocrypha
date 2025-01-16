@@ -7,7 +7,7 @@ public class PlayerMovement : MonoBehaviour
 	
     [SerializeField] private float jumpForce = 850f;			// Amount of force added when the player jumps.
 	[SerializeField] private float movementSmoothing = .05f;	// How much to smooth out the movement
-	[SerializeField] private float dashSpeed = 25f;			//How fast the player can dash
+	[SerializeField] private float dashSpeed = 35f;			//How fast the player can dash
 	[Space]
 	[SerializeField] private float coyoteTime = 0.1f;			// Time allowed for player to jump after leaving the ground
 	[SerializeField] private float wallCoyoteTime = 0.2f;		// Coyote time for wall jump

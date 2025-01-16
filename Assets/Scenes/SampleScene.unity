@@ -3059,7 +3059,7 @@ SpriteRenderer:
   m_Size: {x: 7.125, y: 2.375}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!70 &640175521
@@ -14224,7 +14224,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jumpForce: 850
   movementSmoothing: 0.05
-  dashSpeed: 25
+  dashSpeed: 35
   coyoteTime: 0.1
   wallCoyoteTime: 0.2
   groundLayer:

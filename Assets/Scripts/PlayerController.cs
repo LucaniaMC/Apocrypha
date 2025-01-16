@@ -115,7 +115,7 @@ public class PlayerController : MonoBehaviour
         }
 
 		//Attack
-        if (Input.GetMouseButtonDown(0) && attack.attacking == false)
+        if (Input.GetMouseButtonDown(0) && attack.attacking == false && dash == false) //No attack during dash
         {
             animator.SetTrigger("Attack");
             trailAnimator.SetTrigger("Attack");
