@@ -10,6 +10,16 @@ A 2D Platformer project.
 
 The project is made with Unity version 2021.3.31f1.
 
+## Controls
+
+**Move** - WASD or arrow keys
+
+**Jump** - Space bar
+
+**Sit** - X
+
+**Dash** - L Shift
+
 ## Assets Used
 
 Free Pixel Art Forest by Edermunizz: https://edermunizz.itch.io/free-pixel-art-forest
