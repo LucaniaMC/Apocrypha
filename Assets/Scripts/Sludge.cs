@@ -7,7 +7,7 @@ public class Sludge : MonoBehaviour
     public GameObject spark;
 
 
-    void OnTriggerEnter2D(Collider2D other) //Same as player attack, maybe they can share the same script?
+    void OnTriggerStay2D(Collider2D other) //Same as player attack, maybe they can share the same script?
     {
         if (other.gameObject.layer == 3) 
         {

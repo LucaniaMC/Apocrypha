@@ -8552,7 +8552,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 786575639}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.5, y: -6, z: 0}
+  m_LocalPosition: {x: 12.75, y: -3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -8575,6 +8575,8 @@ MonoBehaviour:
   health: 100
   maxHealth: 100
   damageModifier: 1
+  invincibleTime: 0
+  isInvincible: 0
   isDead: 0
   OnDamageEvent:
     m_PersistentCalls:
@@ -18373,7 +18375,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slider: {fileID: 1945899841}
   effectSlider: {fileID: 225255908}
-  effectTimerCounter: 1
   health: {fileID: 2121693411}
 --- !u!1 &2021401080
 GameObject:
@@ -19067,6 +19068,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 2121693411}
+        m_TargetAssemblyTypeName: HealthSystem, Assembly-CSharp
+        m_MethodName: SetInvincible
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   OnDashEndingEvent:
     m_PersistentCalls:
       m_Calls:
@@ -19074,6 +19087,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: PlayerParticles, Assembly-CSharp
         m_MethodName: StopDashParticle
         m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2121693411}
+        m_TargetAssemblyTypeName: HealthSystem, Assembly-CSharp
+        m_MethodName: SetInvincible
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -19172,6 +19197,8 @@ MonoBehaviour:
   health: 100
   maxHealth: 100
   damageModifier: 1
+  invincibleTime: 1
+  isInvincible: 0
   isDead: 0
   OnDamageEvent:
     m_PersistentCalls:

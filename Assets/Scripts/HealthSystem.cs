@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
+using System.Collections;
+using System.Collections.Generic;
 
 public class HealthSystem : MonoBehaviour
 {
@@ -9,7 +11,10 @@ public class HealthSystem : MonoBehaviour
     public int maxHealth = 100;         //The object's maximum health
     public float damageModifier = 1f;     //Multiply the damage taken, 0-1
     [Space]
-    public bool isDead = false;
+    [SerializeField] private float invincibleTime = 0f;     //How long is the object invincible after taking damage 
+    public bool isInvincible = false;                       //Is the object invincible
+    [Space]
+    public bool isDead = false;                             //Is the object dead
 
 
     [Header("Events")] 
@@ -44,11 +49,13 @@ public class HealthSystem : MonoBehaviour
     //Damage function
     public void Damage(int damageAmount)
     {
-        if (!isDead) //Only takes damage if still alive
-        {
-            health -= (int)(damageAmount * damageModifier);
-            OnDamageEvent.Invoke();
-        }
+        if (isDead || isInvincible) return; //No damage if the player's dead or invincible
+
+        health -= (int)(damageAmount * damageModifier);
+        OnDamageEvent.Invoke();
+
+        StartCoroutine(Invincible(invincibleTime)); //Start invincibility time after taking damage
+    
         Check();
     }
 
@@ -73,5 +80,21 @@ public class HealthSystem : MonoBehaviour
             isDead = true;
             OnDeathEvent.Invoke();
         }
+    }
+
+
+    //Invincible time after damage
+    private IEnumerator Invincible(float time) 
+    {
+        isInvincible = true;
+        yield return new WaitForSeconds(time);
+        isInvincible = false;
+    }
+
+
+    //Manually set invincibility, currently used in dash event
+    public void SetInvincible(bool invincible) 
+    {
+        isInvincible = invincible;
     }
 }
