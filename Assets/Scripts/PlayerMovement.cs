@@ -147,7 +147,7 @@ public class PlayerMovement : MonoBehaviour
 
 
 		//Wall slide
-		if (onWall) 
+		if (onWall && rb.velocity.y < 0) 
 		{
 			rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(rb.velocity.y, slideVelocity)); //limit downward y velocity to slide speed
 		}
@@ -219,26 +219,26 @@ public class PlayerMovement : MonoBehaviour
 				// ... flip the player.
 				Flip();
 			}
-		}
+				
+
+			// Jump
+			if (coyoteTimeCounter > 0f && jump)	//Replaced grounded state check with coyote timer
+			{
+				// Add a vertical force to the player.
+				rb.velocity = new Vector2(rb.velocity.x, 0);	//Reset player veritcal velocity when jumping to prevent irregular jump heights
+				rb.AddForce(new Vector2(0f, jumpForce));
+
+				OnJumpEvent.Invoke();
+				coyoteTimeCounter = 0f;	//No coyote time after jumping
+			}
 
 
-		// Jump
-		if (coyoteTimeCounter > 0f && jump)	//Replaced grounded state check with coyote timer
-		{
-			// Add a vertical force to the player.
-			rb.velocity = new Vector2(rb.velocity.x, 0);	//Reset player veritcal velocity when jumping to prevent irregular jump heights
-			rb.AddForce(new Vector2(0f, jumpForce));
-
-			OnJumpEvent.Invoke();
-			coyoteTimeCounter = 0f;	//No coyote time after jumping
-		}
-
-
-		//Wall jump
-		if (wallCoyoteTimeCounter > 0f && wallJump)
-		{
-			rb.velocity = new Vector2(rb.velocity.x, 0);	//Reset player veritcal velocity
-			rb.AddForce(new Vector2(0f, jumpForce));
+			//Wall jump
+			if (wallCoyoteTimeCounter > 0f && wallJump)
+			{
+				rb.velocity = new Vector2(rb.velocity.x, 0);	//Reset player veritcal velocity
+				rb.AddForce(new Vector2(0f, jumpForce));
+			}
 		}
 	}
 
@@ -275,8 +275,8 @@ public class PlayerMovement : MonoBehaviour
 				knockbackControl = 0f;
 			}
 			
-			rb.velocity = Vector2.zero;	//Resets previous velocity...
-			rb.AddForce(new Vector2(x, y), ForceMode2D.Impulse);	//...And then apply knockback force.
+			rb.velocity = new Vector2(x, 0);	//Set x knockback force, reset y velocity
+			rb.AddForce(new Vector2(0f, y));	//Used addforce for y axis because setting y velocity directly doesn't work
 		}
 	}
 }
