@@ -19130,7 +19130,7 @@ MonoBehaviour:
   movementSmoothing: 0.05
   jumpForce: 850
   dashSpeed: 30
-  knockbackRecoverRate: 4
+  knockbackRecoverTime: 0.25
   coyoteTime: 0.1
   wallCoyoteTime: 0.2
   groundLayer:
