@@ -163,7 +163,7 @@ public class PlayerController : MonoBehaviour
 
 
         //Dash
-        if (dashBufferCounter > 0f && canDash == true && isDashing == false && movement.onWall == false) //No dash on wall
+        if (dashBufferCounter > 0f && canDash == true && isDashing == false && movement.onWall == false && movement.knockbackControl >= 1f) //No dash on wall or during back
             {
                 StartCoroutine(Dash());
                 dashBufferCounter = 0f; //reset

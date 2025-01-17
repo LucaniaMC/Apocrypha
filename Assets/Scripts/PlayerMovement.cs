@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
 	[SerializeField] private float movementSmoothing = .05f;	// How much to smooth out the movement
     [SerializeField] private float jumpForce = 850f;			// Amount of force added when the player jumps.
 	[SerializeField] private float dashSpeed = 30f;				//How fast the player can dash
+	[SerializeField] private float knockbackRecoverTime = 0.25f;	//How fast the player recovers from knockback in seconds
 	[Space]
 
 	[Header("Assists")]
@@ -48,6 +49,7 @@ public class PlayerMovement : MonoBehaviour
 	//Timers
 	[HideInInspector] public float coyoteTimeCounter = 0f;		//Countdown timer for coyote time
 	[HideInInspector] public float wallCoyoteTimeCounter = 0f;	//Countdown timer for wall time
+	[HideInInspector] public float knockbackControl = 0f;		//Timer for player to fully regain control
 	
 	private Vector3 velocity = Vector3.zero;	//Used as ref for movement smoothdamp
 	const float slideVelocity = -5f;			//Wall slide speed
@@ -56,11 +58,13 @@ public class PlayerMovement : MonoBehaviour
 
 	//References
 	[HideInInspector] public Rigidbody2D rb;
+	[HideInInspector] HealthSystem health;
 
 
 	void Awake()
 	{
 		rb = GetComponent<Rigidbody2D>();
+		health = GetComponent<HealthSystem>();
 
 		if (OnLandEvent == null)
 			OnLandEvent = new UnityEvent();
@@ -154,6 +158,10 @@ public class PlayerMovement : MonoBehaviour
 		{
 			fallTime += Time.deltaTime;
 		} 
+
+
+		//Gradually regains control after being knocked back
+		knockbackControl = Mathf.Clamp(knockbackControl + Time.deltaTime / knockbackRecoverTime, 0f, 1f);
     }
 
 
@@ -190,12 +198,12 @@ public class PlayerMovement : MonoBehaviour
 		}
 
 
-		//Only move and change directions if not dashing
-		if (!dash)
+		//Only move and change directions if not dashing, and if knockback is over
+		if (!dash && knockbackControl >= 1f)
 		{	
 			// Move
 			// Move the character by finding the target velocity
-			Vector3 targetVelocity = new Vector2(move * runSpeed, rb.velocity.y);
+			Vector3 targetVelocity = new Vector2(move * runSpeed * knockbackControl, rb.velocity.y); //multiplies knockback control
 			// And then smoothing it out and applying it to the character
 			rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, movementSmoothing);
 
@@ -251,5 +259,24 @@ public class PlayerMovement : MonoBehaviour
 		Vector3 flipScale = transform.localScale;
 		flipScale.x *= -1;
 		transform.localScale = flipScale;
+	}
+
+
+	//knockback
+	public void Knockback(float x, float y, bool disableControl) 
+	{
+		if (health.isDead == true) return; //Do not knock back dead objects since they no longer have invis time
+
+		if (health.isInvincible == false) //If the player can take damage
+		{
+			//Whether this knockback disables player control
+			if (disableControl) 
+			{
+				knockbackControl = 0f;
+			}
+			
+			rb.velocity = Vector2.zero;	//Resets previous velocity...
+			rb.AddForce(new Vector2(x, y), ForceMode2D.Impulse);	//...And then apply knockback force.
+		}
 	}
 }
