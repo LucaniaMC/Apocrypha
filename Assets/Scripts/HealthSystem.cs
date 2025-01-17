@@ -44,8 +44,11 @@ public class HealthSystem : MonoBehaviour
     //Damage function
     public void Damage(int damageAmount)
     {
-        health -= (int)(damageAmount * damageModifier);
-        OnDamageEvent.Invoke();
+        if (!isDead) //Only takes damage if still alive
+        {
+            health -= (int)(damageAmount * damageModifier);
+            OnDamageEvent.Invoke();
+        }
         Check();
     }
 
