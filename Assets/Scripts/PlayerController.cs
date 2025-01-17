@@ -149,6 +149,8 @@ public class PlayerController : MonoBehaviour
             trailAnimator.SetBool("AltAttack", altAttack);
             altAttack = !altAttack;
         }
+        //Stops trail attack animation if attack is interrupted due to flipping
+        trailAnimator.SetBool("Attacking", attack.attacking);
 
 
         //Dash buffer timer

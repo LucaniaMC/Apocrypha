@@ -69,4 +69,12 @@ public class PlayerAttack : MonoBehaviour
             }
         }
     }
+
+
+    //Stops attack, called in the player's OnFlipEvent
+    public void StopAttack() 
+    {
+        attackCollider.enabled = false;
+        attacking = false;
+    }
 }
