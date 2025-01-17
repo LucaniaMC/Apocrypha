@@ -56,7 +56,7 @@ public class HealthSystem : MonoBehaviour
     //Heal function
     public void Heal(int healAmount)
     {
-        health -= (int)(healAmount);
+        health += (int)(healAmount);
         OnHealEvent.Invoke();
         Check();
     }
