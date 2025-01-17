@@ -79,23 +79,27 @@ public class PlayerController : MonoBehaviour
         }
 
 
-        //Jump
-        if (jumpBufferCounter > 0f && movement.coyoteTimeCounter > 0f)
-        //Additional ground check so the animator trigger won't be triggered in midair, it stops working when it happens. 
-        //There's also a grounded condition check in the animator from any state to jump to fix the issue. 
-        //Edit: Replaced grounded check with coyote timer, and replaced jump button with jump buffer counter
+        //No jump during dash
+        if (!dash) 
         {
-            jump = true; //The actual jump part is in FixedUpdate because tutorial said so
-            animator.SetTrigger("Jump");
+            //Jump
+            if (jumpBufferCounter > 0f && movement.coyoteTimeCounter > 0f)
+            //Additional ground check so the animator trigger won't be triggered in midair, it stops working when it happens. 
+            //There's also a grounded condition check in the animator from any state to jump to fix the issue. 
+            //Edit: Replaced grounded check with coyote timer, and replaced jump button with jump buffer counter
+            {
+                jump = true; //The actual jump part is in FixedUpdate because tutorial said so
+                animator.SetTrigger("Jump");
 
-            jumpBufferCounter = 0f; //reset jump buffer time immediately after jumping
-        } 
-        else if ((jumpBufferCounter > 0f) && movement.wallCoyoteTimeCounter > 0f && movement.grounded == false) //Wall jump
-        {
-            wallJump = true;
-            animator.SetTrigger("Jump");
+                jumpBufferCounter = 0f; //reset jump buffer time immediately after jumping
+            } 
+            else if ((jumpBufferCounter > 0f) && movement.wallCoyoteTimeCounter > 0f && movement.grounded == false) //Wall jump
+            {
+                wallJump = true;
+                animator.SetTrigger("Jump");
 
-            jumpBufferCounter = 0f; //reset
+                jumpBufferCounter = 0f; //reset
+            }
         }
 
 
