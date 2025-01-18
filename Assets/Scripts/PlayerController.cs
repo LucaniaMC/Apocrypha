@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
     float dashBufferCounter = 0f;   //Same timer for dash
 
     //States
-    bool isDashing = false; //Dash conditions
+    bool isDashing = false; //Dash conditions to prevent dashing without cooldown on
     bool canDash = false;   //Can the player dash
 
     private bool altAttack = false; //Choose which random attack animation to play
@@ -102,10 +102,10 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-
+        
         //Variable jump, lower vertical velocity if the player releases jump button early
         //If the player jumped only in buffer time and isn't holding down the jump key, also lower vertical velocity
-        if (Input.GetButtonUp("Jump") && movement.rb.velocity.y > 0f || !Input.GetButton("Jump") && movement.rb.velocity.y > 0f)
+        if (!Input.GetButton("Jump") && movement.rb.velocity.y > 0f && movement.isJumping == true) //only works if the player is gaining height from jumping
         {
             movement.VariableJump();
         }
@@ -165,7 +165,7 @@ public class PlayerController : MonoBehaviour
 
 
         //Dash
-        if (dashBufferCounter > 0f && canDash == true && isDashing == false && movement.onWall == false && movement.knockbackControl >= 1f) //No dash on wall or during back
+        if (dashBufferCounter > 0f && canDash == true && isDashing == false && movement.onWall == false && movement.knockbackTimeCounter == 0f) //No dash on wall or during knockback
             {
                 StartCoroutine(Dash());
                 dashBufferCounter = 0f; //reset

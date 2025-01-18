@@ -19192,9 +19192,11 @@ MonoBehaviour:
   onWall: 0
   facingRight: 1
   fallTime: 0
+  isJumping: 0
+  isJumpFalling: 0
   coyoteTimeCounter: 0
   wallCoyoteTimeCounter: 0
-  knockbackControl: 0
+  knockbackTimeCounter: 0
   rb: {fileID: 0}
 --- !u!114 &2121693411
 MonoBehaviour:
