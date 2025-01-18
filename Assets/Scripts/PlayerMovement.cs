@@ -185,7 +185,7 @@ public class PlayerMovement : MonoBehaviour
 	//Reset fall time when grounded and on wall, in LateUpdate so the animator can process it properly before resetting
 	void LateUpdate() 
 	{
-		if (grounded || onWall) 
+		if (grounded || onWall || rb.velocity.y >= 0) 
 		{
 			fallTime = 0f;
 		}
@@ -261,6 +261,7 @@ public class PlayerMovement : MonoBehaviour
 
 				isJumping = true;
 				OnWallJumpEvent.Invoke();
+				wallCoyoteTimeCounter = 0f;
 			}
 		}
 	}
