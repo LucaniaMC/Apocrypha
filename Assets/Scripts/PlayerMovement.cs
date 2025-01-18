@@ -33,6 +33,10 @@ public class PlayerMovement : MonoBehaviour
 	[Header("Events")]
 	[Space]
 
+	public UnityEvent OnLandEvent;		//Functions to call when the player lands
+	public UnityEvent OnJumpEvent;		//Functions to call when the player jumps
+	public UnityEvent OnWallJumpEvent;	//Functions to call when the player jumps from wall
+	public UnityEvent OnFlipEvent;		//Functions to call when the player flips
 
 	[System.Serializable]
 	public class BoolEvent : UnityEvent<bool> { }
@@ -71,6 +75,9 @@ public class PlayerMovement : MonoBehaviour
 
 		if (OnJumpEvent == null)
 			OnJumpEvent = new UnityEvent();
+
+		if (OnWallJumpEvent == null)
+			OnWallJumpEvent = new UnityEvent();
 
 		if (OnFlipEvent == null)
 			OnFlipEvent = new UnityEvent();
@@ -249,9 +256,11 @@ public class PlayerMovement : MonoBehaviour
 			//Wall jump
 			if (wallCoyoteTimeCounter > 0f && wallJump)
 			{
-				isJumping = true;
 				rb.velocity = new Vector2(rb.velocity.x, 0);	//Reset player veritcal velocity
 				rb.AddForce(new Vector2(0f, jumpForce));
+
+				isJumping = true;
+				OnWallJumpEvent.Invoke();
 			}
 		}
 	}
