@@ -202,4 +202,14 @@ public class PlayerController : MonoBehaviour
             OnDashRefillEvent.Invoke();
         }  
     }
+
+
+    //Turning animation, called in OnFlipEvents
+    public void Turn() 
+    {
+        if (movement.grounded == true) //only turn if grounded
+        {
+            animator.SetTrigger("Turn");
+        }
+    }
 }
