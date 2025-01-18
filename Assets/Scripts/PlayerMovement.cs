@@ -261,6 +261,7 @@ public class PlayerMovement : MonoBehaviour
 
 				isJumping = true;
 				OnWallJumpEvent.Invoke();
+				wallCoyoteTimeCounter = 0f;
 			}
 		}
 	}
