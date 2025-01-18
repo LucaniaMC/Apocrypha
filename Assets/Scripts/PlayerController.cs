@@ -60,10 +60,12 @@ public class PlayerController : MonoBehaviour
 
 
         //Animator parameters
+        animator.SetBool("IsJumping", movement.isJumping);
         animator.SetFloat("Speed", Mathf.Abs(horizontalMove));
         animator.SetBool("IsGrounded", movement.grounded);
         animator.SetFloat("FallTime", movement.fallTime);
         animator.SetFloat("VerticalVelocity", movement.rb.velocity.y);
+        animator.SetBool("Attacking", attack.attacking);
         animator.SetBool("OnWall", movement.onWall);
         animator.SetBool("Dash", dash);
 
@@ -89,14 +91,12 @@ public class PlayerController : MonoBehaviour
             //Edit: Replaced grounded check with coyote timer, and replaced jump button with jump buffer counter
             {
                 jump = true; //The actual jump part is in FixedUpdate because tutorial said so
-                animator.SetTrigger("Jump");
 
                 jumpBufferCounter = 0f; //reset jump buffer time immediately after jumping
             } 
             else if ((jumpBufferCounter > 0f) && movement.wallCoyoteTimeCounter > 0f && movement.grounded == false) //Wall jump
             {
                 wallJump = true;
-                animator.SetTrigger("Jump");
 
                 jumpBufferCounter = 0f; //reset
             }
@@ -118,13 +118,11 @@ public class PlayerController : MonoBehaviour
             {
                 if (sit == false) 
                 {
-                    animator.SetTrigger("Sit");
                     animator.SetBool("IsSitting", true);
                     sit = true;
                 } 
                 else if (sit == true) 
                 {
-                    animator.SetTrigger("Stand");
                     animator.SetBool("IsSitting", false);
                     sit = false;
                 }  
