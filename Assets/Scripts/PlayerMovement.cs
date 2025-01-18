@@ -8,7 +8,8 @@ public class PlayerMovement : MonoBehaviour
 	[SerializeField] private float runSpeed = 500f;				// Player run speed
 	[SerializeField] private float movementSmoothing = .05f;	// How much to smooth out the movement
     [SerializeField] private float jumpForce = 850f;			// Amount of force added when the player jumps.
-	[SerializeField] private float dashSpeed = 30f;				//How fast the player can dash
+	[SerializeField] private float jumpCutRate = 0.5f;			// How fast the player loses vertical velocity if jump button is released during jump
+	[SerializeField] private float dashSpeed = 30f;				// How fast the player can dash
 	[SerializeField] private float knockbackRecoverTime = 0.25f;	//How fast the player recovers from knockback in seconds
 	[Space]
 
@@ -263,7 +264,7 @@ public class PlayerMovement : MonoBehaviour
 	{	
 		if (knockbackTimeCounter == 0f)	//Don't perform varible jump during knockback
 		{
-			rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.9f);
+			rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * jumpCutRate);
 		}
 	}
 

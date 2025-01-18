@@ -19129,6 +19129,7 @@ MonoBehaviour:
   runSpeed: 500
   movementSmoothing: 0.05
   jumpForce: 850
+  jumpCutRate: 0.7
   dashSpeed: 30
   knockbackRecoverTime: 0.25
   coyoteTime: 0.1
@@ -19190,10 +19191,9 @@ MonoBehaviour:
         m_CallState: 2
   grounded: 0
   onWall: 0
+  isJumping: 0
   facingRight: 1
   fallTime: 0
-  isJumping: 0
-  isJumpFalling: 0
   coyoteTimeCounter: 0
   wallCoyoteTimeCounter: 0
   knockbackTimeCounter: 0
@@ -19309,7 +19309,7 @@ TrailRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2121693403}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
