@@ -21,8 +21,6 @@ public class PlayerController : MonoBehaviour
 
 	public PlayerMovement movement;
 	public PlayerAttack attack;
-    public Animator animator;       //Animator for player sprite
-	public Animator trailAnimator;  //animator for attack trail
 
     [Header("Events")]
 	[Space]
@@ -30,13 +28,14 @@ public class PlayerController : MonoBehaviour
 	public UnityEvent OnDashEvent;	    //Functions to call when the player dashes
 	public UnityEvent OnDashEndingEvent;	//Functions to call when the dash ends
     public UnityEvent OnDashRefillEvent;	//Functions to call when the dash cooldown ends
+    public UnityEvent OnAttackEvent;	//Functions to call when the player lands
 
     [System.Serializable]
 	public class BoolEvent : UnityEvent<bool> { }
 
 
     //Variables
-    float horizontalMove = 0f;
+    [HideInInspector] public float horizontalMove = 0f;
 	[HideInInspector] public bool jump = false;
     [HideInInspector] public bool wallJump = false;
     [HideInInspector] public bool sit = false;
@@ -50,24 +49,11 @@ public class PlayerController : MonoBehaviour
     bool isDashing = false; //Dash conditions to prevent dashing without cooldown on
     bool canDash = false;   //Can the player dash
 
-    private bool altAttack = false; //Choose which random attack animation to play
-
 
     void Update()
     {
         //Get player Horizontal Movement, in Update function for percise input
         horizontalMove = Input.GetAxisRaw("Horizontal");
-
-
-        //Animator parameters
-        animator.SetBool("IsJumping", movement.isJumping);
-        animator.SetFloat("Speed", Mathf.Abs(horizontalMove));
-        animator.SetBool("IsGrounded", movement.grounded);
-        animator.SetFloat("FallTime", movement.fallTime);
-        animator.SetFloat("VerticalVelocity", movement.rb.velocity.y);
-        animator.SetBool("Attacking", attack.attacking);
-        animator.SetBool("OnWall", movement.onWall);
-        animator.SetBool("Dash", dash);
 
 
         //Jump buffer timer
@@ -112,24 +98,14 @@ public class PlayerController : MonoBehaviour
 
 
         //Sit
-        if(Input.anyKeyDown && movement.grounded == true) //Put everything inside anykeydown and make exceptions, otherwise it's janky
+        if(Input.anyKeyDown && movement.grounded == true) //Put everything inside anykeydown and make an exception for the sit key
         {       
             if (Input.GetKeyDown(KeyCode.X)) //when sit key is pressed, sit down if standing, and stand up if sitting
             {
-                if (sit == false) 
-                {
-                    animator.SetBool("IsSitting", true);
-                    sit = true;
-                } 
-                else if (sit == true) 
-                {
-                    animator.SetBool("IsSitting", false);
-                    sit = false;
-                }  
+                sit = !sit; 
             } 
-            else //If keys other than the sit key is pressed, stand up without standing animation
+            else //If keys other than the sit key is pressed, stand up
             {
-                animator.SetBool("IsSitting", false);
                 sit = false;
             }
         }
@@ -138,17 +114,9 @@ public class PlayerController : MonoBehaviour
 		//Attack
         if (Input.GetMouseButtonDown(0) && attack.attacking == false && dash == false) //No attack during dash
         {
-            animator.SetTrigger("Attack");
-            trailAnimator.SetTrigger("Attack");
+            OnAttackEvent.Invoke();
 			StartCoroutine(attack.Attack());
-
-            //Alternative attack animator
-            animator.SetBool("AltAttack", altAttack);
-            trailAnimator.SetBool("AltAttack", altAttack);
-            altAttack = !altAttack;
         }
-        //Stops trail attack animation if attack is interrupted due to flipping
-        trailAnimator.SetBool("Attacking", attack.attacking);
 
 
         //Dash buffer timer
@@ -201,15 +169,5 @@ public class PlayerController : MonoBehaviour
             isDashing = false;
             OnDashRefillEvent.Invoke();
         }  
-    }
-
-
-    //Turning animation, called in OnFlipEvents
-    public void Turn() 
-    {
-        if (movement.grounded == true) //only turn if grounded
-        {
-            animator.SetTrigger("Turn");
-        }
     }
 }

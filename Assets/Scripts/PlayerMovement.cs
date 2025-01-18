@@ -33,9 +33,6 @@ public class PlayerMovement : MonoBehaviour
 	[Header("Events")]
 	[Space]
 
-	public UnityEvent OnLandEvent;	//Functions to call when the player lands
-	public UnityEvent OnJumpEvent;	//Functions to call when the player jumps
-	public UnityEvent OnFlipEvent;	//Functions to call when the player flips
 
 	[System.Serializable]
 	public class BoolEvent : UnityEvent<bool> { }
@@ -89,10 +86,10 @@ public class PlayerMovement : MonoBehaviour
 		//Wall check, same mechanics as ground check
 		onWall = false;
 
-		// The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
-		// This can be done using layers instead but Sample Assets will not overwrite your project settings.
+		//ground & wall check cast
 		if (!isJumping) //if the player is jumping, no longer check if grounded to avoid multiple checks
 		{
+			// Grounc check cast, the player is grounded if a cast to the groundcheck position hits anything designated as ground
 			Collider2D[] colliders = Physics2D.OverlapBoxAll(groundCheck.position, groundCheckSize, 0, groundLayer);
 			for (int i = 0; i < colliders.Length; i++)
 			{
@@ -107,6 +104,7 @@ public class PlayerMovement : MonoBehaviour
 				}
 			}
 
+			//Wall check cast
 			Collider2D[] collidersWall = Physics2D.OverlapBoxAll(wallCheck.position, wallCheckSize, 0, wallLayer);
 			for (int i = 0; i < collidersWall.Length; i++)
 			{
@@ -193,7 +191,7 @@ public class PlayerMovement : MonoBehaviour
 		//Dash
 		if (dash) 
 		{
-			isJumping = false;
+			isJumping = false;	//If the player dashes while jumping, no longer jumping
 
 			if (facingRight) //Dash towards the direction the player is facing
 			{
@@ -269,6 +267,7 @@ public class PlayerMovement : MonoBehaviour
 	}
 
 
+	//Flip player depending on movement direction
 	private void Flip()
 	{
 		// Switch the way the player is labelled as facing.
