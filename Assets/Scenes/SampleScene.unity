@@ -19153,7 +19153,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   groundCheck: {fileID: 753848053}
-  groundCheckSize: {x: 0.48, y: 0.1}
+  groundCheckSize: {x: 0.68, y: 0.1}
   wallLayer:
     serializedVersion: 2
     m_Bits: 64

@@ -23,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
 
 	[SerializeField] private LayerMask groundLayer;				// A mask determining what is ground to the character
 	[SerializeField] private Transform groundCheck;				// A position marking where to check if the player is grounded.
-	[SerializeField] Vector2 groundCheckSize = new Vector2(.48f, .1f);	//Dimensions of the ground check box size. .48 is the biggest size to not touching walls
+	[SerializeField] Vector2 groundCheckSize = new Vector2(.68f, .1f);	//Dimensions of the ground check box size.
 	[Space]
 	[SerializeField] private LayerMask wallLayer;				// A mask determining what is wall to the character
 	[SerializeField] private Transform wallCheck;				// A position marking where to check if the player is on wall.
