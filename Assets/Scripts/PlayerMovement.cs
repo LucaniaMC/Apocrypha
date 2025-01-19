@@ -257,7 +257,7 @@ public class PlayerMovement : MonoBehaviour
 			if (wallCoyoteTimeCounter > 0f && wallJump)
 			{
 				rb.velocity = new Vector2(rb.velocity.x, 0);	//Reset player veritcal velocity
-				rb.AddForce(new Vector2(0f, jumpForce));
+				rb.AddForce(new Vector2(0, jumpForce));
 
 				isJumping = true;
 				OnWallJumpEvent.Invoke();

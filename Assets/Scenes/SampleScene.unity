@@ -19052,8 +19052,6 @@ MonoBehaviour:
   jumpBuffer: 0.15
   movement: {fileID: 2121693410}
   attack: {fileID: 640175522}
-  animator: {fileID: 1119788021}
-  trailAnimator: {fileID: 640175519}
   OnDashEvent:
     m_PersistentCalls:
       m_Calls:
@@ -19191,6 +19189,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnWallJumpEvent:
+    m_PersistentCalls:
+      m_Calls: []
   OnFlipEvent:
     m_PersistentCalls:
       m_Calls:
