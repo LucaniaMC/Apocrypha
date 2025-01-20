@@ -25,3 +25,5 @@ The project is made with Unity version 2021.3.31f1.
 Free Pixel Art Forest by Edermunizz: https://edermunizz.itch.io/free-pixel-art-forest
 
 2D Character Controller by Brackeys: https://github.com/Brackeys/2D-Character-Controller
+
+Pixel Fire Asset Pack by Devkidd: https://devkidd.itch.io/pixel-fire-asset-pack
