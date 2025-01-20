@@ -258,5 +258,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flashColor: {r: 1, g: 1, b: 1, a: 1}
-  flashTime: 0.25
-  spriteRenderer: {fileID: 3644150817391774452}
+  flashTime: 0.2

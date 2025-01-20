@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DummyHurt : MonoBehaviour
+public class Dummy : MonoBehaviour
 {
     public GameObject sprite;
     public GameObject spark;

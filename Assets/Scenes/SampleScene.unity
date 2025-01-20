@@ -19251,6 +19251,7 @@ MonoBehaviour:
   onWall: 0
   isJumping: 0
   isWallJumping: 0
+  isDashing: 0
   facingRight: 1
   fallTime: 0
   coyoteTimeCounter: 0
@@ -19497,14 +19498,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1737036465, guid: 6b473a08515ee064683def73c70f9679, type: 3}
-      propertyPath: flashTime
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1737036465, guid: 6b473a08515ee064683def73c70f9679, type: 3}
-      propertyPath: spriteRenderer.Array.size
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3644150817739113261, guid: 6b473a08515ee064683def73c70f9679, type: 3}
       propertyPath: m_RootOrder
       value: 7
