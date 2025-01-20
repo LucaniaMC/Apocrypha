@@ -10374,7 +10374,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 47d048ca7923f3c45aa9ffe4c29c1964, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -18988,6 +18988,7 @@ GameObject:
   - component: {fileID: 2121693407}
   - component: {fileID: 2121693412}
   - component: {fileID: 2121693413}
+  - component: {fileID: 2121693415}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -19300,6 +19301,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 2121693415}
+        m_TargetAssemblyTypeName: DamageFlash, Assembly-CSharp
+        m_MethodName: Flash
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnDeathEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -19462,6 +19475,20 @@ MonoBehaviour:
   movement: {fileID: 2121693410}
   attack: {fileID: 640175522}
   controller: {fileID: 2121693408}
+--- !u!114 &2121693415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2121693403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef7386a2b0910924bab7a1825327bcf9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashColor: {r: 1, g: 0.107547104, b: 0.107547104, a: 0.5882353}
+  flashTime: 0.2
 --- !u!1001 &3644150815770369759
 PrefabInstance:
   m_ObjectHideFlags: 0
