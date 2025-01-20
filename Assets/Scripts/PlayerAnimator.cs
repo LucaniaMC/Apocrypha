@@ -16,14 +16,14 @@ public class PlayerAnimator : MonoBehaviour
     {
         //Animator parameters
         animator.SetBool("IsJumping", movement.isJumping);
-        animator.SetFloat("Speed", Mathf.Abs(controller.horizontalMove));
+        animator.SetFloat("Speed", Mathf.Abs(controller.horizontalMoveInput));
         animator.SetBool("IsGrounded", movement.grounded);
         animator.SetFloat("FallTime", movement.fallTime);
         animator.SetFloat("VerticalVelocity", movement.rb.velocity.y);
         animator.SetBool("Attacking", attack.attacking);
         animator.SetBool("OnWall", movement.onWall);
-        animator.SetBool("Dash", controller.dash);
-        animator.SetBool("IsSitting", controller.sit);
+        animator.SetBool("Dash", controller.dashInput);
+        animator.SetBool("IsSitting", controller.sitting);
         trailAnimator.SetBool("Attacking", attack.attacking);
     }
 

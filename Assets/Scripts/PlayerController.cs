@@ -35,11 +35,11 @@ public class PlayerController : MonoBehaviour
 
 
     //Variables
-    [HideInInspector] public float horizontalMove = 0f;
-	[HideInInspector] public bool jump = false;
-    [HideInInspector] public bool wallJump = false;
-    [HideInInspector] public bool sit = false;
-    [HideInInspector] public bool dash = false;
+    [HideInInspector] public float horizontalMoveInput = 0f;
+	[HideInInspector] public bool jumpInput = false;
+    [HideInInspector] public bool wallJumpInput = false;
+    [HideInInspector] public bool sitting = false;
+    [HideInInspector] public bool dashInput = false;
 
     //Timers
     float jumpBufferCounter = 0f; //Countdown timer for jump buffering
@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         //Get player Horizontal Movement, in Update function for percise input
-        horizontalMove = Input.GetAxisRaw("Horizontal");
+        horizontalMoveInput = Input.GetAxisRaw("Horizontal");
 
 
         //Jump buffer timer
@@ -68,7 +68,7 @@ public class PlayerController : MonoBehaviour
 
 
         //No jump during dash
-        if (!dash) 
+        if (!dashInput) 
         {
             //Jump
             if (jumpBufferCounter > 0f && movement.coyoteTimeCounter > 0f)
@@ -76,13 +76,13 @@ public class PlayerController : MonoBehaviour
             //There's also a grounded condition check in the animator from any state to jump to fix the issue. 
             //Edit: Replaced grounded check with coyote timer, and replaced jump button with jump buffer counter
             {
-                jump = true; //The actual jump part is in FixedUpdate because tutorial said so
+                jumpInput = true; //The actual jump part is in FixedUpdate because tutorial said so
 
                 jumpBufferCounter = 0f; //reset jump buffer time immediately after jumping
             } 
             else if ((jumpBufferCounter > 0f) && movement.wallCoyoteTimeCounter > 0f && movement.grounded == false) //Wall jump
             {
-                wallJump = true;
+                wallJumpInput = true;
 
                 jumpBufferCounter = 0f; //reset
             }
@@ -102,17 +102,17 @@ public class PlayerController : MonoBehaviour
         {       
             if (Input.GetKeyDown(KeyCode.X)) //when sit key is pressed, sit down if standing, and stand up if sitting
             {
-                sit = !sit; 
+                sitting = !sitting; 
             } 
             else //If keys other than the sit key is pressed, stand up
             {
-                sit = false;
+                sitting = false;
             }
         }
 
 
 		//Attack
-        if (Input.GetMouseButtonDown(0) && attack.attacking == false && dash == false) //No attack during dash
+        if (Input.GetMouseButtonDown(0) && attack.attacking == false && dashInput == false) //No attack during dash
         {
             OnAttackEvent.Invoke();
 			StartCoroutine(attack.Attack());
@@ -148,9 +148,9 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         //Move player
-        movement.Move(horizontalMove * Time.fixedDeltaTime, jump, wallJump, dash);
-        jump = false; //Reset jump after jumped
-        wallJump = false; //reset wall jump
+        movement.Move(horizontalMoveInput * Time.fixedDeltaTime, jumpInput, wallJumpInput, dashInput);
+        jumpInput = false; //Reset jump after jumped
+        wallJumpInput = false; //reset wall jump
     }
 
 
@@ -160,10 +160,10 @@ public class PlayerController : MonoBehaviour
         if (isDashing == false && canDash == true) 
         {
             isDashing = true;
-            dash = true;
+            dashInput = true;
             OnDashEvent.Invoke();
             yield return new WaitForSeconds(dashTime);
-            dash = false;
+            dashInput = false;
             OnDashEndingEvent.Invoke();
             yield return new WaitForSeconds(dashCooldown);
             isDashing = false;
