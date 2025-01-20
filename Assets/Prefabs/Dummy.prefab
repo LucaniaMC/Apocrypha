@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 3644150817391774451}
   - component: {fileID: 3644150817391774453}
   - component: {fileID: 3644150817391774452}
-  - component: {fileID: 7804752291585033609}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -75,7 +74,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 47d048ca7923f3c45aa9ffe4c29c1964, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -107,20 +106,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &7804752291585033609
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3644150817391774454}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef7386a2b0910924bab7a1825327bcf9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  flashMaterial: {fileID: 2100000, guid: 6f5ffe02cfb404244aa574e595650f8e, type: 2}
-  duration: 0.2
 --- !u!1 &3644150817739113264
 GameObject:
   m_ObjectHideFlags: 0
@@ -133,6 +118,7 @@ GameObject:
   - component: {fileID: 3644150817739113263}
   - component: {fileID: 3644150817739113259}
   - component: {fileID: 3644150817739113258}
+  - component: {fileID: 1737036465}
   m_Layer: 7
   m_Name: Dummy
   m_TagString: Enemy
@@ -215,7 +201,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 7804752291585033609}
+      - m_Target: {fileID: 1737036465}
         m_TargetAssemblyTypeName: DamageFlash, Assembly-CSharp
         m_MethodName: Flash
         m_Mode: 1
@@ -259,3 +245,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite: {fileID: 3644150817391774454}
   spark: {fileID: 5257125201645060266, guid: 3bb842a14803cca43b9dc80ef240311b, type: 3}
+--- !u!114 &1737036465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3644150817739113264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef7386a2b0910924bab7a1825327bcf9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashColor: {r: 1, g: 1, b: 1, a: 1}
+  flashTime: 0.25
+  spriteRenderer: {fileID: 3644150817391774452}
