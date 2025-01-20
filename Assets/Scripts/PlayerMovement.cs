@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
 	[Header("Parameters")]
 	
 	[SerializeField] private float runSpeed = 500f;				// Player run speed
+	[SerializeField] private float runSpeed = 10f;				// Player run speed
 	[SerializeField] private float movementSmoothing = .05f;	// How much to smooth out the movement
     [SerializeField] private float jumpForce = 850f;			// Amount of force added when the player jumps.
 	[SerializeField] private float jumpCutRate = 0.5f;			// How fast the player loses vertical velocity if jump button is released during jump

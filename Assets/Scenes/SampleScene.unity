@@ -19170,6 +19170,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   runSpeed: 500
+  runSpeed: 10
   movementSmoothing: 0.05
   jumpForce: 850
   jumpCutRate: 0.7

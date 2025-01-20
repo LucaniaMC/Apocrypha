@@ -149,6 +149,7 @@ public class PlayerController : MonoBehaviour
     {
         //Move player
         movement.Move(horizontalMoveInput * Time.fixedDeltaTime, jumpInput, wallJumpInput, dashInput);
+        movement.Move(horizontalMoveInput, jumpInput, wallJumpInput, dashInput);
         jumpInput = false; //Reset jump after jumped
         wallJumpInput = false; //reset wall jump
     }
