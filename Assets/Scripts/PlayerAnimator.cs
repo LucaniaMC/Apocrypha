@@ -44,7 +44,7 @@ public class PlayerAnimator : MonoBehaviour
         animator.SetTrigger("Attack");
         trailAnimator.SetTrigger("Attack");
 
-        //Alternative attack animator
+        //Alternate between two attack variants
         altAttack = !altAttack;
         animator.SetBool("AltAttack", altAttack);
         trailAnimator.SetBool("AltAttack", altAttack);

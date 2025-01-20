@@ -19152,11 +19152,11 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  horizontalMove: 0
-  jump: 0
-  wallJump: 0
-  sit: 0
-  dash: 0
+  horizontalMoveInput: 0
+  jumpInput: 0
+  wallJumpInput: 0
+  sitting: 0
+  dashInput: 0
 --- !u!114 &2121693410
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19169,7 +19169,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c1813418e170b142aff22e2a9592346, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runSpeed: 500
   runSpeed: 10
   movementSmoothing: 0.05
   jumpForce: 850
@@ -19251,6 +19250,7 @@ MonoBehaviour:
   grounded: 0
   onWall: 0
   isJumping: 0
+  isWallJumping: 0
   facingRight: 1
   fallTime: 0
   coyoteTimeCounter: 0

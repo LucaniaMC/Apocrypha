@@ -5,12 +5,11 @@ public class PlayerMovement : MonoBehaviour
 {
 	[Header("Parameters")]
 	
-	[SerializeField] private float runSpeed = 500f;				// Player run speed
-	[SerializeField] private float runSpeed = 10f;				// Player run speed
-	[SerializeField] private float movementSmoothing = .05f;	// How much to smooth out the movement
-    [SerializeField] private float jumpForce = 850f;			// Amount of force added when the player jumps.
-	[SerializeField] private float jumpCutRate = 0.5f;			// How fast the player loses vertical velocity if jump button is released during jump
-	[SerializeField] private float dashSpeed = 30f;				// How fast the player can dash
+	[SerializeField] private float runSpeed = 10f;					// Player run speed
+	[SerializeField] private float movementSmoothing = .05f;		// How much to smooth out the movement
+    [SerializeField] private float jumpForce = 850f;				// Amount of force added when the player jumps.
+	[SerializeField] private float jumpCutRate = 0.5f;				// How fast the player loses vertical velocity if jump button is released during jump
+	[SerializeField] private float dashSpeed = 30f;					// How fast the player can dash
 	[SerializeField] private float knockbackRecoverTime = 0.25f;	//How fast the player recovers from knockback in seconds
 	[Space]
 
@@ -47,6 +46,8 @@ public class PlayerMovement : MonoBehaviour
 	[HideInInspector] public bool grounded = false;				// Whether or not the player is grounded.
 	[HideInInspector] public bool onWall = false;				// Whether the player is on wall.
 	[HideInInspector] public bool isJumping = false;			// Is the player jumping
+	[HideInInspector] public bool isWallJumping = false;		// Is the player wall jumping
+	[HideInInspector] public bool isDashing = false;			// Is the player dashing
 	[HideInInspector] public bool facingRight = true;			// For determining which way the player is currently facing.
 	[HideInInspector] public float fallTime = 0f;				// Used by player's animator for landing animation variations
 
@@ -70,18 +71,6 @@ public class PlayerMovement : MonoBehaviour
 	{
 		rb = GetComponent<Rigidbody2D>();
 		health = GetComponent<HealthSystem>();
-
-		if (OnLandEvent == null)
-			OnLandEvent = new UnityEvent();
-
-		if (OnJumpEvent == null)
-			OnJumpEvent = new UnityEvent();
-
-		if (OnWallJumpEvent == null)
-			OnWallJumpEvent = new UnityEvent();
-
-		if (OnFlipEvent == null)
-			OnFlipEvent = new UnityEvent();
 	}
 
 
@@ -175,6 +164,7 @@ public class PlayerMovement : MonoBehaviour
 		if (isJumping && rb.velocity.y < 0f) 
 		{
 			isJumping = false;
+			isWallJumping = false;
 		}
 
 
@@ -194,36 +184,13 @@ public class PlayerMovement : MonoBehaviour
 
 
     //Move function
-    public void Move(float move, bool jump, bool wallJump, bool dash)
+    public void Move(float move)
 	{
-		//Dash
-		if (dash) 
-		{
-			isJumping = false;	//If the player dashes while jumping, no longer jumping
-
-			if (facingRight) //Dash towards the direction the player is facing
-			{
-				rb.velocity = new Vector2(dashSpeed, 0f);
-				rb.gravityScale = 0f;	//No gravity during dash so the player stays on the same y axis
-			}
-			else if (!facingRight) 
-			{
-				rb.velocity = new Vector2(-dashSpeed, 0f);
-				rb.gravityScale = 0f;
-			}
-		}
-		else
-		{
-			rb.gravityScale = gravity;
-		}
-
-
 		//Only move, jump and change directions if not dashing, and if knockback is over
-		if (!dash && knockbackTimeCounter == 0f)
-		{	
-			// Move
+		if (!isDashing && knockbackTimeCounter == 0f)
+		{
 			// Move the character by finding the target velocity
-			Vector3 targetVelocity = new Vector2(move * runSpeed, rb.velocity.y); //multiplies knockback control
+			Vector3 targetVelocity = new Vector2(move * runSpeed, rb.velocity.y);
 			// And then smoothing it out and applying it to the character
 			rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, movementSmoothing);
 
@@ -239,39 +206,80 @@ public class PlayerMovement : MonoBehaviour
 				// ... flip the player.
 				Flip();
 			}
-				
+		}
+	}
 
-			// Jump
-			if (coyoteTimeCounter > 0f && jump)	//Replaced grounded state check with coyote timer
+
+	//Jump
+	public void Jump(bool jump) 
+	{
+		if (coyoteTimeCounter > 0f && jump)	//Replaced grounded state check with coyote timer
+		{
+			//Set flag
+			isJumping = true;
+
+			// Add a vertical force to the player.
+			rb.velocity = new Vector2(rb.velocity.x, 0);	//Reset player veritcal velocity when jumping to prevent irregular jump heights
+			rb.AddForce(new Vector2(0f, jumpForce));
+
+			OnJumpEvent.Invoke();
+			coyoteTimeCounter = 0f;	//No coyote time after jumping
+		}
+	}
+
+
+	//Wall Jump
+	public void WallJump(bool wallJump) 
+	{
+		if (wallCoyoteTimeCounter > 0f && wallJump)
+		{
+			//Set flag
+			isJumping = true;
+			isWallJumping = true;
+
+			rb.velocity = new Vector2(rb.velocity.x, 0);	//Reset player veritcal velocity
+			rb.AddForce(new Vector2(0, jumpForce));
+
+			OnWallJumpEvent.Invoke();
+			wallCoyoteTimeCounter = 0f;
+		}
+	}
+
+
+	public void Dash(bool dash) 
+	{
+		if (dash) 
+		{
+			//Set flag
+			isDashing = true;
+
+			isJumping = false;	//If the player dashes while jumping, no longer jumping
+			rb.gravityScale = 0f;	//No gravity during dash so the player stays on the same y axis
+
+			if (facingRight) //Dash towards the direction the player is facing
 			{
-				// Add a vertical force to the player.
-				rb.velocity = new Vector2(rb.velocity.x, 0);	//Reset player veritcal velocity when jumping to prevent irregular jump heights
-				rb.AddForce(new Vector2(0f, jumpForce));
-
-				isJumping = true;
-				OnJumpEvent.Invoke();
-				coyoteTimeCounter = 0f;	//No coyote time after jumping
+				rb.velocity = new Vector2(dashSpeed, 0f);
 			}
-
-
-			//Wall jump
-			if (wallCoyoteTimeCounter > 0f && wallJump)
+			else if (!facingRight) 
 			{
-				rb.velocity = new Vector2(rb.velocity.x, 0);	//Reset player veritcal velocity
-				rb.AddForce(new Vector2(0, jumpForce));
-
-				isJumping = true;
-				OnWallJumpEvent.Invoke();
-				wallCoyoteTimeCounter = 0f;
+				rb.velocity = new Vector2(-dashSpeed, 0f);
 			}
 		}
 	}
 
 
+	//Called at the end of dash corontine
+	public void DashReset() 
+	{
+		rb.gravityScale = gravity;	//Resets gravity when dash finishes
+		isDashing = false;
+	}
+
+
 	//lower vertical velocity if the player releases jump button early, called in PlayerController
-	public void VariableJump() 
+	public void JumpCut() 
 	{	
-		if (knockbackTimeCounter == 0f)	//Don't perform varible jump during knockback
+		if (knockbackTimeCounter == 0f)	//Don't perform jump cut during knockback
 		{
 			rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * jumpCutRate);
 		}
@@ -294,9 +302,7 @@ public class PlayerMovement : MonoBehaviour
 	//knockback
 	public void Knockback(float x, float y, bool disableControl) 
 	{
-		if (health.isDead == true) return; //Do not knock back dead objects since they no longer have invis time
-
-		if (health.isInvincible == false) //If the player can take damage
+		if (!health.isDead && !health.isInvincible) //If the player can take damage and isn't dead
 		{
 			//Whether this knockback disables player control
 			if (disableControl) 
@@ -304,7 +310,9 @@ public class PlayerMovement : MonoBehaviour
 				knockbackTimeCounter = 1f;
 			}
 
+			//Interrupts jumping
 			isJumping = false;
+			isWallJumping = false;
 			
 			rb.velocity = new Vector2(x, 0);	//Set x knockback force, reset y velocity
 			rb.AddForce(new Vector2(0f, y));	//Used addforce for y axis because setting y velocity directly doesn't work

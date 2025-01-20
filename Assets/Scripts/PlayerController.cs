@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviour
     float dashBufferCounter = 0f;   //Same timer for dash
 
     //States
-    bool isDashing = false; //Dash conditions to prevent dashing without cooldown on
+    bool dashOnCooldown = false; //Dash conditions to prevent dashing without cooldown on
     bool canDash = false;   //Can the player dash
 
 
@@ -89,11 +89,11 @@ public class PlayerController : MonoBehaviour
         }
 
         
-        //Variable jump, lower vertical velocity if the player releases jump button early
+        //Jump cutting, lower vertical velocity if the player releases jump button early
         //If the player jumped only in buffer time and isn't holding down the jump key, also lower vertical velocity
         if (!Input.GetButton("Jump") && movement.rb.velocity.y > 0f && movement.isJumping == true) //only works if the player is gaining height from jumping
         {
-            movement.VariableJump();
+            movement.JumpCut();
         }
 
 
@@ -131,7 +131,7 @@ public class PlayerController : MonoBehaviour
 
 
         //Dash
-        if (dashBufferCounter > 0f && canDash == true && isDashing == false && movement.onWall == false && movement.knockbackTimeCounter == 0f) //No dash on wall or during knockback
+        if (dashBufferCounter > 0f && canDash == true && dashOnCooldown == false && movement.onWall == false && movement.knockbackTimeCounter == 0f) //No dash on wall or during knockback
             {
                 StartCoroutine(Dash());
                 dashBufferCounter = 0f; //reset
@@ -148,8 +148,11 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         //Move player
-        movement.Move(horizontalMoveInput * Time.fixedDeltaTime, jumpInput, wallJumpInput, dashInput);
-        movement.Move(horizontalMoveInput, jumpInput, wallJumpInput, dashInput);
+        movement.Move(horizontalMoveInput);
+        movement.Jump(jumpInput);
+        movement.WallJump(wallJumpInput);
+        movement.Dash(dashInput);
+
         jumpInput = false; //Reset jump after jumped
         wallJumpInput = false; //reset wall jump
     }
@@ -158,16 +161,26 @@ public class PlayerController : MonoBehaviour
     //Dash sequence
     private IEnumerator Dash() 
     {
-        if (isDashing == false && canDash == true) 
+        if (dashOnCooldown == false && canDash == true) 
         {
-            isDashing = true;
+            //Start of Dash
             dashInput = true;
             OnDashEvent.Invoke();
+
+            //Wait for dash duration
             yield return new WaitForSeconds(dashTime);
+
+            //End of dash
+            dashOnCooldown = true;
             dashInput = false;
             OnDashEndingEvent.Invoke();
+            movement.DashReset();
+
+            //Wait for dash cooldown
             yield return new WaitForSeconds(dashCooldown);
-            isDashing = false;
+
+            //Dash refill, can dash again
+            dashOnCooldown = false;
             OnDashRefillEvent.Invoke();
         }  
     }
