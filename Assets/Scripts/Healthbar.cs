@@ -6,11 +6,11 @@ public class Healthbar : MonoBehaviour
     public Slider slider;           //Main slider
     public Slider effectSlider;     //A second slider for smooth damage effect
 
-    //Variables for damage effect, and effect that displays how much the player's health has decreased
+    //Variables for damage effect, an effect that displays how much the player's health has decreased
     const float effectTimerMax = 1f;
     float effectTimerCounter = 1f;
-    const float effectSpeedMin = 20f;
-    float effectSpeed;
+    const float effectSpeedMin = 20f;   //Minimum speed of the decrease effect
+    float effectSpeed;                  //Current effect speed
 
     public HealthSystem health;
 
@@ -31,7 +31,8 @@ public class Healthbar : MonoBehaviour
         effectTimerCounter = Mathf.Clamp(effectTimerCounter - Time.deltaTime, 0f, effectTimerMax);
 
         //Variable effect speed based on the difference between the slider value and effect slider value, with a minimum speed
-        effectSpeed = Mathf.Max(effectSpeedMin, (effectSlider.value - slider.value)  *2);
+        //Bigger difference means faster spped
+        effectSpeed = Mathf.Max(effectSpeedMin, (effectSlider.value - slider.value) * 2);
         
         //Smoothly move the damage effect bar towards the current health bar position
         if (effectTimerCounter <= 0 && effectSlider.value > health.health) 

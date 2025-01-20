@@ -9,13 +9,12 @@ public class Parallax : MonoBehaviour
     Vector3 camPrev;    //Camera origin position
 
 
-    // Start is called before the first frame update
     void Start()
     {
         camPrev = cam.transform.position;
     }
 
-    // Update is called once per frame
+
     void LateUpdate()
     {
         Vector3 camPos = cam.transform.position;

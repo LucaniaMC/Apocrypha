@@ -57,12 +57,13 @@ public class PlayerAttack : MonoBehaviour
     //Damage all enemies in attack hitbox
     void OnTriggerEnter2D(Collider2D other) 
     {
-        List<GameObject> attackedEnemy = new List<GameObject>();
+        List<GameObject> attackedEnemy = new List<GameObject>();    //Used list for easy resize
 
-        if (other.gameObject.layer == 7) 
+        if (other.gameObject.layer == 7)    //If the collided object is in enemy layer
         {
-            attackedEnemy.Add(other.gameObject);
+            attackedEnemy.Add(other.gameObject);    //Add the object to the list
 
+            //Get the HealthSystem component of each enemy, and damages them
             foreach (GameObject enemy in attackedEnemy) 
             {
                 enemy.GetComponent<HealthSystem>().Damage(attackDamage);

@@ -55,8 +55,10 @@ public class DamageFlash : MonoBehaviour
 
         while (elapsedTime < flashTime) 
         {
+            //Timer
             elapsedTime += Time.deltaTime;
 
+            //Lerp the current flash amount
             currentFlashAmount = Mathf.Lerp(1f, 0f, elapsedTime / flashTime);
             SetFlashAmount(currentFlashAmount);
 
@@ -65,6 +67,7 @@ public class DamageFlash : MonoBehaviour
     }
 
 
+    //Sets the material's flash opacity to the Currentflashamount variable
     private void SetFlashAmount(float amount) 
     {
         for (int i = 0;  i < material.Length; i++) 
