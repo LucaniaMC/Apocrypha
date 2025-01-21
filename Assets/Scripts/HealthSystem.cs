@@ -33,18 +33,6 @@ public class HealthSystem : MonoBehaviour
     //Since they'll have different behaviors when damaged and dead
     //It'll need another script specific to each object to call the functions and add in events
 
-    void Start() //Not sure why
-    {
-        if (OnDeathEvent == null)
-			OnDeathEvent = new UnityEvent();
-
-        if (OnDamageEvent == null)
-			OnDamageEvent = new UnityEvent();
-
-        if (OnHealEvent == null)
-			OnHealEvent = new UnityEvent();
-    }
-
 
     //Damage function
     public void Damage(int damageAmount)
@@ -54,8 +42,10 @@ public class HealthSystem : MonoBehaviour
         health -= (int)(damageAmount * damageModifier);
         OnDamageEvent.Invoke();
 
-        StartCoroutine(Invincible(invincibleTime)); //Start invincibility time after taking damage
-    
+        if (invincibleTime > 0f)
+        {
+            StartCoroutine(Invincible(invincibleTime)); //Start invincibility time after taking damage
+        }
         Check();
     }
 
@@ -69,6 +59,7 @@ public class HealthSystem : MonoBehaviour
     }
 
 
+    //Check for player health clamp and death each time player health is changed
     void Check()
     {
         //Clamp health amount
@@ -83,18 +74,25 @@ public class HealthSystem : MonoBehaviour
     }
 
 
-    //Invincible time after damage
+    //Manually set invincibility to true or false
+    public void SetInvincible(bool invincible) 
+    {
+        isInvincible = invincible;
+    }
+
+
+    //Manually set invincibility with a set time during which the player is invincible
+     public void SetInvincible(float time) 
+    {
+        StartCoroutine(Invincible(time));
+    }
+
+
+    //Corontine for invincible time after damage or manually set
     private IEnumerator Invincible(float time) 
     {
         isInvincible = true;
         yield return new WaitForSeconds(time);
         isInvincible = false;
-    }
-
-
-    //Manually set invincibility, currently used in dash event
-    public void SetInvincible(bool invincible) 
-    {
-        isInvincible = invincible;
     }
 }

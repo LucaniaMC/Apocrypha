@@ -7,8 +7,8 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Parameters")]
 
-    private const float dashCooldown = 0.5f;        //Time between dash, so the player doesn't dash too much on ground
-    private const float dashTime = 0.1f;            //How long do dashes last
+    private const float dashCooldown = 0.5f;                    // Time between dash, so the player doesn't dash too much on ground
+    private const float dashTime = 0.1f;                        // How long do dashes last
     [Space]
 
     [Header("Assists")]
@@ -25,29 +25,29 @@ public class PlayerController : MonoBehaviour
     [Header("Events")]
 	[Space]
 
-	public UnityEvent OnDashEvent;	    //Functions to call when the player dashes
+	public UnityEvent OnDashEvent;          //Functions to call when the player dashes
 	public UnityEvent OnDashEndingEvent;	//Functions to call when the dash ends
     public UnityEvent OnDashRefillEvent;	//Functions to call when the dash cooldown ends
-    public UnityEvent OnAttackEvent;	//Functions to call when the player lands
+    public UnityEvent OnAttackEvent;        //Functions to call when the player lands
 
     [System.Serializable]
 	public class BoolEvent : UnityEvent<bool> { }
 
 
     //Variables
-    [HideInInspector] public float horizontalMoveInput = 0f;
+    [HideInInspector] public float horizontalMoveInput = 0f;    //The player's horizontal input on a range of -1 to 1
 	[HideInInspector] public bool jumpInput = false;
     [HideInInspector] public bool wallJumpInput = false;
     [HideInInspector] public bool sitting = false;
     [HideInInspector] public bool dashInput = false;
 
     //Timers
-    float jumpBufferCounter = 0f; //Countdown timer for jump buffering
+    float jumpBufferCounter = 0f;   //Countdown timer for jump buffering
     float dashBufferCounter = 0f;   //Same timer for dash
 
     //States
-    bool dashOnCooldown = false; //Dash conditions to prevent dashing without cooldown on
-    bool canDash = false;   //Can the player dash
+    bool dashOnCooldown = false;    //Dash conditions to prevent dashing without cooldown on
+    bool canDash = false;           //Can the player dash
 
 
     void Update()
