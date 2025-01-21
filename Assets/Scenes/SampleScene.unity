@@ -9652,7 +9652,7 @@ GameObject:
   - component: {fileID: 918737849}
   - component: {fileID: 918737851}
   - component: {fileID: 918737852}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: Campfire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19171,10 +19171,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   runSpeed: 10
   movementSmoothing: 0.05
+  airMovementSmoothing: 0.1
   jumpForce: 850
   jumpCutRate: 0.7
   dashSpeed: 30
-  knockbackRecoverTime: 0.25
   coyoteTime: 0.1
   wallCoyoteTime: 0.2
   groundLayer:
@@ -19257,6 +19257,7 @@ MonoBehaviour:
   coyoteTimeCounter: 0
   wallCoyoteTimeCounter: 0
   knockbackTimeCounter: 0
+  forceMoveXCounter: 0
   rb: {fileID: 0}
 --- !u!114 &2121693411
 MonoBehaviour:
@@ -19489,7 +19490,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef7386a2b0910924bab7a1825327bcf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flashColor: {r: 1, g: 0.107547104, b: 0.107547104, a: 0.5882353}
+  flashColor: {r: 1, g: 0.17358488, b: 0.17358488, a: 0.5882353}
   flashTime: 0.2
 --- !u!1001 &3644150815770369759
 PrefabInstance:
