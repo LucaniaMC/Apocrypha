@@ -4,8 +4,8 @@ A 2D Platformer project.
 
 ## Installation
 
-1. Clone the project
-2. Unzip the file
+1. ` git clone https://github.com/LucaniaMC/Apocrypha.git`
+2. In Unity Hub, click Add to add the folder as a new project
 3. Open the project in Unity
 
 The project is made with Unity version 2021.3.31f1.
