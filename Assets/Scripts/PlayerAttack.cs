@@ -10,6 +10,7 @@ public class PlayerAttack : MonoBehaviour
     public int attackDamage = 10;
     [Space]
     public bool attacking = false;
+    float attackTime = .2f;
 
 
     [Header("References")]
@@ -32,7 +33,7 @@ public class PlayerAttack : MonoBehaviour
         {
             attacking = true;
             attackCollider.enabled = true;
-            yield return new WaitForSeconds(.2f);
+            yield return new WaitForSeconds(attackTime);
             attackCollider.enabled = false;
             yield return new WaitForSeconds(attackCooldown);
             attacking = false;

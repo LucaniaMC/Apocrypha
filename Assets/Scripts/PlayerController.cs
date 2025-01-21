@@ -71,16 +71,14 @@ public class PlayerController : MonoBehaviour
         if (!dashInput) 
         {
             //Jump
-            if (jumpBufferCounter > 0f && movement.coyoteTimeCounter > 0f)
-            //Additional ground check so the animator trigger won't be triggered in midair, it stops working when it happens. 
-            //There's also a grounded condition check in the animator from any state to jump to fix the issue. 
-            //Edit: Replaced grounded check with coyote timer, and replaced jump button with jump buffer counter
+            if (jumpBufferCounter > 0f && movement.coyoteTimeCounter > 0f) //Jump buffer counter acts as jump input check, and coyote time counter acts as ground check
+            //Additional ground check so the animator trigger won't be triggered in midair. 
             {
-                jumpInput = true; //The actual jump part is in FixedUpdate because tutorial said so
+                jumpInput = true; // Inputs are used in FixedUpdate
 
                 jumpBufferCounter = 0f; //reset jump buffer time immediately after jumping
             } 
-            else if ((jumpBufferCounter > 0f) && movement.wallCoyoteTimeCounter > 0f && movement.grounded == false) //Wall jump
+            else if (jumpBufferCounter > 0f && movement.wallCoyoteTimeCounter > 0f && movement.grounded == false) //Wall jump
             {
                 wallJumpInput = true;
 
