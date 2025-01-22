@@ -316,7 +316,7 @@ public class PlayerMovement : MonoBehaviour
 
 	
 	//knock the player towards a direction and temporarily disables movement control. 
-	//Takes input float x as horizontal velocity, float y >= 0 as vertical force, and float time >= 0 as time takes for the player to regain control
+	//Takes input float x as horizontal velocity, y as vertical velocity, and float time >= 0 as time takes for the player to regain control
 	public void Knockback(float x, float y, float time)
 	{
 		if (!health.isDead && !health.isInvincible) //If the player can take damage and isn't dead
@@ -327,8 +327,7 @@ public class PlayerMovement : MonoBehaviour
 			isJumping = false;
 			isWallJumping = false;
 			
-			rb.velocity = new Vector2(x, 0);	//Set x knockback force, reset y velocity to prevent irregular y velocity
-			rb.AddForce(new Vector2(0f, y));	//Used addforce for y axis, because setting y velocity directly doesn't work
+			rb.velocity = new Vector2(x, y);	//Set x and y to knockback velocity
 		}
 	}
 
