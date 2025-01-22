@@ -40,10 +40,14 @@ public class PlayerController : MonoBehaviour
     public bool wallJumpInput {get; private set;} = false;        // Set to true after user input, then back to false once the player has jumped
     public bool sitting {get; private set;} = false;              // Whether the player is sitting, toggle with input
     public bool dashInput {get; private set;} = false;            // Set to true after user input, then set back to false after dashTime
+    public float verticalInput {get; private set;} = 0f;          // Input for vertical input, on a range of -1 (down) to 1 (up)
+    public bool lookingUp {get; private set;} = false;            // True for looking up
+    public bool lookingDown {get; private set;} = false;          // True for looking down
 
     //Timers
-    float jumpBufferCounter = 0f;   //Countdown timer for jump buffering
-    float dashBufferCounter = 0f;   //Same timer for dash
+    float jumpBufferCounter = 0f;   // Countdown timer for jump buffering
+    float dashBufferCounter = 0f;   // Same timer for dash
+    float verticalInputTimer = 0f;  // Timer for vertical input, count up from 0
 
     //Private variables
     bool dashOnCooldown = false;    //Dash conditions to prevent dashing without cooldown on
@@ -62,7 +66,7 @@ public class PlayerController : MonoBehaviour
             jumpBufferCounter = jumpBuffer;
         } 
         else 
-        {   //Same as coyote time counter
+        {
             jumpBufferCounter = Mathf.Clamp(jumpBufferCounter - Time.deltaTime, 0f, jumpBuffer);
         }
 
@@ -123,7 +127,7 @@ public class PlayerController : MonoBehaviour
             dashBufferCounter = dashBuffer;
         } 
         else 
-        {   //Same as coyote time counter
+        {
             dashBufferCounter = Mathf.Clamp(dashBufferCounter - Time.deltaTime, 0f, dashBuffer);
         }
 
@@ -139,6 +143,40 @@ public class PlayerController : MonoBehaviour
         if (movement.grounded || movement.onWall)
         {
             canDash = true;
+        }
+
+        
+        //Player vertical input for looking up/down
+        verticalInput = Input.GetAxisRaw("Vertical");
+
+
+        //Timer for looking up or down
+        if (verticalInput != 0f && !dashInput && !jumpInput && !wallJumpInput && !attack.attacking && movement.grounded) //Don't look up/down if dashing, jumping, walljumping, attacking or ungrounded
+        {
+            verticalInputTimer = Mathf.Clamp(verticalInputTimer + Time.deltaTime, 0f, 1f);
+        } 
+        else 
+        {
+            verticalInputTimer = 0f; //timer wil be reset if dashing, jumping, walljumping, attacking or ungrounded, but not moving
+        }
+
+
+        //Look up/down. Only start after the input is held down for a while, so the player is less likely to unintentionally look up/down when trying to attack up/down
+        if (verticalInputTimer >= 1f && horizontalMoveInput == 0f)  //Player can only look up or down when standing still 
+        {
+            if (verticalInput >= 1f) 
+            {
+                lookingUp = true;
+            }
+            else if (verticalInput <= -1f) 
+            {
+                lookingDown = true;
+            }
+        }
+        else 
+        {
+            lookingUp = false;
+            lookingDown = false;
         }
     }
 

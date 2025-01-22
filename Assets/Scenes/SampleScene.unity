@@ -19140,11 +19140,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  horizontalMoveInput: 0
-  jumpInput: 0
-  wallJumpInput: 0
-  sitting: 0
-  dashInput: 0
 --- !u!114 &2121693410
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19235,17 +19230,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  grounded: 0
-  onWall: 0
-  isJumping: 0
-  isWallJumping: 0
-  isDashing: 0
-  facingRight: 1
-  fallTime: 0
-  coyoteTimeCounter: 0
-  wallCoyoteTimeCounter: 0
-  knockbackTimeCounter: 0
-  forceMoveXCounter: 0
   rb: {fileID: 0}
 --- !u!114 &2121693411
 MonoBehaviour:

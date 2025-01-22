@@ -24,6 +24,8 @@ public class PlayerAnimator : MonoBehaviour
         animator.SetBool("OnWall", movement.onWall);
         animator.SetBool("Dash", controller.dashInput);
         animator.SetBool("IsSitting", controller.sitting);
+        animator.SetBool("LookingUp", controller.lookingUp);
+        animator.SetBool("LookingDown", controller.lookingDown);
         trailAnimator.SetBool("Attacking", attack.attacking);
     }
 
