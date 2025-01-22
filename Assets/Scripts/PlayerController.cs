@@ -7,14 +7,14 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Parameters")]
 
-    private const float dashCooldown = 0.5f;                    // Time between dash, so the player doesn't dash too much on ground
-    private const float dashTime = 0.1f;                        // How long do dashes last
+    private const float dashCooldown = 0.5f;    // Time between dash, so the player doesn't dash too much on ground
+    private const float dashTime = 0.1f;        // How long do dashes last
     [Space]
 
     [Header("Assists")]
 
-    [SerializeField] private float dashBuffer = 0.1f;   //time allowed for player input for dash
-    [SerializeField] private float jumpBuffer = 0.1f;   //time allowed for player jump input
+    [SerializeField] private float dashBuffer = 0.1f;   // Grace time allowed for player dash input before it can dash
+    [SerializeField] private float jumpBuffer = 0.1f;   // Grace time allowed for player jump input before being grounded
     [Space]
 
     [Header("References")]
@@ -34,18 +34,18 @@ public class PlayerController : MonoBehaviour
 	public class BoolEvent : UnityEvent<bool> { }
 
 
-    //Variables
-    [HideInInspector] public float horizontalMoveInput = 0f;    //The player's horizontal input on a range of -1 to 1
-	[HideInInspector] public bool jumpInput = false;
-    [HideInInspector] public bool wallJumpInput = false;
-    [HideInInspector] public bool sitting = false;
-    [HideInInspector] public bool dashInput = false;
+    //Readable Variables
+    public float horizontalMoveInput {get; private set;} = 0f;    // Input for horizontal movement, on a range of -1 (left) to 1 (right)
+    public bool jumpInput {get; private set;} = false;            // Set to true after user input, then back to false once the player has jumped
+    public bool wallJumpInput {get; private set;} = false;        // Set to true after user input, then back to false once the player has jumped
+    public bool sitting {get; private set;} = false;              // Whether the player is sitting, toggle with input
+    public bool dashInput {get; private set;} = false;            // Set to true after user input, then set back to false after dashTime
 
     //Timers
     float jumpBufferCounter = 0f;   //Countdown timer for jump buffering
     float dashBufferCounter = 0f;   //Same timer for dash
 
-    //States
+    //Private variables
     bool dashOnCooldown = false;    //Dash conditions to prevent dashing without cooldown on
     bool canDash = false;           //Can the player dash
 
@@ -165,7 +165,6 @@ public class PlayerController : MonoBehaviour
             dashInput = true;
             OnDashEvent.Invoke();
 
-            //Wait for dash duration
             yield return new WaitForSeconds(dashTime);
 
             //End of dash
@@ -174,7 +173,6 @@ public class PlayerController : MonoBehaviour
             OnDashEndingEvent.Invoke();
             movement.DashReset();
 
-            //Wait for dash cooldown
             yield return new WaitForSeconds(dashCooldown);
 
             //Dash refill, can dash again

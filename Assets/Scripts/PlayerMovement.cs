@@ -5,29 +5,29 @@ public class PlayerMovement : MonoBehaviour
 {
 	[Header("Parameters")]
 	
-	[SerializeField] private float runSpeed = 10f;					// Player horizontal velocity when running
-	[SerializeField] private float movementSmoothing = .05f;		// How much to smooth out the player's movement with Smoothdamp
-	[SerializeField] private float airMovementSmoothing = .1f;		// How much to smooth out the player's movement in air with Smoothdamp
-    [SerializeField] private float jumpForce = 850f;				// Amount of force added when the player jumps
-	[SerializeField] private float jumpCutRate = 0.5f;				// Multiplier for the player's vertical velocity if jump button is released during jump
-	[SerializeField] private float dashSpeed = 30f;					// Player horizontal velocity when dashing
+	[SerializeField] private float runSpeed = 10f;				// Player horizontal velocity when running
+	[SerializeField] private float movementSmoothing = .05f;	// How much to smooth out the player's movement with Smoothdamp
+	[SerializeField] private float airMovementSmoothing = .1f;	// How much to smooth out the player's movement in air with Smoothdamp
+	[SerializeField] private float jumpForce = 850f;			// Amount of force added when the player jumps
+	[SerializeField] private float jumpCutRate = 0.5f;			// Multiplier for the player's vertical velocity if jump button is released during jump
+	[SerializeField] private float dashSpeed = 30f;				// Player horizontal velocity when dashing
 	[Space]
 
 	[Header("Assists")]
 
-	[SerializeField] private float coyoteTime = 0.1f;			// In seconds, time allowed for player to jump after leaving the ground
-	[SerializeField] private float wallCoyoteTime = 0.2f;		// In seconds, coyote time for wall jump
+	[SerializeField] private float coyoteTime = 0.1f;		// In seconds, time allowed for player to jump after leaving the ground
+	[SerializeField] private float wallCoyoteTime = 0.2f;	// In seconds, coyote time for wall jump
 	[Space]
 
 	[Header("Checks")]
 
-	[SerializeField] private LayerMask groundLayer;				// A mask determining what is ground to the character
-	[SerializeField] private Transform groundCheck;				// A position marking where to check if the player is grounded.
-	[SerializeField] Vector2 groundCheckSize = new Vector2(.68f, .1f);	//Dimensions of the ground check box size.
+	[SerializeField] private LayerMask groundLayer;						// A mask determining what is ground to the character
+	[SerializeField] private Transform groundCheck;						// A position marking where to check if the player is grounded.
+	[SerializeField] Vector2 groundCheckSize = new Vector2(.68f, .1f);	// Dimensions of the ground check box size.
 	[Space]
-	[SerializeField] private LayerMask wallLayer;				// A mask determining what is wall to the character
-	[SerializeField] private Transform wallCheck;				// A position marking where to check if the player is on wall.
-	[SerializeField] Vector2 wallCheckSize = new Vector2(.1f, 1.5f);	//Dimensions of the wall check box size.
+	[SerializeField] private LayerMask wallLayer;						// A mask determining what is wall to the character
+	[SerializeField] private Transform wallCheck;						// A position marking where to check if the player is on wall.
+	[SerializeField] Vector2 wallCheckSize = new Vector2(.1f, 1.5f);	// Dimensions of the wall check box size.
 	[Space]
 
 	[Header("Events")]
@@ -42,20 +42,20 @@ public class PlayerMovement : MonoBehaviour
 	public class BoolEvent : UnityEvent<bool> { }
 
 
-	//Variables
-	[HideInInspector] public bool grounded = false;				// Whether the player is grounded
-	[HideInInspector] public bool onWall = false;				// Whether the player is on wall
-	[HideInInspector] public bool isJumping = false;			// Is the player jumping
-	[HideInInspector] public bool isWallJumping = false;		// Is the player wall jumping
-	[HideInInspector] public bool isDashing = false;			// Is the player dashing
-	[HideInInspector] public bool facingRight = true;			// For determining which way the player is currently facing.
-	[HideInInspector] public float fallTime = 0f;				// In seconds, how long has the player been falling. Used by player's animator for landing animation variations
+	//Readable Variables
+	public bool grounded {get; private set;} = false;			// Whether the player is grounded
+	public bool onWall {get; private set;} = false;				// Whether the player is on wall
+	public bool isJumping {get; private set;} = false;			// Is the player jumping
+	public bool isWallJumping {get; private set;} = false;		// Is the player wall jumping
+	public bool isDashing {get; private set;} = false;			// Is the player dashing
+	public bool facingRight {get; private set;} = true;			// For determining which way the player is currently facing.
+	public float fallTime {get; private set;} = 0f;				// In seconds, how long has the player been falling. Used by player's animator for landing animation variations
 	
 	//Timers
-	[HideInInspector] public float coyoteTimeCounter = 0f;		//Countdown timer for coyote time
-	[HideInInspector] public float wallCoyoteTimeCounter = 0f;	//Countdown timer for wall time
-	[HideInInspector] public float knockbackTimeCounter = 0f;	//Timer for player to regain control
-	[HideInInspector] public float forceMoveXCounter = 0f;	//Timer for forcing player movement
+	public float coyoteTimeCounter {get; private set;} = 0f;		//Countdown timer for coyote time
+	public float wallCoyoteTimeCounter {get; private set;} = 0f;	//Countdown timer for wall time
+	public float knockbackTimeCounter {get; private set;} = 0f;		//Timer for player to regain control
+	public float forceMoveXCounter {get; private set;} = 0f;		//Timer for forcing player horizontal movement
 
 	//Private variables
 	private Vector3 velocity = Vector3.zero;	//Used as ref for movement smoothdamp
@@ -145,7 +145,7 @@ public class PlayerMovement : MonoBehaviour
 		}
 
 
-		//Wall slide, limits downward y velocity to slide speed
+		//Wall slide, limits downward y velocity to slide speed on wall
 		if (onWall && rb.velocity.y < 0) 
 		{
 			rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(rb.velocity.y, slideVelocity));
@@ -196,7 +196,7 @@ public class PlayerMovement : MonoBehaviour
 			//Actual movement smoothing amount
 			float smoothing;
 			// If the player's on ground, use movementSmoothing, otherwise use airMovementSmoothing
-			// So the player has less horizontal control in air so the movement feels different than moving on the ground
+			// So the player has less horizontal control in air, for air movement to feel different than ground movement
 			if(grounded) 
 			{	
 				smoothing = movementSmoothing;
