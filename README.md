@@ -20,6 +20,8 @@ The project is made with Unity version 2021.3.31f1.
 
 **Dash** - L Shift
 
+**Attack** - Left mouse click
+
 **Look Up/Down** - W/S or up/down arrow keys
 
 ## Assets Used
