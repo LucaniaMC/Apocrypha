@@ -50,8 +50,8 @@ public class PlayerController : MonoBehaviour
     float verticalInputTimer = 0f;  // Timer for vertical input, count up from 0
 
     //Private variables
-    bool dashOnCooldown = false;    //Dash conditions to prevent dashing without cooldown on
-    bool canDash = false;           //Can the player dash
+    bool dashOnCooldown = false;    // Prevent dashing during cooldown
+    bool canDash = false;           // Does the player meet dash conditions
 
 
     void Update()
@@ -151,7 +151,7 @@ public class PlayerController : MonoBehaviour
 
 
         //Timer for looking up or down
-        if (verticalInput != 0f && !dashInput && !jumpInput && !wallJumpInput && !attack.attacking && movement.grounded) //Don't look up/down if dashing, jumping, walljumping, attacking or ungrounded
+        if (verticalInput != 0f && !dashInput && !jumpInput && !wallJumpInput && !attack.attacking && movement.grounded) //How do I stop doing these long lists of conditions
         {
             verticalInputTimer = Mathf.Clamp(verticalInputTimer + Time.deltaTime, 0f, 1f);
         } 
