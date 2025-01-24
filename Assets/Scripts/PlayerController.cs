@@ -25,10 +25,14 @@ public class PlayerController : MonoBehaviour
     [Header("Events")]
 	[Space]
 
-	public UnityEvent OnDashEvent;          //Functions to call when the player dashes
-	public UnityEvent OnDashEndingEvent;	//Functions to call when the dash ends
-    public UnityEvent OnDashRefillEvent;	//Functions to call when the dash cooldown ends
-    public UnityEvent OnAttackEvent;        //Functions to call when the player lands
+	public UnityEvent OnDashEvent;
+	public UnityEvent OnDashEndingEvent;
+    public UnityEvent OnDashRefillEvent;
+    public UnityEvent OnAttackEvent;
+    //Events for switching between high, low, and default cameras
+    public UnityEvent LookUpEvent;          
+    public UnityEvent LookDownEvent;
+    public UnityEvent LookDefaultEvent;
 
     [System.Serializable]
 	public class BoolEvent : UnityEvent<bool> { }
@@ -164,19 +168,19 @@ public class PlayerController : MonoBehaviour
         //Look up/down. Only start after the input is held down for a while, so the player is less likely to unintentionally look up/down when trying to attack up/down
         if (verticalInputTimer >= 1f && horizontalMoveInput == 0f)  //Player can only look up or down when standing still 
         {
-            if (verticalInput >= 1f) 
+            if (verticalInput >= 1f && !lookingUp) //Only change value if it's different, so the setter only calls the events once
             {
-                lookingUp = true;
+                SetLookingUp = true;
             }
-            else if (verticalInput <= -1f) 
+            else if (verticalInput <= -1f && !lookingDown) 
             {
-                lookingDown = true;
+                SetLookingDown = true;
             }
         }
-        else 
-        {
-            lookingUp = false;
-            lookingDown = false;
+        else if (lookingUp || lookingDown)
+        { 
+            SetLookingUp = false;
+            SetLookingDown = false;
         }
     }
 
@@ -217,5 +221,43 @@ public class PlayerController : MonoBehaviour
             dashOnCooldown = false;
             OnDashRefillEvent.Invoke();
         }  
+    }
+
+
+    //Setter for looking up, calls looking up or default events when value changes
+    bool SetLookingUp 
+    {
+        set 
+        {   
+            lookingUp = value;
+
+            if (lookingUp == true) 
+            {
+                LookUpEvent.Invoke();
+            }
+            else
+            {
+                LookDefaultEvent.Invoke();
+            }
+        }
+    }
+
+
+    //Setter for looking down, calls looking down or default events when value changes
+    bool SetLookingDown 
+    {
+        set 
+        {
+            lookingDown = value;
+
+            if (lookingDown == true) 
+            {
+                LookDownEvent.Invoke();
+            } 
+            else
+            {
+                LookDefaultEvent.Invoke();
+            }
+        }
     }
 }
