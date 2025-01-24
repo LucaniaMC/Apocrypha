@@ -170,17 +170,20 @@ public class PlayerController : MonoBehaviour
         {
             if (verticalInput >= 1f && !lookingUp) //Only change value if it's different, so the setter only calls the events once
             {
-                SetLookingUp = true;
+                lookingUp = true;
+                LookUpEvent.Invoke();
             }
             else if (verticalInput <= -1f && !lookingDown) 
             {
-                SetLookingDown = true;
+                lookingDown = true;
+                LookDownEvent.Invoke();
             }
         }
         else if (lookingUp || lookingDown)
         { 
-            SetLookingUp = false;
-            SetLookingDown = false;
+            lookingUp = false;
+            lookingDown = false;
+            LookDefaultEvent.Invoke();
         }
     }
 
@@ -221,43 +224,5 @@ public class PlayerController : MonoBehaviour
             dashOnCooldown = false;
             OnDashRefillEvent.Invoke();
         }  
-    }
-
-
-    //Setter for looking up, calls looking up or default events when value changes
-    bool SetLookingUp 
-    {
-        set 
-        {   
-            lookingUp = value;
-
-            if (lookingUp == true) 
-            {
-                LookUpEvent.Invoke();
-            }
-            else
-            {
-                LookDefaultEvent.Invoke();
-            }
-        }
-    }
-
-
-    //Setter for looking down, calls looking down or default events when value changes
-    bool SetLookingDown 
-    {
-        set 
-        {
-            lookingDown = value;
-
-            if (lookingDown == true) 
-            {
-                LookDownEvent.Invoke();
-            } 
-            else
-            {
-                LookDefaultEvent.Invoke();
-            }
-        }
     }
 }
