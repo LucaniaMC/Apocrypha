@@ -8054,8 +8054,9 @@ MonoBehaviour:
   attackCooldown: 0.1
   attackDamage: 10
   attacking: 0
+  attackTime: 0.2
   attackCollider: {fileID: 640175521}
-  movement: {fileID: 2121693410}
+  movement: {fileID: 0}
 --- !u!1 &643875760
 GameObject:
   m_ObjectHideFlags: 0
@@ -18422,7 +18423,6 @@ MonoBehaviour:
   normalCamera: {fileID: 1889820082}
   highCamera: {fileID: 1347198092}
   lowCamera: {fileID: 993991618}
-  controller: {fileID: 2121693408}
 --- !u!4 &1846162114
 Transform:
   m_ObjectHideFlags: 0
@@ -19399,13 +19399,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2121693404}
-  - component: {fileID: 2121693408}
-  - component: {fileID: 2121693410}
-  - component: {fileID: 2121693414}
   - component: {fileID: 2121693411}
+  - component: {fileID: 2121693416}
   - component: {fileID: 2121693406}
   - component: {fileID: 2121693407}
-  - component: {fileID: 2121693412}
   - component: {fileID: 2121693413}
   - component: {fileID: 2121693415}
   m_Layer: 3
@@ -19483,218 +19480,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.5, y: 1.5}
   m_EdgeRadius: 0.1
---- !u!114 &2121693408
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2121693403}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a33db08b38842d4eb3ce89adad43a08, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dashBuffer: 0.1
-  jumpBuffer: 0.15
-  movement: {fileID: 2121693410}
-  attack: {fileID: 640175522}
-  OnDashEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2121693412}
-        m_TargetAssemblyTypeName: PlayerParticles, Assembly-CSharp
-        m_MethodName: StartDashParticle
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 2121693411}
-        m_TargetAssemblyTypeName: HealthSystem, Assembly-CSharp
-        m_MethodName: SetInvincible
-        m_Mode: 4
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0.2
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnDashEndingEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2121693412}
-        m_TargetAssemblyTypeName: PlayerParticles, Assembly-CSharp
-        m_MethodName: StopDashParticle
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnDashRefillEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  OnAttackEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2121693414}
-        m_TargetAssemblyTypeName: PlayerAnimator, Assembly-CSharp
-        m_MethodName: AttackAnimation
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  LookUpEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1846162113}
-        m_TargetAssemblyTypeName: CameraManager, Assembly-CSharp
-        m_MethodName: SetHighCamera
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  LookDownEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1846162113}
-        m_TargetAssemblyTypeName: CameraManager, Assembly-CSharp
-        m_MethodName: SetLowCamera
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  LookDefaultEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1846162113}
-        m_TargetAssemblyTypeName: CameraManager, Assembly-CSharp
-        m_MethodName: SetNormalCamera
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &2121693410
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2121693403}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c1813418e170b142aff22e2a9592346, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  runSpeed: 10
-  movementSmoothing: 0.05
-  airMovementSmoothing: 0.1
-  jumpForce: 850
-  jumpCutRate: 0.7
-  dashSpeed: 30
-  coyoteTime: 0.1
-  wallCoyoteTime: 0.2
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  groundCheck: {fileID: 753848053}
-  groundCheckSize: {x: 0.68, y: 0.1}
-  wallLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  wallCheck: {fileID: 256341221}
-  wallCheckSize: {x: 0.1, y: 1.5}
-  OnLandEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2121693412}
-        m_TargetAssemblyTypeName: PlayerParticles, Assembly-CSharp
-        m_MethodName: SpawnLandingParticle
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnJumpEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2121693412}
-        m_TargetAssemblyTypeName: PlayerParticles, Assembly-CSharp
-        m_MethodName: SpawnJumpParticle
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnWallJumpEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  OnFlipEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 640175522}
-        m_TargetAssemblyTypeName: PlayerAttack, Assembly-CSharp
-        m_MethodName: StopAttack
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 2121693414}
-        m_TargetAssemblyTypeName: PlayerAnimator, Assembly-CSharp
-        m_MethodName: TurnAnimation
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  rb: {fileID: 0}
 --- !u!114 &2121693411
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19782,22 +19567,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &2121693412
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2121693403}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a050b3aed5c3b9c4bbaa35bb1a7fd0c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  landingParticle: {fileID: 9064148963762782749, guid: 992e8dba597bf974a8af6c11e64e88d8, type: 3}
-  jumpParticle: {fileID: 599155002226572451, guid: 90a7936b6c00da14fafb90fc9ebd6527, type: 3}
-  player: {fileID: 2121693403}
-  dashParticle: {fileID: 270198493}
 --- !u!96 &2121693413
 TrailRenderer:
   serializedVersion: 2
@@ -19897,23 +19666,6 @@ TrailRenderer:
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
   m_Emitting: 1
---- !u!114 &2121693414
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2121693403}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71c1119a79e47df4a851d9ecfc29f02f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 1119788021}
-  trailAnimator: {fileID: 640175519}
-  movement: {fileID: 2121693410}
-  attack: {fileID: 640175522}
-  controller: {fileID: 2121693408}
 --- !u!114 &2121693415
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19928,6 +19680,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   flashColor: {r: 1, g: 0.17358488, b: 0.17358488, a: 0.5882353}
   flashTime: 0.2
+--- !u!114 &2121693416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2121693403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bab49da824c1294180b6ed34c8d09d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  runSpeed: 10
+  movementSmoothing: 0.05
+  airMovementSmoothing: 0.1
+  jumpForce: 850
+  jumpCutRate: 0.5
+  dashSpeed: 30
+  coyoteTime: 0.1
+  wallCoyoteTime: 0.2
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  groundCheck: {fileID: 0}
+  groundCheckSize: {x: 0.68, y: 0.1}
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  wallCheck: {fileID: 0}
+  wallCheckSize: {x: 0.1, y: 1.5}
+  rb: {fileID: 0}
 --- !u!1001 &3644150815770369759
 PrefabInstance:
   m_ObjectHideFlags: 0
