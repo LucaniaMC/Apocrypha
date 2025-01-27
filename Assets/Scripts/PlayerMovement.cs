@@ -55,7 +55,6 @@ public class PlayerMovement : MonoBehaviour
 	public float coyoteTimeCounter {get; private set;} = 0f;		//Countdown timer for coyote time
 	public float wallCoyoteTimeCounter {get; private set;} = 0f;	//Countdown timer for wall time
 	public float knockbackTimeCounter {get; private set;} = 0f;		//Timer for player to regain control
-	public float forceMoveXCounter {get; private set;} = 0f;		//Timer for forcing player horizontal movement
 
 	//Private variables
 	private Vector3 velocity = Vector3.zero;	//Used as ref for movement smoothdamp
@@ -77,41 +76,6 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-		bool wasGrounded = grounded;	//This bool updates 1 fixed update after grounded to check if the player has just landed to call events.
-		grounded = false;	//Grounded is false unless the ground check cast hits something
-
-		onWall = false;
-
-		//ground & wall check cast
-		if (!isJumping) //if the player is jumping, no longer check if grounded to avoid multiple checks
-		{
-			// Ground check cast, the player is grounded if a cast to the groundcheck position hits anything designated as ground
-			Collider2D[] colliders = Physics2D.OverlapBoxAll(groundCheck.position, groundCheckSize, 0, groundLayer);
-			for (int i = 0; i < colliders.Length; i++)
-			{
-				if (colliders[i].gameObject != gameObject)	//Do not check for colliding with self
-				{
-					grounded = true;
-
-					if (!wasGrounded) //If grounded is true, but wasGrounded is false, the player has just landed. Lasts for 1 fixed update
-					{
-						OnLandEvent.Invoke();
-					}
-				}
-			}
-
-			//Wall check cast. The player is on wall if a cast to the wallcheck position hits anything designated as wall
-			Collider2D[] collidersWall = Physics2D.OverlapBoxAll(wallCheck.position, wallCheckSize, 0, wallLayer);
-			for (int i = 0; i < collidersWall.Length; i++)
-			{
-				if (collidersWall[i].gameObject != gameObject)
-				{
-					onWall = true;
-				}
-			}
-		}
-
-
 		//Limit fall velocity by clambing the lower bound
 		rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(rb.velocity.y, -limitVelocity));
 
@@ -169,20 +133,45 @@ public class PlayerMovement : MonoBehaviour
 
 		//Knockback time countdown, counts down to 0 over time, no upper bound
 		knockbackTimeCounter = Mathf.Max(knockbackTimeCounter - Time.deltaTime, 0f);
-
-
-		//Force move X countdown, counts down to 0 over time, no upper bound
-		forceMoveXCounter = Mathf.Max(forceMoveXCounter - Time.deltaTime, 0f);
-
     }
 
 
-	void LateUpdate() 
+	//Ground check, call in fixed update
+	public void GroundCheck() 
 	{
-		//Reset fall time counter when grounded and on wall, in LateUpdate so the animator can read it before it resetting
-		if (grounded || onWall) 
+		bool wasGrounded = grounded;	//This bool updates 1 fixed update after grounded to check if the player has just landed to call events.
+		grounded = false;	//Grounded is false unless the ground check cast hits something
+
+		// Ground check cast, the player is grounded if a cast to the groundcheck position hits anything designated as ground
+		Collider2D[] colliders = Physics2D.OverlapBoxAll(groundCheck.position, groundCheckSize, 0, groundLayer);
+		for (int i = 0; i < colliders.Length; i++)
 		{
-			fallTime = 0f;
+			if (colliders[i].gameObject != gameObject)	//Do not check for colliding with self
+			{
+				grounded = true;
+
+				if (!wasGrounded) //If grounded is true, but wasGrounded is false, the player has just landed. Lasts for 1 fixed update
+				{
+					OnLandEvent.Invoke();
+				}
+			}
+		}
+	}
+
+
+	//Wall check, called in fixed update
+	public void WallCheck() 
+	{
+		onWall = false;
+
+		//Wall check cast. The player is on wall if a cast to the wallcheck position hits anything designated as wall
+		Collider2D[] collidersWall = Physics2D.OverlapBoxAll(wallCheck.position, wallCheckSize, 0, wallLayer);
+		for (int i = 0; i < collidersWall.Length; i++)
+		{
+			if (collidersWall[i].gameObject != gameObject)
+			{
+				onWall = true;
+			}
 		}
 	}
 
@@ -190,37 +179,33 @@ public class PlayerMovement : MonoBehaviour
     //Horizontally move player, takes player horizontal input float -1 to 1, and outputs horizontal velocity
     public void Move(float move)
 	{
-		//Only move, jump and change directions if not dashing, and if knockback is over
-		if (!isDashing && knockbackTimeCounter == 0f && forceMoveXCounter == 0f)
+		//Actual movement smoothing amount
+		float smoothing;
+		// If the player's on ground, use movementSmoothing, otherwise use airMovementSmoothing
+		// So the player has less horizontal control in air, for air movement to feel different than ground movement
+		if(grounded) 
+		{	
+			smoothing = movementSmoothing;
+		} 
+		else 
+		{	
+			smoothing = airMovementSmoothing;
+		}
+
+		// Move the player by finding the target velocity
+		Vector3 targetVelocity = new Vector2(move * runSpeed, rb.velocity.y);
+		// And then smoothing it out and applying it to the character
+		rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, smoothing);
+
+		// If the player is moving towards the opposite direction it's facing, flip the player
+		// So it's clear which way the player's moving, and its attack would align with the movement direction 
+		if (move > 0 && !facingRight)
 		{
-			//Actual movement smoothing amount
-			float smoothing;
-			// If the player's on ground, use movementSmoothing, otherwise use airMovementSmoothing
-			// So the player has less horizontal control in air, for air movement to feel different than ground movement
-			if(grounded) 
-			{	
-				smoothing = movementSmoothing;
-			} 
-			else 
-			{	
-				smoothing = airMovementSmoothing;
-			}
-
-			// Move the player by finding the target velocity
-			Vector3 targetVelocity = new Vector2(move * runSpeed, rb.velocity.y);
-			// And then smoothing it out and applying it to the character
-			rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, smoothing);
-
-			// If the player is moving towards the opposite direction it's facing, flip the player
-			// So it's clear which way the player's moving, and its attack would align with the movement direction 
-			if (move > 0 && !facingRight)
-			{
-				Flip();
-			}
-			else if (move < 0 && facingRight)
-			{
-				Flip();
-			}
+			Flip();
+		}
+		else if (move < 0 && facingRight)
+		{
+			Flip();
 		}
 	}
 
@@ -228,43 +213,35 @@ public class PlayerMovement : MonoBehaviour
 	// Apply a vertical force to the player to jump. Takes player jump input as bool, if jump is true, the player is jumping
 	public void Jump(bool jump) 
 	{
-		if (coyoteTimeCounter > 0f && jump)	//Coyote time functions as ground check
-		{
-			//Set flag
-			isJumping = true;
+		//Set flag
+		isJumping = true;
 
-			rb.velocity = new Vector2(rb.velocity.x, 0);	// Reset player veritcal velocity when jumping to prevent irregular jump heights.
-			rb.AddForce(new Vector2(0f, jumpForce));		// Add a new vertical force to the player to jump.
+		rb.velocity = new Vector2(rb.velocity.x, 0);	// Reset player veritcal velocity when jumping to prevent irregular jump heights.
+		rb.AddForce(new Vector2(0f, jumpForce));		// Add a new vertical force to the player to jump.
 
-			OnJumpEvent.Invoke();
-			coyoteTimeCounter = 0f;	//No coyote time after jumping
-		}
+		OnJumpEvent.Invoke();
+		coyoteTimeCounter = 0f;	//No coyote time after jumping
 	}
 
 
 	// Add a vertical force to the player to jump on wall. Takes player jump input as bool, if jump is true, the player is jumping
 	public void WallJump(bool wallJump) 
 	{
-		if (wallCoyoteTimeCounter > 0f && wallJump)	//Wall coyote time functions as wall check
-		{
-			//Set flag
-			isJumping = true;
-			isWallJumping = true;
+		//Set flag
+		isJumping = true;
+		isWallJumping = true;
 
-			rb.velocity = new Vector2(rb.velocity.x, 0);	// Reset player veritcal velocity when jumping to prevent irregular jump heights.
-			rb.AddForce(new Vector2(0, jumpForce));			// Add a new vertical force to the player to jump.
+		rb.velocity = new Vector2(rb.velocity.x, 0);	// Reset player veritcal velocity when jumping to prevent irregular jump heights.
+		rb.AddForce(new Vector2(0, jumpForce));			// Add a new vertical force to the player to jump.
 
-			OnWallJumpEvent.Invoke();
-			wallCoyoteTimeCounter = 0f;
-		}
+		OnWallJumpEvent.Invoke();
+		wallCoyoteTimeCounter = 0f;
 	}
 
 
 	// Horizontally moves player at dash speed. Takes player dash input as bool, if dash is true, the player is dashing
-	public void Dash(bool dash) 
+	public void Dash(float speed) 
 	{
-		if (dash) 
-		{
 			//Set flag
 			isDashing = true;
 
@@ -273,13 +250,12 @@ public class PlayerMovement : MonoBehaviour
 
 			if (facingRight) //Dash towards the direction the player is facing
 			{
-				rb.velocity = new Vector2(dashSpeed, 0f);
+				rb.velocity = new Vector2(speed, 0f);
 			}
 			else if (!facingRight) 
 			{
-				rb.velocity = new Vector2(-dashSpeed, 0f);
+				rb.velocity = new Vector2(-speed, 0f);
 			}
-		}
 	}
 
 
@@ -294,10 +270,7 @@ public class PlayerMovement : MonoBehaviour
 	//lower vertical velocity if the player releases jump button early, so the player can control how high they jump. Called in PlayerController
 	public void JumpCut() 
 	{	
-		if (knockbackTimeCounter == 0f)	//Don't perform jump cut during knockback, since the player should not have control over their movement.
-		{
-			rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * jumpCutRate);
-		}
+		rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * jumpCutRate);
 	}
 
 
@@ -319,27 +292,19 @@ public class PlayerMovement : MonoBehaviour
 	//Takes input float x as horizontal velocity, y as vertical velocity, and float time >= 0 as time takes for the player to regain control
 	public void Knockback(float x, float y, float time)
 	{
-		if (!health.isDead && !health.isInvincible) //If the player can take damage and isn't dead
-		{
-			//Sets knockback counter to a given time, player loses horizontal movement and jump control during this time
-			knockbackTimeCounter = time;
-			//Interrupts jumping
-			isJumping = false;
-			isWallJumping = false;
-			
-			rb.velocity = new Vector2(x, y);	//Set x and y to knockback velocity
-		}
+		//Sets knockback counter to a given time, player loses horizontal movement and jump control during this time
+		knockbackTimeCounter = time;
+		//Interrupts jumping
+		isJumping = false;
+		isWallJumping = false;
+		
+		rb.velocity = new Vector2(x, y);	//Set x and y to knockback velocity
 	}
 
 
-	//Force set the player's horizontal velocity, takes float x as velocity, and float time as how long the player is moved
-	public void ForceMoveX(float x, float time) 
+	//Called when grounded, on wall, or no longer falling down
+	public void ResetFallTime() 
 	{
-		forceMoveXCounter = time;
-
-		if (forceMoveXCounter > 0f) 
-		{
-			rb.velocity = new Vector2(x, rb.velocity.y);
-		}
+		fallTime = 0f;
 	}
 }
