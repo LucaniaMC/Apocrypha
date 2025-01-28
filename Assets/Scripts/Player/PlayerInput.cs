@@ -4,22 +4,20 @@ using UnityEngine;
 
 public class PlayerInput : MonoBehaviour
 {
-    public bool moveInput;
-    public bool jumpInput;
+    public PlayerData data;
 
-    public float coyoteTimeCounter = 0f;
-    public float jumpBufferCounter = 0f;
+    public float moveInput {get; private set;}
+    public bool jumpInput {get; private set;}
+    public bool jumpHoldInput {get; private set;}
 
+    public float jumpBufferCounter {get; private set;} = 0f;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()
     {
-        
+        moveInput = Input.GetAxisRaw("Horizontal");
+        jumpInput = Input.GetButtonDown("Jump");
+        jumpHoldInput = Input.GetButton("Jump");
     }
 }

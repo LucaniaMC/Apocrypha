@@ -23,7 +23,7 @@ public class Sludge : MonoBehaviour
                 knockbackDirection = 1f;    //knock the player to the right.
             }
 
-            //other.gameObject.GetComponent<PlayerMovement>().Knockback(10 * knockbackDirection , 10, 0.25f); //Apply knockback
+            other.gameObject.GetComponent<Player>().Knockback(10 * knockbackDirection , 10, 0.25f); //Apply knockback
             other.gameObject.GetComponent<HealthSystem>().Damage(10);    
             //Damage after knockback, so invisibility is only switched on after the player received knockback, otherwise knockback would not work
         }

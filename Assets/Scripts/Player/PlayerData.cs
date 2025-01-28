@@ -6,13 +6,13 @@ using UnityEngine;
 public class PlayerData : ScriptableObject
 {
     [Header("Movement")]
-	public float runSpeed;				// Player horizontal velocity when running
+	public float runSpeed;			                	// Player horizontal velocity when running
 	[Range(0f, 1f)] public float movementSmoothing;	    // How much to smooth out the player's movement with Smoothdamp
 	[Range(0f, 1f)] public float airMovementSmoothing;	// How much to smooth out the player's movement in air with Smoothdamp
     [Space]
 
     [Header("Jump")]
-	public float jumpForce;     // Amount of force added when the player jumps
+	public float jumpForce;                     // Amount of force added when the player jumps
 	[Range(0f, 1f)] public float jumpCutRate;   // Multiplier for the player's vertical velocity if jump button is released during jump
     [Space]
 
@@ -37,7 +37,7 @@ public class PlayerData : ScriptableObject
 
     
     [Header("Others")]
-    public float slideVelocity;		//Player's vertical velocity when sliding on
+    public float slideVelocity;		//Player's vertical velocity when sliding on walls
 	public float limitVelocity;		//Player's vertical velocity limit when falling
 	public float gravity;           //Player's gravity scale, used for dash, sets to 0 when dashing and back to
 

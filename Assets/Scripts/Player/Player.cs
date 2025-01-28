@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [Header("State Machine References")]
-    public PlayerMovement movement;
+
     public PlayerData data;
     public PlayerInput input;
 
@@ -17,7 +17,7 @@ public class Player : MonoBehaviour
 
 	[SerializeField] private LayerMask groundLayer;						// A mask determining what is ground to the character
 	[SerializeField] private Transform groundCheck;						// A position marking where to check if the player is grounded.
-	[SerializeField] Vector2 groundCheckSize = new Vector2(.68f, .1f);	// Dimensions of the ground check box size.
+	[SerializeField] Vector2 groundCheckSize = new Vector2(.65f, .1f);	// Dimensions of the ground check box size.
 	[Space]
 	[SerializeField] private LayerMask wallLayer;						// A mask determining what is wall to the character
 	[SerializeField] private Transform wallCheck;						// A position marking where to check if the player is on wall.
@@ -25,10 +25,12 @@ public class Player : MonoBehaviour
     [Space]
 
     [Header("RigidBody")]
+
     public Rigidbody2D rb;
 
     //Readable variables
     [HideInInspector] public bool facingRight {get; private set;} = true;			// For determining which way the player is currently facing.
+    [HideInInspector] public float coyoteTimeCounter {get; private set;} = 0f;	
 
 	//Private variables
 	private Vector3 velocity = Vector3.zero;	//Used as ref for movement smoothdamp
@@ -47,13 +49,13 @@ public class Player : MonoBehaviour
         currentState.StateUpdate(this, input, data);
         GroundCheck();
 		WallCheck();
+        CoyoteTime();
     }
 
 
     public void FixedUpdate() 
     {
         currentState.StateFixedUpdate(this, input, data);
-        print(currentState);
     }
     #endregion
 
@@ -63,7 +65,6 @@ public class Player : MonoBehaviour
     public void Initialize () 
     {
         TransitionToState(defaultState);
-        defaultState.OnEnter(this, input, data);
     }
 
 
@@ -117,6 +118,26 @@ public class Player : MonoBehaviour
 	}
 
 
+    private void CoyoteTime() 
+    {
+        //Coyote time countdown
+		if (GroundCheck()) 
+		{
+			coyoteTimeCounter = data.coyoteTime;	//reset coyote time when grounded
+		} 
+		else 
+		{	//decrease coyote time when airborne, clamps value to prevent it from going above the maximum time, or continue counting down below 0
+			coyoteTimeCounter = Mathf.Clamp(coyoteTimeCounter - Time.deltaTime, 0f, data.coyoteTime);
+		}
+    }
+
+
+    public void ResetCoyoteTime() 
+    {
+        coyoteTimeCounter = 0f;
+    } 
+
+
     //Horizontally move player, takes player horizontal input float -1 to 1, runSpeed and smoothing from PlayerData
     public void Move(float moveInput, float runSpeed, float smoothing)
 	{
@@ -157,7 +178,7 @@ public class Player : MonoBehaviour
 		rb.velocity = new Vector2(rb.velocity.x, 0);	// Reset player veritcal velocity when jumping to prevent irregular jump heights.
 		rb.AddForce(new Vector2(0f, jumpForce));		// Add a new vertical force to the player to jump.
 
-		//coyoteTimeCounter = 0f;	//No coyote time after jumping
+		ResetCoyoteTime();	//No coyote time after jumping
 	}
 
 

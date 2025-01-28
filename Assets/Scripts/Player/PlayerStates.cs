@@ -10,7 +10,7 @@ public class PlayerWalkState : PlayerState
     public override void StateUpdate(Player player, PlayerInput input, PlayerData data) 
     {
         //State transitions
-        if (Input.GetButtonDown("Jump")) // To jump state
+        if (input.jumpHoldInput) // To jump state
         {
             player.TransitionToState(new PlayerJumpState());
         }
@@ -22,7 +22,7 @@ public class PlayerWalkState : PlayerState
 
     public override void StateFixedUpdate(Player player, PlayerInput input, PlayerData data) 
     {
-        player.Move(Input.GetAxisRaw("Horizontal"), data.runSpeed, data.movementSmoothing);
+        player.Move(input.moveInput, data.runSpeed, data.movementSmoothing);
     }
 
     public override void OnExit(Player player, PlayerInput input, PlayerData data) {}
@@ -36,6 +36,7 @@ public class PlayerJumpState : PlayerState
     public override void OnEnter(Player player, PlayerInput input, PlayerData data) 
     {
         player.Jump(data.jumpForce);
+        Debug.Log("entered jump state");
     }
 
     public override void StateUpdate(Player player, PlayerInput input, PlayerData data) 
@@ -45,7 +46,7 @@ public class PlayerJumpState : PlayerState
         {
             player.TransitionToState(new PlayerFallState());
         }
-        if (player.WallCheck()) //To wall state
+        if (player.rb.velocity.y < 0 && player.WallCheck()) //To wall state
         {
             player.TransitionToState(new PlayerWallState());
         }
@@ -54,9 +55,10 @@ public class PlayerJumpState : PlayerState
     public override void StateFixedUpdate(Player player, PlayerInput input, PlayerData data) 
     {
         //Enable air movement
-        player.Move(Input.GetAxisRaw("Horizontal"), data.runSpeed, data.airMovementSmoothing);
+        player.Move(input.moveInput, data.runSpeed, data.airMovementSmoothing);
 
-        if(!Input.GetButton("Jump")) 
+        //Jump cut
+        if(!input.jumpHoldInput) 
         {
             player.JumpCut(data.jumpCutRate);
         }
@@ -74,6 +76,8 @@ public class PlayerFallState : PlayerState
 
     public override void StateUpdate(Player player, PlayerInput input, PlayerData data) 
     {
+ 
+
         //State transitions
         if (player.GroundCheck()) //To walk state
         {
@@ -83,12 +87,16 @@ public class PlayerFallState : PlayerState
         {
             player.TransitionToState(new PlayerWallState());
         }
+        if (player.coyoteTimeCounter > 0f && input.jumpHoldInput) //To jump state, if jumped during coyote time
+        {
+            player.TransitionToState(new PlayerJumpState());
+        }
     }
 
     public override void StateFixedUpdate(Player player, PlayerInput input, PlayerData data) 
     {
         //Enable air movement, and ground check for transitioning back to walk
-        player.Move(Input.GetAxisRaw("Horizontal"), data.runSpeed, data.airMovementSmoothing);
+        player.Move(input.moveInput, data.runSpeed, data.airMovementSmoothing);
         player.LimitFallVelocity(data.limitVelocity);
     }
 
@@ -113,7 +121,7 @@ public class PlayerWallState : PlayerState
         {
             player.TransitionToState(new PlayerFallState());
         }
-        if (Input.GetButtonDown("Jump")) // To wall jump state
+        if (input.jumpHoldInput) // To wall jump state
         {
             player.TransitionToState(new PlayerWallJumpState());
         }
@@ -123,7 +131,7 @@ public class PlayerWallState : PlayerState
     {
         //Enable air movement, and ground check for transitioning back to walk
         player.WallSlide(data.slideVelocity);
-        player.Move(Input.GetAxisRaw("Horizontal"), data.runSpeed, data.movementSmoothing);
+        player.Move(input.moveInput, data.runSpeed, data.movementSmoothing);
     }
 
     public override void OnExit(Player player, PlayerInput input, PlayerData data) {}
@@ -151,9 +159,10 @@ public class PlayerWallJumpState : PlayerState
     public override void StateFixedUpdate(Player player, PlayerInput input, PlayerData data) 
     {
         //Enable air movement
-        player.Move(Input.GetAxisRaw("Horizontal"), data.runSpeed, data.airMovementSmoothing);
+        player.Move(input.moveInput, data.runSpeed, data.airMovementSmoothing);
 
-        if(!Input.GetButton("Jump")) 
+        //Jump cut
+        if(!input.jumpHoldInput) 
         {
             player.JumpCut(data.jumpCutRate);
         }
