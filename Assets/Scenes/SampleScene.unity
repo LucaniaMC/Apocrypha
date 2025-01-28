@@ -8051,12 +8051,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8904ce261b509d041b3c9c2788107f7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackCooldown: 0.1
-  attackDamage: 10
-  attacking: 0
-  attackTime: 0.2
-  attackCollider: {fileID: 640175521}
-  movement: {fileID: 0}
 --- !u!1 &643875760
 GameObject:
   m_ObjectHideFlags: 0
@@ -19400,6 +19394,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2121693404}
   - component: {fileID: 2121693411}
+  - component: {fileID: 2121693417}
   - component: {fileID: 2121693416}
   - component: {fileID: 2121693406}
   - component: {fileID: 2121693407}
@@ -19692,25 +19687,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bab49da824c1294180b6ed34c8d09d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runSpeed: 10
-  movementSmoothing: 0.05
-  airMovementSmoothing: 0.1
-  jumpForce: 850
-  jumpCutRate: 0.5
-  dashSpeed: 30
-  coyoteTime: 0.1
-  wallCoyoteTime: 0.2
   groundLayer:
     serializedVersion: 2
-    m_Bits: 0
-  groundCheck: {fileID: 0}
+    m_Bits: 64
+  groundCheck: {fileID: 753848053}
   groundCheckSize: {x: 0.68, y: 0.1}
   wallLayer:
     serializedVersion: 2
-    m_Bits: 0
-  wallCheck: {fileID: 0}
+    m_Bits: 64
+  wallCheck: {fileID: 256341221}
   wallCheckSize: {x: 0.1, y: 1.5}
-  rb: {fileID: 0}
+  rb: {fileID: 2121693406}
+--- !u!114 &2121693417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2121693403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5de29d6ebd2feb24c9728961ff996571, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movement: {fileID: 2121693416}
+  data: {fileID: 11400000, guid: 12ad7e088a614b545815725bc44747c8, type: 2}
 --- !u!1001 &3644150815770369759
 PrefabInstance:
   m_ObjectHideFlags: 0

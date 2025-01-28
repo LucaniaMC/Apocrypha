@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
 	[SerializeField] private LayerMask wallLayer;						// A mask determining what is wall to the character
 	[SerializeField] private Transform wallCheck;						// A position marking where to check if the player is on wall.
 	[SerializeField] Vector2 wallCheckSize = new Vector2(.1f, 1.5f);	// Dimensions of the wall check box size.
-    
+
 
     //Readable variables
     public bool facingRight {get; private set;} = true;			// For determining which way the player is currently facing.
@@ -22,7 +22,14 @@ public class PlayerMovement : MonoBehaviour
 	private Vector3 velocity = Vector3.zero;	//Used as ref for movement smoothdamp
 
 	//References
-	[HideInInspector] public Rigidbody2D rb;
+	public Rigidbody2D rb;
+
+
+	private void Update() 
+	{
+		GroundCheck();
+		WallCheck();
+	}
 
 
 	//Ground check, call in fixed update, return true if the player's grounded
@@ -61,21 +68,21 @@ public class PlayerMovement : MonoBehaviour
 	}
 
 
-    //Horizontally move player, takes player horizontal input float -1 to 1 to change player's horizontal velocity. Smoothing smoothes out player velocity change
-    public void Move(float move, float smoothing)
+    //Horizontally move player, takes player horizontal input float -1 to 1, runSpeed and smoothing from PlayerData
+    public void Move(float moveInput, float runSpeed, float smoothing)
 	{
 		// Move the player by finding the target velocity
-		Vector3 targetVelocity = new Vector2(move * runSpeed, rb.velocity.y);
+		Vector3 targetVelocity = new Vector2(moveInput * runSpeed, rb.velocity.y);
 		// And then smoothing it out and applying it to the character
 		rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, smoothing);
 
 		// If the player is moving towards the opposite direction it's facing, flip the player
 		// So it's clear which way the player's moving, and its attack would align with the movement direction 
-		if (move > 0 && !facingRight)
+		if (moveInput > 0 && !facingRight)
 		{
 			Flip();
 		}
-		else if (move < 0 && facingRight)
+		else if (moveInput < 0 && facingRight)
 		{
 			Flip();
 		}
@@ -96,7 +103,7 @@ public class PlayerMovement : MonoBehaviour
 
 
     // Apply a vertical force to the player to jump. Takes player jump input as bool, if jump is true, the player is jumping
-	public void Jump(bool jump) 
+	public void Jump(float jumpForce) 
 	{
 		rb.velocity = new Vector2(rb.velocity.x, 0);	// Reset player veritcal velocity when jumping to prevent irregular jump heights.
 		rb.AddForce(new Vector2(0f, jumpForce));		// Add a new vertical force to the player to jump.
@@ -106,7 +113,7 @@ public class PlayerMovement : MonoBehaviour
 
 
 	// Add a vertical force to the player to jump on wall. Takes player jump input as bool, if jump is true, the player is jumping
-	public void WallJump(bool wallJump) 
+	public void WallJump(float jumpForce) 
 	{
 		rb.velocity = new Vector2(rb.velocity.x, 0);	// Reset player veritcal velocity when jumping to prevent irregular jump heights.
 		rb.AddForce(new Vector2(0, jumpForce));			// Add a new vertical force to the player to jump.W
@@ -129,18 +136,30 @@ public class PlayerMovement : MonoBehaviour
 	}
 
 
-	// Called at the end of dash corontine to set player gravity scale back
-	public void DashReset() 
+	// Called at the end of dash to set player gravity scale back
+	public void DashReset(float gravity) 
 	{
 		rb.gravityScale = gravity;
 	}
 
 
 	//lower vertical velocity if the player releases jump button early, so the player can control how high they jump. Called in PlayerController
-	public void JumpCut() 
+	public void JumpCut(float jumpCutRate) 
 	{	
 		rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * jumpCutRate);
 	}
+
+
+    public void WallSlide(float slideVelocity) 
+    {
+        rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(rb.velocity.y, slideVelocity));
+    }
+
+
+    public void LimitFallVelocity(float limitVelocity) 
+    {
+        rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(rb.velocity.y, -limitVelocity));
+    }
 
 
     //knock the player towards a direction and temporarily disables movement control. 

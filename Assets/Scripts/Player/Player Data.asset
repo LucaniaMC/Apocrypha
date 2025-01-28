@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3978f7af57e1bb842a9fec222bb7c5f5, type: 3}
+  m_Name: Player Data
+  m_EditorClassIdentifier: 
+  runSpeed: 10
+  movementSmoothing: 0.05
+  airMovementSmoothing: 0.1
+  jumpForce: 850
+  jumpCutRate: 0.5
+  dashSpeed: 30
+  dashCooldown: 0.5
+  dashTime: 0.1
+  attackTime: 0.2
+  attackCooldown: 0.1
+  attackDamage: 10
+  coyoteTime: 0.1
+  wallCoyoteTime: 0.1
+  dashBuffer: 0.1
+  jumpBuffer: 0.1
+  slideVelocity: -5
+  limitVelocity: 25
+  gravity: 4
