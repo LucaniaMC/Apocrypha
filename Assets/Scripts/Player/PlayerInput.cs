@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class PlayerInput : MonoBehaviour
 {
+    public bool moveInput;
+    public bool jumpInput;
+
+    public float coyoteTimeCounter = 0f;
+    public float jumpBufferCounter = 0f;
+
+
     // Start is called before the first frame update
     void Start()
     {

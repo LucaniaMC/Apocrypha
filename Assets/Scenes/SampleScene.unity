@@ -19687,17 +19687,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bab49da824c1294180b6ed34c8d09d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  groundCheck: {fileID: 753848053}
-  groundCheckSize: {x: 0.68, y: 0.1}
-  wallLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  wallCheck: {fileID: 256341221}
-  wallCheckSize: {x: 0.1, y: 1.5}
-  rb: {fileID: 2121693406}
 --- !u!114 &2121693417
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19712,6 +19701,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movement: {fileID: 2121693416}
   data: {fileID: 11400000, guid: 12ad7e088a614b545815725bc44747c8, type: 2}
+  input: {fileID: 0}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  groundCheck: {fileID: 753848053}
+  groundCheckSize: {x: 0.68, y: 0.1}
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  wallCheck: {fileID: 256341221}
+  wallCheckSize: {x: 0.1, y: 1.5}
+  rb: {fileID: 2121693406}
 --- !u!1001 &3644150815770369759
 PrefabInstance:
   m_ObjectHideFlags: 0

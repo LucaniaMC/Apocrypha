@@ -2,8 +2,8 @@ using UnityEngine;
 
 public abstract class PlayerState
 {
-    public abstract void OnEnter(Player player, PlayerMovement movement, PlayerData data);          //Called once when the state is entered
-    public abstract void StateUpdate(Player player, PlayerMovement movement, PlayerData data);         //Called every frame in Update
-    public abstract void StateFixedUpdate(Player player, PlayerMovement movement, PlayerData data);    //Called in FixexUpdate
-    public abstract void OnExit(Player player, PlayerMovement movement, PlayerData data);           //Called once when the state is exited
+    public abstract void OnEnter(Player player, PlayerInput input, PlayerData data);          //Called once when the state is entered
+    public abstract void StateUpdate(Player player, PlayerInput input, PlayerData data);         //Called every frame in Update
+    public abstract void StateFixedUpdate(Player player, PlayerInput input, PlayerData data);    //Called in FixexUpdate
+    public abstract void OnExit(Player player, PlayerInput input, PlayerData data);           //Called once when the state is exited
 }

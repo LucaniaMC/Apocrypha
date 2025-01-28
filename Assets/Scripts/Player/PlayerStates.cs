@@ -5,27 +5,27 @@ using UnityEngine;
 #region Walk State
 public class PlayerWalkState : PlayerState
 {
-    public override void OnEnter(Player player, PlayerMovement movement, PlayerData data) {}
+    public override void OnEnter(Player player, PlayerInput input, PlayerData data) {}
 
-    public override void StateUpdate(Player player, PlayerMovement movement, PlayerData data) 
+    public override void StateUpdate(Player player, PlayerInput input, PlayerData data) 
     {
         //State transitions
         if (Input.GetButtonDown("Jump")) // To jump state
         {
             player.TransitionToState(new PlayerJumpState());
         }
-        if (!movement.GroundCheck()) //To fall state
+        if (!player.GroundCheck()) //To fall state
         {
             player.TransitionToState(new PlayerFallState());
         }
     }
 
-    public override void StateFixedUpdate(Player player, PlayerMovement movement, PlayerData data) 
+    public override void StateFixedUpdate(Player player, PlayerInput input, PlayerData data) 
     {
-        movement.Move(Input.GetAxisRaw("Horizontal"), data.runSpeed, data.movementSmoothing);
+        player.Move(Input.GetAxisRaw("Horizontal"), data.runSpeed, data.movementSmoothing);
     }
 
-    public override void OnExit(Player player, PlayerMovement movement, PlayerData data) {}
+    public override void OnExit(Player player, PlayerInput input, PlayerData data) {}
 }
 #endregion
 
@@ -33,36 +33,36 @@ public class PlayerWalkState : PlayerState
 #region Jump State
 public class PlayerJumpState : PlayerState
 {
-    public override void OnEnter(Player player, PlayerMovement movement, PlayerData data) 
+    public override void OnEnter(Player player, PlayerInput input, PlayerData data) 
     {
-        movement.Jump(data.jumpForce);
+        player.Jump(data.jumpForce);
     }
 
-    public override void StateUpdate(Player player, PlayerMovement movement, PlayerData data) 
+    public override void StateUpdate(Player player, PlayerInput input, PlayerData data) 
     {   
         //State transitions
-        if (movement.rb.velocity.y < 0) //To fall state
+        if (player.rb.velocity.y < 0) //To fall state
         {
             player.TransitionToState(new PlayerFallState());
         }
-        if (movement.WallCheck()) //To wall state
+        if (player.WallCheck()) //To wall state
         {
             player.TransitionToState(new PlayerWallState());
         }
     }
 
-    public override void StateFixedUpdate(Player player, PlayerMovement movement, PlayerData data) 
+    public override void StateFixedUpdate(Player player, PlayerInput input, PlayerData data) 
     {
         //Enable air movement
-        movement.Move(Input.GetAxisRaw("Horizontal"), data.runSpeed, data.airMovementSmoothing);
+        player.Move(Input.GetAxisRaw("Horizontal"), data.runSpeed, data.airMovementSmoothing);
 
         if(!Input.GetButton("Jump")) 
         {
-            movement.JumpCut(data.jumpCutRate);
+            player.JumpCut(data.jumpCutRate);
         }
     }
 
-    public override void OnExit(Player player, PlayerMovement movement, PlayerData data) {}
+    public override void OnExit(Player player, PlayerInput input, PlayerData data) {}
 }
 #endregion
 
@@ -70,29 +70,29 @@ public class PlayerJumpState : PlayerState
 #region Fall State
 public class PlayerFallState : PlayerState
 {
-    public override void OnEnter(Player player, PlayerMovement movement, PlayerData data) {}
+    public override void OnEnter(Player player, PlayerInput input, PlayerData data) {}
 
-    public override void StateUpdate(Player player, PlayerMovement movement, PlayerData data) 
+    public override void StateUpdate(Player player, PlayerInput input, PlayerData data) 
     {
         //State transitions
-        if (movement.GroundCheck()) //To walk state
+        if (player.GroundCheck()) //To walk state
         {
             player.TransitionToState(new PlayerWalkState());
         }
-        if (movement.WallCheck()) //To wall state
+        if (player.WallCheck()) //To wall state
         {
             player.TransitionToState(new PlayerWallState());
         }
     }
 
-    public override void StateFixedUpdate(Player player, PlayerMovement movement, PlayerData data) 
+    public override void StateFixedUpdate(Player player, PlayerInput input, PlayerData data) 
     {
         //Enable air movement, and ground check for transitioning back to walk
-        movement.Move(Input.GetAxisRaw("Horizontal"), data.runSpeed, data.airMovementSmoothing);
-        movement.LimitFallVelocity(data.limitVelocity);
+        player.Move(Input.GetAxisRaw("Horizontal"), data.runSpeed, data.airMovementSmoothing);
+        player.LimitFallVelocity(data.limitVelocity);
     }
 
-    public override void OnExit(Player player, PlayerMovement movement, PlayerData data) {}
+    public override void OnExit(Player player, PlayerInput input, PlayerData data) {}
 }
 #endregion
 
@@ -100,16 +100,16 @@ public class PlayerFallState : PlayerState
 #region Wall State
 public class PlayerWallState : PlayerState
 {
-    public override void OnEnter(Player player, PlayerMovement movement, PlayerData data) {}
+    public override void OnEnter(Player player, PlayerInput input, PlayerData data) {}
 
-    public override void StateUpdate(Player player, PlayerMovement movement, PlayerData data) 
+    public override void StateUpdate(Player player, PlayerInput input, PlayerData data) 
     {
         //State transitions
-        if (movement.GroundCheck()) //To walk state
+        if (player.GroundCheck()) //To walk state
         {
             player.TransitionToState(new PlayerWalkState());
         }
-        if (!movement.WallCheck()) //To wall state
+        if (!player.WallCheck()) //To wall state
         {
             player.TransitionToState(new PlayerFallState());
         }
@@ -119,14 +119,14 @@ public class PlayerWallState : PlayerState
         }
     }
 
-    public override void StateFixedUpdate(Player player, PlayerMovement movement, PlayerData data) 
+    public override void StateFixedUpdate(Player player, PlayerInput input, PlayerData data) 
     {
         //Enable air movement, and ground check for transitioning back to walk
-        movement.WallSlide(data.slideVelocity);
-        movement.Move(Input.GetAxisRaw("Horizontal"), data.runSpeed, data.movementSmoothing);
+        player.WallSlide(data.slideVelocity);
+        player.Move(Input.GetAxisRaw("Horizontal"), data.runSpeed, data.movementSmoothing);
     }
 
-    public override void OnExit(Player player, PlayerMovement movement, PlayerData data) {}
+    public override void OnExit(Player player, PlayerInput input, PlayerData data) {}
 }
 #endregion
 
@@ -134,31 +134,31 @@ public class PlayerWallState : PlayerState
 #region Wall Jump State
 public class PlayerWallJumpState : PlayerState
 {
-    public override void OnEnter(Player player, PlayerMovement movement, PlayerData data) 
+    public override void OnEnter(Player player, PlayerInput input, PlayerData data) 
     {
-        movement.WallJump(data.jumpForce);
+        player.WallJump(data.jumpForce);
     }
 
-    public override void StateUpdate(Player player, PlayerMovement movement, PlayerData data) 
+    public override void StateUpdate(Player player, PlayerInput input, PlayerData data) 
     {   
         //State transitions
-        if (movement.rb.velocity.y < 0) //To fall state
+        if (player.rb.velocity.y < 0) //To fall state
         {
             player.TransitionToState(new PlayerFallState());
         }
     }
 
-    public override void StateFixedUpdate(Player player, PlayerMovement movement, PlayerData data) 
+    public override void StateFixedUpdate(Player player, PlayerInput input, PlayerData data) 
     {
         //Enable air movement
-        movement.Move(Input.GetAxisRaw("Horizontal"), data.runSpeed, data.airMovementSmoothing);
+        player.Move(Input.GetAxisRaw("Horizontal"), data.runSpeed, data.airMovementSmoothing);
 
         if(!Input.GetButton("Jump")) 
         {
-            movement.JumpCut(data.jumpCutRate);
+            player.JumpCut(data.jumpCutRate);
         }
     }
 
-    public override void OnExit(Player player, PlayerMovement movement, PlayerData data) {}
+    public override void OnExit(Player player, PlayerInput input, PlayerData data) {}
 }
 #endregion
