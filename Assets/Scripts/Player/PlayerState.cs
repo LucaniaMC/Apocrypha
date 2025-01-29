@@ -20,6 +20,8 @@ public class PlayerWalkState : PlayerState
 
     public override void StateUpdate(Player player, PlayerInput input, PlayerData data) 
     {
+        player.SetWalkAnimator();
+        
         //State transitions
         if (input.jumpHoldInput) // To jump state
         {

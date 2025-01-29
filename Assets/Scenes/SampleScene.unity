@@ -19687,6 +19687,7 @@ MonoBehaviour:
   wallCheck: {fileID: 256341221}
   wallCheckSize: {x: 0.1, y: 1.5}
   rb: {fileID: 2121693406}
+  animator: {fileID: 1119788021}
 --- !u!114 &2121693418
 MonoBehaviour:
   m_ObjectHideFlags: 0
