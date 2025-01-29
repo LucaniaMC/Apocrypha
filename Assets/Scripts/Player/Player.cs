@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     public PlayerInput input;
 
     [HideInInspector] public PlayerState currentState {get; private set;}   
-    [HideInInspector] public PlayerState defaultState {get; private set;}
+    [HideInInspector] public PlayerState defaultState {get; private set;} = new PlayerWalkState();
     [Space]
 
     [Header("Checks")]
@@ -37,14 +37,13 @@ public class Player : MonoBehaviour
 
 
     #region Loop
-    public void Start() 
+    void Start() 
     {
-        defaultState = new PlayerWalkState();
         Initialize();
     }
 
 
-    public void Update() 
+    void Update() 
     {
         currentState.StateUpdate(this, input, data);
         GroundCheck();
@@ -53,7 +52,7 @@ public class Player : MonoBehaviour
     }
 
 
-    public void FixedUpdate() 
+    void FixedUpdate() 
     {
         currentState.StateFixedUpdate(this, input, data);
     }
@@ -62,21 +61,22 @@ public class Player : MonoBehaviour
 
     #region State Machine Functions
     // Called in Awake/Start on the player script
-    public void Initialize () 
+    public void Initialize() 
     {
         TransitionToState(defaultState);
     }
 
 
+	//Exit current state, and enter new state
     public void TransitionToState(PlayerState newState)
     {
         if (currentState != null)
-            currentState.OnExit(this, input, data);
+            currentState.OnExit(this, data);
 
         currentState = newState;
 
         if (currentState != null)
-            currentState.OnEnter(this, input, data);
+            currentState.OnEnter(this, data);
     }
     #endregion
 
@@ -118,6 +118,7 @@ public class Player : MonoBehaviour
 	}
 
 
+	// Gives the player a grace period to jump after falling off ground, allowing small input inaccuracy
     private void CoyoteTime() 
     {
         //Coyote time countdown
@@ -172,7 +173,7 @@ public class Player : MonoBehaviour
 	}
 
 
-    // Apply a vertical force to the player to jump. Takes player jump input as bool, if jump is true, the player is jumping
+    // Apply a vertical force to the player to jump
 	public void Jump(float jumpForce) 
 	{
 		rb.velocity = new Vector2(rb.velocity.x, 0);	// Reset player veritcal velocity when jumping to prevent irregular jump heights.
@@ -182,7 +183,7 @@ public class Player : MonoBehaviour
 	}
 
 
-	// Add a vertical force to the player to jump on wall. Takes player jump input as bool, if jump is true, the player is jumping
+	// Add a vertical force to the player to jump on wall
 	public void WallJump(float jumpForce) 
 	{
 		rb.velocity = new Vector2(rb.velocity.x, 0);	// Reset player veritcal velocity when jumping to prevent irregular jump heights.
@@ -190,7 +191,7 @@ public class Player : MonoBehaviour
 	}
 
 
-	// Horizontally moves player at dash speed. Takes player dash input as bool, if dash is true, the player is dashing continously
+	// Horizontally moves player at dash speed
 	public void Dash(float speed) 
 	{
         rb.gravityScale = 0f;	//No gravity during dash so the player stays on the same y axis
@@ -213,19 +214,21 @@ public class Player : MonoBehaviour
 	}
 
 
-	//lower vertical velocity if the player releases jump button early, so the player can control how high they jump. Called in PlayerController
+	//lower vertical velocity if the player releases jump button early, so the player can control how high they jump
 	public void JumpCut(float jumpCutRate) 
 	{	
 		rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * jumpCutRate);
 	}
 
 
+	// Limit vertical velocity when going down on wall
     public void WallSlide(float slideVelocity) 
     {
         rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(rb.velocity.y, slideVelocity));
     }
 
 
+	// Hard fall velocity limit
     public void LimitFallVelocity(float limitVelocity) 
     {
         rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(rb.velocity.y, -limitVelocity));

@@ -13,7 +13,6 @@ public class PlayerInput : MonoBehaviour
     public float jumpBufferCounter {get; private set;} = 0f;
 
 
-    // Update is called once per frame
     void Update()
     {
         moveInput = Input.GetAxisRaw("Horizontal");
