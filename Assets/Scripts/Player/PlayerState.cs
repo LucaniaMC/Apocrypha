@@ -16,20 +16,25 @@ public abstract class PlayerState
 #region Walk State
 public class PlayerWalkState : PlayerState
 {
-    public override void OnEnter(Player player, PlayerData data) {}
+    public override void OnEnter(Player player, PlayerData data) 
+    {
+        player.SetWalkBoolAnimator(true);
+    }
 
     public override void StateUpdate(Player player, PlayerInput input, PlayerData data) 
     {
-        player.SetWalkAnimator();
-        
         //State transitions
         if (input.jumpHoldInput) // To jump state
         {
             player.TransitionToState(new PlayerJumpState());
         }
-        if (!player.GroundCheck()) //To fall state
+        if (!player.GroundCheck())  //To fall state
         {
             player.TransitionToState(new PlayerFallState());
+        }
+        if (input.dashInput && player.CanDash())    //To dash state
+        {
+            player.TransitionToState(new PlayerDashState());
         }
     }
 
@@ -38,7 +43,10 @@ public class PlayerWalkState : PlayerState
         player.Move(input.moveInput, data.runSpeed, data.movementSmoothing);
     }
 
-    public override void OnExit(Player player, PlayerData data) {}
+    public override void OnExit(Player player, PlayerData data) 
+    {
+        player.SetWalkBoolAnimator(false);
+    }
 }
 #endregion
 
@@ -49,6 +57,7 @@ public class PlayerJumpState : PlayerState
     public override void OnEnter(Player player, PlayerData data) 
     {
         player.Jump(data.jumpForce);
+        player.SetJumpAnimator(true);
     }
 
     public override void StateUpdate(Player player, PlayerInput input, PlayerData data) 
@@ -61,6 +70,10 @@ public class PlayerJumpState : PlayerState
         if (player.rb.velocity.y < 0 && player.WallCheck()) //To wall state
         {
             player.TransitionToState(new PlayerWallState());
+        }
+        if (input.dashInput && player.CanDash())    //To dash state
+        {
+            player.TransitionToState(new PlayerDashState());
         }
     }
 
@@ -76,7 +89,10 @@ public class PlayerJumpState : PlayerState
         }
     }
 
-    public override void OnExit(Player player, PlayerData data) {}
+    public override void OnExit(Player player, PlayerData data) 
+    {
+        player.SetJumpAnimator(false);
+    }
 }
 #endregion
 
@@ -84,7 +100,10 @@ public class PlayerJumpState : PlayerState
 #region Fall State
 public class PlayerFallState : PlayerState
 {
-    public override void OnEnter(Player player, PlayerData data) {}
+    public override void OnEnter(Player player, PlayerData data) 
+    {
+        player.SetFallAnimator(true);
+    }
 
     public override void StateUpdate(Player player, PlayerInput input, PlayerData data) 
     {
@@ -97,9 +116,13 @@ public class PlayerFallState : PlayerState
         {
             player.TransitionToState(new PlayerWallState());
         }
-        if (player.coyoteTimeCounter > 0f && input.jumpHoldInput) //To jump state, if jumped during coyote time
+        if (player.CoyoteTime() && input.jumpHoldInput) //To jump state, if jumped during coyote time
         {
             player.TransitionToState(new PlayerJumpState());
+        }
+        if (input.dashInput && player.CanDash())    //To dash state
+        {
+            player.TransitionToState(new PlayerDashState());
         }
     }
 
@@ -110,7 +133,10 @@ public class PlayerFallState : PlayerState
         player.LimitFallVelocity(data.limitVelocity);
     }
 
-    public override void OnExit(Player player, PlayerData data) {}
+    public override void OnExit(Player player, PlayerData data) 
+    {
+        player.SetFallAnimator(false);
+    }
 }
 #endregion
 
@@ -118,7 +144,10 @@ public class PlayerFallState : PlayerState
 #region Wall State
 public class PlayerWallState : PlayerState
 {
-    public override void OnEnter(Player player, PlayerData data) {}
+    public override void OnEnter(Player player, PlayerData data) 
+    {
+        player.SetWallAnimator(true);
+    }
 
     public override void StateUpdate(Player player, PlayerInput input, PlayerData data) 
     {
@@ -144,7 +173,10 @@ public class PlayerWallState : PlayerState
         player.Move(input.moveInput, data.runSpeed, data.movementSmoothing);
     }
 
-    public override void OnExit(Player player, PlayerData data) {}
+    public override void OnExit(Player player, PlayerData data) 
+    {
+        player.SetWallAnimator(false);
+    }
 }
 #endregion
 
@@ -155,6 +187,7 @@ public class PlayerWallJumpState : PlayerState
     public override void OnEnter(Player player, PlayerData data) 
     {
         player.WallJump(data.jumpForce);
+        player.SetJumpAnimator(true);
     }
 
     public override void StateUpdate(Player player, PlayerInput input, PlayerData data) 
@@ -163,6 +196,10 @@ public class PlayerWallJumpState : PlayerState
         if (player.rb.velocity.y < 0) //To fall state
         {
             player.TransitionToState(new PlayerFallState());
+        }
+        if (input.dashInput && player.CanDash())    //To dash state
+        {
+            player.TransitionToState(new PlayerDashState());
         }
     }
 
@@ -178,6 +215,46 @@ public class PlayerWallJumpState : PlayerState
         }
     }
 
-    public override void OnExit(Player player, PlayerData data) {}
+    public override void OnExit(Player player, PlayerData data) 
+    {
+        player.SetJumpAnimator(false);
+    }
+}
+#endregion
+
+
+#region Dash State
+public class PlayerDashState : PlayerState
+{
+    private float dashStartTime;
+
+    public override void OnEnter(Player player, PlayerData data) 
+    {
+        player.SetDashAnimator(true);
+        dashStartTime = Time.time;
+        player.DashStart();
+    }                                
+    public override void StateUpdate(Player player, PlayerInput input, PlayerData data) 
+    {
+        player.Dash(data.dashSpeed);
+
+        if (Time.time >= dashStartTime + data.dashTime) //if dash ended
+        {
+            if (player.GroundCheck())
+            {
+                player.TransitionToState(new PlayerWalkState());
+            }
+            else
+            {
+                player.TransitionToState(new PlayerFallState());
+            }
+        }
+    }         
+    public override void StateFixedUpdate(Player player, PlayerInput input, PlayerData data) {}    
+    public override void OnExit(Player player, PlayerData data) 
+    {
+        player.SetDashAnimator(false);
+        player.DashEnd(data.gravity);
+    }                             
 }
 #endregion

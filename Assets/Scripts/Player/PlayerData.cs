@@ -31,8 +31,8 @@ public class PlayerData : ScriptableObject
 	[Header("Assists")]
 	public float coyoteTime;        // In seconds, time allowed for player to jump after leaving the ground 
 	public float wallCoyoteTime;    // In seconds, coyote time for wall jump 
-    public float dashBuffer;        // Grace time allowed for player dash input before it can dash 
     public float jumpBuffer;        // Grace time allowed for player jump input before being grounded
+    public float wallJumpBuffer;    // Jump buffer for wall jump
 	[Space]
 
     

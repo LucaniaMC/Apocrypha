@@ -5,14 +5,22 @@ using UnityEngine;
 
 public partial class Player 
 {
-    public void SetWalkAnimator() 
+    public void SetWalkAnimator(float moveInput) 
     {
-        animator.SetFloat("Speed", Mathf.Abs(input.moveInput));
+        animator.SetFloat("Speed", Mathf.Abs(moveInput));
+    }
+
+    public void SetWalkBoolAnimator(bool isWalking) 
+    {
+        animator.SetBool("IsWalking", isWalking);
     }
 
     public void SetTurnAnimator()
     {
-        animator.SetTrigger("Turn");
+        if(GroundCheck()) 
+        {
+            animator.SetTrigger("Turn");
+        }
     }
 
     public void SetJumpAnimator(bool isJumping) 
@@ -23,6 +31,16 @@ public partial class Player
     public void SetFallAnimator(bool isFalling) 
     {
         animator.SetBool("IsFalling", isFalling);
+    }
+
+    public void SetWallAnimator(bool isOnWall) 
+    {
+        animator.SetBool("OnWall", isOnWall);
+    }
+
+    public void SetDashAnimator(bool isDashing) 
+    {
+        animator.SetBool("IsDashing", isDashing);
     }
     
 }

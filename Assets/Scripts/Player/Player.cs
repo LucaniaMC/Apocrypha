@@ -13,7 +13,7 @@ public partial class Player : MonoBehaviour
     [HideInInspector] public PlayerState defaultState {get; private set;} = new PlayerWalkState();
     [Space]
 
-    [Header("Checks")]
+    [Header("Checks")]	//Used for PlayerMovement
 
 	[SerializeField] private LayerMask groundLayer;						// A mask determining what is ground to the character
 	[SerializeField] private Transform groundCheck;						// A position marking where to check if the player is grounded.
@@ -26,15 +26,8 @@ public partial class Player : MonoBehaviour
 
     [Header("References")]
 
-    public Rigidbody2D rb;
-	public Animator animator;
-
-    //Readable variables
-    [HideInInspector] public bool facingRight {get; private set;} = true;			// For determining which way the player is currently facing.
-    [HideInInspector] public float coyoteTimeCounter {get; private set;} = 0f;	
-
-	//Private variables
-	private Vector3 velocity = Vector3.zero;	//Used as ref for movement smoothdamp
+    public Rigidbody2D rb;		//Used for PlayerMovement
+	public Animator animator;	//Used for PlayerAnimator
 
 
     #region Loop
@@ -47,9 +40,8 @@ public partial class Player : MonoBehaviour
     void Update() 
     {
         currentState.StateUpdate(this, input, data);
-        GroundCheck();
-		WallCheck();
         CoyoteTime();
+        SetWalkAnimator(input.moveInput);
     }
 
 

@@ -6,7 +6,17 @@ using UnityEngine;
 //Only Player.cs needs to be attatched to an object
 
 public partial class Player
-{
+{	
+    //Readable variables
+    [HideInInspector] public bool facingRight {get; private set;} = true;			// For determining which way the player is currently facing.
+    [HideInInspector] public float coyoteTimeCounter {get; private set;} = 0f;	
+
+	//Private variables
+	private Vector3 velocity = Vector3.zero;	//Used as ref for movement smoothdamp
+	private float lastDashTime;		// Used to calculate dash cooldown
+	private float lastGroundedTime;	 // Used for coyote time
+
+
     #region Ground Check
 	//Ground check, call in fixed update, return true if the player's grounded
 	public bool GroundCheck() 
@@ -20,6 +30,7 @@ public partial class Player
 			if (colliders[i].gameObject != gameObject)	//Do not check for colliding with self
 			{
 				grounded = true;
+				lastGroundedTime = Time.time;	// for coyote time
 			}
 		}
         return grounded;
@@ -48,24 +59,11 @@ public partial class Player
 
 
     #region Coyote Time
-	// Gives the player a grace period to jump after falling off ground, allowing small input inaccuracy
-    private void CoyoteTime() 
+	// returns true if coyote time is active, allowing the player to jump for a bit after falling off ground, allowing small input inaccuracy
+    public bool CoyoteTime()
     {
-        //Coyote time countdown
-		if (GroundCheck()) 
-		{
-			coyoteTimeCounter = data.coyoteTime;	//reset coyote time when grounded
-		} 
-		else 
-		{	//decrease coyote time when airborne, clamps value to prevent it from going above the maximum time, or continue counting down below 0
-			coyoteTimeCounter = Mathf.Clamp(coyoteTimeCounter - Time.deltaTime, 0f, data.coyoteTime);
-		}
+        return Time.time - lastGroundedTime <= data.coyoteTime;
     }
-
-    public void ResetCoyoteTime() 
-    {
-        coyoteTimeCounter = 0f;
-    } 
     #endregion
 
 
@@ -112,8 +110,6 @@ public partial class Player
 	{
 		rb.velocity = new Vector2(rb.velocity.x, 0);	// Reset player veritcal velocity when jumping to prevent irregular jump heights.
 		rb.AddForce(new Vector2(0f, jumpForce));		// Add a new vertical force to the player to jump.
-
-		ResetCoyoteTime();	//No coyote time after jumping
 	}
     #endregion
 
@@ -138,11 +134,15 @@ public partial class Player
 
 
     #region Dash
+	// Called at the beginning to dash to set gravity to 0, so the player stays on the same y axis
+	public void DashStart() 
+	{
+		rb.gravityScale = 0f;
+	}
+
 	// Horizontally moves player at dash speed
 	public void Dash(float speed) 
 	{
-        rb.gravityScale = 0f;	//No gravity during dash so the player stays on the same y axis
-
         if (facingRight) //Dash towards the direction the player is facing
         {
             rb.velocity = new Vector2(speed, 0f);
@@ -153,11 +153,18 @@ public partial class Player
         }
 	}
 
-	// Called at the end of dash to set player gravity scale back
-	public void DashReset(float gravity) 
+	// Called at the end of dash
+	public void DashEnd(float gravity) 
 	{
-		rb.gravityScale = gravity;
+		rb.gravityScale = gravity;	// Reset player gravity
+		lastDashTime = Time.time;	// Set dash cooldown
 	}
+
+	// can the player dash, return true if cooldown time is over
+	public bool CanDash()
+    {
+        return Time.time >= lastDashTime + data.dashCooldown;
+    }
     #endregion
 
 
