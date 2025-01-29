@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 068926f44da14f8488e52cb709c67079
+guid: 835c776b6b1e13a4585206111e1512d4
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -117,7 +117,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Player_Jump_0
+      name: Player_Fall_Start_0
       rect:
         serializedVersion: 2
         x: 0
@@ -131,14 +131,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a067580ec29ff7e479ef85f0a4675953
-      internalID: -1014935161
+      spriteID: 68d8d0da6df696d4494646361aa57aec
+      internalID: -1721273315
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player_Jump_1
+      name: Player_Fall_Start_1
       rect:
         serializedVersion: 2
         x: 20
@@ -152,50 +152,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 23dd0717350b92643b1fb38a5fab15e9
-      internalID: 1406598219
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Player_Jump_2
-      rect:
-        serializedVersion: 2
-        x: 40
-        y: 0
-        width: 20
-        height: 20
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 886d598aae1de84458d773cce2f53ee9
-      internalID: 1612988605
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Player_Jump_3
-      rect:
-        serializedVersion: 2
-        x: 60
-        y: 0
-        width: 20
-        height: 20
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: fd8063cdd523fce4bb243f5708f2c2c6
-      internalID: -1139754967
+      spriteID: 37eabd962534cc74b9ceac703dc8a66d
+      internalID: 487190849
       vertices: []
       indices: 
       edges: []
@@ -211,10 +169,8 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Player_Jump_0: -1014935161
-      Player_Jump_1: 1406598219
-      Player_Jump_2: 1612988605
-      Player_Jump_3: -1139754967
+      Player_Fall_Start_0: -1721273315
+      Player_Fall_Start_1: 487190849
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
