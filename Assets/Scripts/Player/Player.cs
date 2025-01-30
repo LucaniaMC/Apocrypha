@@ -10,7 +10,7 @@ public partial class Player : MonoBehaviour
     public PlayerInput input;
 
     [HideInInspector] public PlayerState currentState {get; private set;}   
-    [HideInInspector] public PlayerState defaultState {get; private set;} = new PlayerWalkState();
+    [HideInInspector] public PlayerState defaultState {get; private set;}
     [Space]
 
     [Header("Checks")]	//Used for PlayerMovement
@@ -33,20 +33,21 @@ public partial class Player : MonoBehaviour
     #region Loop
     void Start() 
     {
+        defaultState = new PlayerWalkState(this, input, data);
         Initialize();
     }
 
 
     void Update() 
     {
-        currentState.StateUpdate(this, input, data);
+        currentState.StateUpdate();
         SetWalkAnimator(input.moveInput);
     }
 
 
     void FixedUpdate() 
     {
-        currentState.StateFixedUpdate(this, input, data);
+        currentState.StateFixedUpdate();
     }
     #endregion
 
@@ -63,12 +64,12 @@ public partial class Player : MonoBehaviour
     public void TransitionToState(PlayerState newState)
     {
         if (currentState != null)
-            currentState.OnExit(this, data);
+            currentState.OnExit();
 
         currentState = newState;
 
         if (currentState != null)
-            currentState.OnEnter(this, data);
+            currentState.OnEnter();
     }
     #endregion
 }
