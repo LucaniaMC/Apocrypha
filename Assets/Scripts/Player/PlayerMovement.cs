@@ -30,7 +30,7 @@ public partial class Player
 			if (colliders[i].gameObject != gameObject)	//Do not check for colliding with self
 			{
 				grounded = true;
-				lastGroundedTime = Time.time;	// for coyote time
+				ResetCoyoteTime();	// for coyote time
 			}
 		}
         return grounded;
@@ -64,6 +64,11 @@ public partial class Player
     {
         return Time.time - lastGroundedTime <= data.coyoteTime;
     }
+
+	void ResetCoyoteTime() 
+	{
+		lastGroundedTime = Time.time;
+	}
     #endregion
 
 

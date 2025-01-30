@@ -40,7 +40,6 @@ public partial class Player : MonoBehaviour
     void Update() 
     {
         currentState.StateUpdate(this, input, data);
-        CoyoteTime();
         SetWalkAnimator(input.moveInput);
     }
 
