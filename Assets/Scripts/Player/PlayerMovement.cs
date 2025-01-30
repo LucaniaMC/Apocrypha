@@ -8,13 +8,13 @@ using UnityEngine;
 public partial class Player
 {	
     //Readable variables
-    [HideInInspector] public bool facingRight {get; private set;} = true;			// For determining which way the player is currently facing.
-    [HideInInspector] public float coyoteTimeCounter {get; private set;} = 0f;	
+    [HideInInspector] public bool facingRight {get; private set;} = true;		// For determining which way the player is currently facing.	
+	[HideInInspector] public bool hasAirDashed {get; private set;}				// Keeps the player from dashing in air again if already dashed in air
 
 	//Private variables
-	private Vector3 velocity = Vector3.zero;	//Used as ref for movement smoothdamp
-	private float lastDashTime;		// Used to calculate dash cooldown
-	private float lastGroundedTime;	 // Used for coyote time
+	private Vector3 velocity = Vector3.zero;	// Used as ref for movement smoothdamp
+	private float lastDashTime;					// Used to calculate dash cooldown
+	private float lastGroundedTime;	 			// Used for coyote time
 
 
     #region Ground Check
@@ -30,7 +30,9 @@ public partial class Player
 			if (colliders[i].gameObject != gameObject)	//Do not check for colliding with self
 			{
 				grounded = true;
+
 				ResetCoyoteTime();	// for coyote time
+				DashRefill();
 			}
 		}
         return grounded;
@@ -51,6 +53,8 @@ public partial class Player
 			if (collidersWall[i].gameObject != gameObject)
 			{
 				onWall = true;
+
+				DashRefill();
 			}
 		}
         return onWall;
@@ -143,6 +147,7 @@ public partial class Player
 	public void DashStart() 
 	{
 		rb.gravityScale = 0f;
+		hasAirDashed = true;
 	}
 
 	// Horizontally moves player at dash speed
@@ -165,10 +170,16 @@ public partial class Player
 		lastDashTime = Time.time;	// Set dash cooldown
 	}
 
+	// Called when grounded to enable dash again
+	public void DashRefill() 
+	{
+		hasAirDashed = false;
+	}
+
 	// can the player dash, return true if cooldown time is over
 	public bool CanDash()
     {
-        return Time.time >= lastDashTime + data.dashCooldown;
+        return !hasAirDashed && Time.time >= lastDashTime + data.dashCooldown;
     }
     #endregion
 

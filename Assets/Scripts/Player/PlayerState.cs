@@ -10,7 +10,7 @@ public abstract class PlayerState
     protected PlayerInput input;
     protected PlayerData data;
 
-    //Set references
+    //Constructor set references
     public PlayerState(Player player, PlayerInput input, PlayerData data) 
     {
         this.player = player;
