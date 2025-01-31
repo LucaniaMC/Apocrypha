@@ -42,5 +42,17 @@ public partial class Player
     {
         animator.SetBool("IsDashing", isDashing);
     }
+
+    public void SetAttackAnimator(bool isAttacking) 
+    {
+        animator.SetBool("IsAttacking", isAttacking);
+    }
+
+    public void SetAltAttack() 
+    {
+        bool altAttack = animator.GetBool("AltAttack"); //flip the animator bool
+        altAttack = !altAttack;
+        animator.SetBool("AltAttack", altAttack);
+    }
     
 }

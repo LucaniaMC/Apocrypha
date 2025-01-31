@@ -12,7 +12,7 @@ public partial class Player
 	[HideInInspector] public bool hasAirDashed {get; private set;}				// Keeps the player from dashing in air again if already dashed in air
 
 	//Private variables
-	private Vector3 velocity = Vector3.zero;	// Used as ref for movement smoothdamp
+	[HideInInspector] public Vector3 velocity = Vector3.zero;	// Used as ref for movement smoothdamp
 	private float lastDashTime;					// Used to calculate dash cooldown
 	private float lastGroundedTime;	 			// Used for coyote time
 
@@ -58,6 +58,26 @@ public partial class Player
 			}
 		}
         return onWall;
+	}
+    #endregion
+
+
+	#region Edge Check
+    //Edge check, called in fixed update, returns true if the player is near an edge
+	public bool EdgeCheck() 
+	{
+		bool onEdge = true;
+
+		//Edge check cast. The player is on edge if a cast to the wallcheck position does not hit anything
+		Collider2D[] collidersEdge = Physics2D.OverlapCircleAll(edgeCheck.position, 0.1f, wallLayer);
+		for (int i = 0; i < collidersEdge.Length; i++)
+		{
+			if (collidersEdge[i].gameObject != gameObject)
+			{
+				onEdge = false;
+			}
+		}
+        return onEdge;
 	}
     #endregion
 

@@ -67,6 +67,10 @@ public class PlayerWalkState : PlayerState
         {
             player.TransitionToState(new PlayerDashState(player, input, data));
         }
+        if(input.attackInput) //test attack state
+        {
+            player.TransitionToState(new PlayerAttackState(player, input, data));
+        }
     }
 }
 #endregion
@@ -283,14 +287,16 @@ public class PlayerDashState : PlayerState
     }                                
     public override void StateUpdate() 
     {
-        player.Dash(data.dashSpeed);
-
         if (Time.time >= dashStartTime + data.dashTime) //if dash ended, transition to other states
         {
             Transitions();
         }
     }         
-    public override void StateFixedUpdate() {}    
+    public override void StateFixedUpdate() 
+    {
+        player.Dash(data.dashSpeed);
+    }    
+    
     public override void OnExit() 
     {
         player.SetDashAnimator(false);
@@ -308,5 +314,60 @@ public class PlayerDashState : PlayerState
             player.TransitionToState(new PlayerFallState(player, input, data));
         }
     }                   
+}
+#endregion
+
+
+#region Attack State
+public class PlayerAttackState : PlayerState
+{
+    public PlayerAttackState(Player player, PlayerInput input, PlayerData data) : base(player, input, data) {}
+
+    float startTime = Time.time;    // When did the state start
+    float forwardTime = 0.2f;       // How long does the player move forward
+    float totalTime = 0.5f;         // How long does the state last
+    float moveVelocity = 8f;      // How fast the player moves forward
+
+    public override void OnEnter() 
+    {
+        player.rb.velocity = new Vector2(0f, 0f);
+        player.SetAttackAnimator(true);
+
+        if (!player.facingRight) //moves player left if facing left
+        {
+            moveVelocity = -moveVelocity;
+        }
+    }
+
+    public override void StateUpdate() 
+    {
+        if (Time.time >= startTime + totalTime) // Transition to other states when timer is over
+        {
+            Transitions();
+        }
+    }
+
+    public override void StateFixedUpdate() 
+    {
+        if ((Time.time <= startTime + forwardTime) & !player.EdgeCheck()) //Move player forward, stops on edge
+        {
+            player.rb.velocity = new Vector2(moveVelocity, player.rb.velocity.y);
+        }
+        else //Stops moving
+        {
+            player.rb.velocity = new Vector2(0f, player.rb.velocity.y);
+        }
+    }
+
+    public override void OnExit() 
+    {
+        player.SetAttackAnimator(false);
+        player.SetAltAttack();
+    }
+
+    public override void Transitions() 
+    {
+        player.TransitionToState(new PlayerWalkState(player, input, data));
+    }
 }
 #endregion
