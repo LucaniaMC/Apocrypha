@@ -5,6 +5,8 @@ using UnityEngine;
 
 public partial class Player 
 {
+    [HideInInspector] public float fallTime {get; private set;}					// How long has the player been falling
+    
     public void SetWalkAnimator(float moveInput) 
     {
         animator.SetFloat("Speed", Mathf.Abs(moveInput));
@@ -15,6 +17,7 @@ public partial class Player
         animator.SetBool("IsWalking", isWalking);
     }
 
+    #region Turn Trigger
     public void SetTurnAnimator()
     {
         if(GroundCheck()) 
@@ -22,6 +25,12 @@ public partial class Player
             animator.SetTrigger("Turn");
         }
     }
+
+    public void ResetTurnAnimator() 
+    {
+        animator.ResetTrigger("Turn");
+    }
+    #endregion
 
     public void SetJumpAnimator(bool isJumping) 
     {
@@ -54,5 +63,19 @@ public partial class Player
         altAttack = !altAttack;
         animator.SetBool("AltAttack", altAttack);
     }
+
+	#region Fall Time
+	public void CalculateFallTime() 
+	{
+		fallTime += Time.deltaTime;
+        animator.SetFloat("FallTime", fallTime);
+	}
+
+	public void ResetFallTime()
+	{
+		fallTime = 0f;
+        animator.SetFloat("FallTime", fallTime);
+	}
+	#endregion
     
 }

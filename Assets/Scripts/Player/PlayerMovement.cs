@@ -30,9 +30,6 @@ public partial class Player
 			if (colliders[i].gameObject != gameObject)	//Do not check for colliding with self
 			{
 				grounded = true;
-
-				ResetCoyoteTime();	// for coyote time
-				DashRefill();
 			}
 		}
         return grounded;
@@ -53,8 +50,6 @@ public partial class Player
 			if (collidersWall[i].gameObject != gameObject)
 			{
 				onWall = true;
-
-				DashRefill();
 			}
 		}
         return onWall;
@@ -89,7 +84,7 @@ public partial class Player
         return Time.time - lastGroundedTime <= data.coyoteTime;
     }
 
-	void ResetCoyoteTime() 
+	public void ResetCoyoteTime() 
 	{
 		lastGroundedTime = Time.time;
 	}

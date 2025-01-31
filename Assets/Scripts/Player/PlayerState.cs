@@ -36,6 +36,7 @@ public class PlayerWalkState : PlayerState
     public override void OnEnter() 
     {
         player.SetWalkBoolAnimator(true);
+        player.DashRefill();
     }
 
     public override void StateUpdate() 
@@ -51,6 +52,8 @@ public class PlayerWalkState : PlayerState
     public override void OnExit() 
     {
         player.SetWalkBoolAnimator(false);
+        player.ResetCoyoteTime();
+        player.ResetTurnAnimator(); //Prevents turn animator from staying active when the player leaves the state
     }
 
     public override void Transitions() 
@@ -148,11 +151,13 @@ public class PlayerFallState : PlayerState
         //Enable air movement
         player.Move(input.moveInput, data.runSpeed, data.airMovementSmoothing);
         player.LimitFallVelocity(data.limitVelocity);
+        player.CalculateFallTime();
     }
 
     public override void OnExit() 
     {
         player.SetFallAnimator(false);
+        player.Invoke("ResetFallTime", 0.02f); //Invoke with a delay so the animator can process the value before it resets to 0
     }
 
     public override void Transitions() 
@@ -186,6 +191,7 @@ public class PlayerWallState : PlayerState
     public override void OnEnter() 
     {
         player.SetWallAnimator(true);
+        player.DashRefill();
     }
 
     public override void StateUpdate() 
