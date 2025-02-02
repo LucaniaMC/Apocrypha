@@ -88,6 +88,7 @@ public class PlayerJumpState : PlayerState
     {
         player.Jump(data.jumpForce);
         player.SetJumpAnimator(true);
+        player.SpawnJumpParticle();
     }
 
     public override void StateUpdate() 
@@ -157,6 +158,10 @@ public class PlayerFallState : PlayerState
     public override void OnExit() 
     {
         player.SetFallAnimator(false);
+        if (player.GroundCheck()) 
+        {
+            player.SpawnLandingParticle();
+        }
         player.Invoke("ResetFallTime", 0.02f); //Invoke with a delay so the animator can process the value before it resets to 0
     }
 
@@ -288,6 +293,7 @@ public class PlayerDashState : PlayerState
     public override void OnEnter() 
     {
         player.SetDashAnimator(true);
+        player.SetDashParticle(true);
         dashStartTime = Time.time;
         player.DashStart();
     }                                
@@ -306,6 +312,7 @@ public class PlayerDashState : PlayerState
     public override void OnExit() 
     {
         player.SetDashAnimator(false);
+        player.SetDashParticle(false);
         player.DashEnd(data.gravity);
     }          
 
