@@ -5,7 +5,7 @@ using UnityEngine;
 
 public partial class Player 
 {
-    [HideInInspector] public float fallTime {get; private set;}					// How long has the player been falling
+    [HideInInspector] public float fallTime {get; private set;}		// How long has the player been falling
     
     public void SetWalkAnimator(float moveInput) 
     {
@@ -52,17 +52,19 @@ public partial class Player
         animator.SetBool("IsDashing", isDashing);
     }
 
-    public void SetAttackAnimator(bool isAttacking) 
+    #region Attack
+    public void SetAttackAnimator(Animator animator, bool isAttacking) 
     {
         animator.SetBool("IsAttacking", isAttacking);
     }
 
-    public void SetAltAttack() 
+    public void SetAltAttack(Animator animator) 
     {
         bool altAttack = animator.GetBool("AltAttack"); //flip the animator bool
         altAttack = !altAttack;
         animator.SetBool("AltAttack", altAttack);
     }
+    #endregion
 
 	#region Fall Time
 	public void CalculateFallTime() 

@@ -7927,6 +7927,7 @@ GameObject:
   - component: {fileID: 640175520}
   - component: {fileID: 640175519}
   - component: {fileID: 640175521}
+  - component: {fileID: 640175522}
   m_Layer: 8
   m_Name: AttackTrail
   m_TagString: Untagged
@@ -8029,7 +8030,7 @@ CapsuleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 640175517}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
@@ -8038,6 +8039,19 @@ CapsuleCollider2D:
   m_Offset: {x: 1.9, y: 0}
   m_Size: {x: 3.8, y: 2.2}
   m_Direction: 1
+--- !u!114 &640175522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 640175517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da4bb4c128b264f469e127130abf6ea7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data: {fileID: 11400000, guid: 12ad7e088a614b545815725bc44747c8, type: 2}
 --- !u!1 &643875760
 GameObject:
   m_ObjectHideFlags: 0
@@ -19724,6 +19738,11 @@ MonoBehaviour:
   edgeCheck: {fileID: 1471054526}
   rb: {fileID: 2121693406}
   animator: {fileID: 1119788021}
+  trailAnimator: {fileID: 640175519}
+  landingParticle: {fileID: 9064148963762782749, guid: 992e8dba597bf974a8af6c11e64e88d8, type: 3}
+  jumpParticle: {fileID: 599155002226572451, guid: 90a7936b6c00da14fafb90fc9ebd6527, type: 3}
+  dashParticle: {fileID: 270198493}
+  attackCollider: {fileID: 640175521}
   velocity: {x: 0, y: 0, z: 0}
 --- !u!114 &2121693418
 MonoBehaviour:

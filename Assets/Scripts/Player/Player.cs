@@ -27,10 +27,24 @@ public partial class Player : MonoBehaviour
 	[SerializeField] private Transform edgeCheck;						// A position marking where to check if the player is on edge.
     [Space]
 
-    [Header("References")]
+    [Header("Rigidbody")]   //Used for PlayerMovement
 
-    public Rigidbody2D rb;		//Used for PlayerMovement
-	public Animator animator;	//Used for PlayerAnimator
+    public Rigidbody2D rb;		
+    [Space]
+
+    [Header("Animators")]       //Used for PlayerAnimator
+	public Animator animator;	
+    public Animator trailAnimator;  //Attack trail animator
+    [Space]
+
+    [Header("Particles")]   //Used for PlayerParticles
+    public GameObject landingParticle;
+    public GameObject jumpParticle;
+    public ParticleSystem dashParticle;
+    [Space]
+
+    [Header("Attack Hitboxes")]     //Used for PlayerAttack
+    public Collider2D attackCollider;
 
 
     #region Loop
