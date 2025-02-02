@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a86908a85cd169a4095353a15b676291
+guid: 835c776b6b1e13a4585206111e1512d4
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -117,7 +117,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Player_Fallstart_0
+      name: Player_Fall_Start_0
       rect:
         serializedVersion: 2
         x: 0
@@ -131,14 +131,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e63d974db3c53694990e31c7b991a5b7
-      internalID: 1556011531
+      spriteID: 68d8d0da6df696d4494646361aa57aec
+      internalID: -1721273315
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Player_Fallstart_1
+      name: Player_Fall_Start_1
       rect:
         serializedVersion: 2
         x: 20
@@ -152,8 +152,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 222489f680692d1459c7761d25e467e1
-      internalID: 1947871425
+      spriteID: 37eabd962534cc74b9ceac703dc8a66d
+      internalID: 487190849
       vertices: []
       indices: 
       edges: []
@@ -169,8 +169,8 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Player_Fallstart_0: 1556011531
-      Player_Fallstart_1: 1947871425
+      Player_Fall_Start_0: -1721273315
+      Player_Fall_Start_1: 487190849
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
