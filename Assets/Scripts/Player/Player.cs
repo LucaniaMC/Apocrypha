@@ -33,7 +33,6 @@ public partial class Player : MonoBehaviour
 
     [Header("Animators")]       //Used for PlayerAnimator
 	public Animator animator;	
-    public Animator trailAnimator;  //Attack trail animator
     [Space]
 
     [Header("Particles")]   //Used for PlayerParticles

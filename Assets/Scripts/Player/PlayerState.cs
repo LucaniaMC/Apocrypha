@@ -344,8 +344,7 @@ public class PlayerAttackState : PlayerState
     public override void OnEnter() 
     {
         player.rb.velocity = new Vector2(0f, 0f);
-        player.SetAttackAnimator(player.animator, true);
-        player.SetAttackAnimator(player.trailAnimator, true);
+        player.SetAttackAnimator(true);
         player.StartCoroutine(player.AttackCoroutine());
 
         if (!player.facingRight) //moves player left if facing left
@@ -376,10 +375,8 @@ public class PlayerAttackState : PlayerState
 
     public override void OnExit() 
     {
-        player.SetAttackAnimator(player.animator, false);
-        player.SetAttackAnimator(player.trailAnimator, false);
-        player.SetAltAttack(player.animator);
-        player.SetAltAttack(player.trailAnimator);
+        player.SetAttackAnimator(false);
+        player.SetAltAttack();
     }
 
     public override void Transitions() 

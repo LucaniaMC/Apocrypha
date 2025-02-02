@@ -53,12 +53,12 @@ public partial class Player
     }
 
     #region Attack
-    public void SetAttackAnimator(Animator animator, bool isAttacking) 
+    public void SetAttackAnimator(bool isAttacking) 
     {
         animator.SetBool("IsAttacking", isAttacking);
     }
 
-    public void SetAltAttack(Animator animator) 
+    public void SetAltAttack() 
     {
         bool altAttack = animator.GetBool("AltAttack"); //flip the animator bool
         altAttack = !altAttack;
