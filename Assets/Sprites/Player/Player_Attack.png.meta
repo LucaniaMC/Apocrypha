@@ -225,8 +225,8 @@ TextureImporter:
       name: Player_Attack_5
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
+        x: 100
+        y: 20
         width: 20
         height: 20
       alignment: 0
@@ -246,7 +246,7 @@ TextureImporter:
       name: Player_Attack_6
       rect:
         serializedVersion: 2
-        x: 20
+        x: 0
         y: 0
         width: 20
         height: 20
@@ -267,7 +267,7 @@ TextureImporter:
       name: Player_Attack_7
       rect:
         serializedVersion: 2
-        x: 40
+        x: 20
         y: 0
         width: 20
         height: 20
@@ -288,7 +288,7 @@ TextureImporter:
       name: Player_Attack_8
       rect:
         serializedVersion: 2
-        x: 60
+        x: 40
         y: 0
         width: 20
         height: 20
@@ -309,7 +309,7 @@ TextureImporter:
       name: Player_Attack_9
       rect:
         serializedVersion: 2
-        x: 80
+        x: 60
         y: 0
         width: 20
         height: 20
@@ -322,6 +322,48 @@ TextureImporter:
       bones: []
       spriteID: 5cd3471c5cb21e04eab37a5f627db2d0
       internalID: 1513196596
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_Attack_10
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 0
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ddc527ff6a02acc43856138f953c0e40
+      internalID: -395353847
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_Attack_11
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 0
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 242ae205d4a161c4ea09ba95b9bc5126
+      internalID: 1665270618
       vertices: []
       indices: 
       edges: []
@@ -339,6 +381,8 @@ TextureImporter:
     nameFileIdTable:
       Player_Attack_0: 1462821003
       Player_Attack_1: -1569687221
+      Player_Attack_10: -395353847
+      Player_Attack_11: 1665270618
       Player_Attack_2: -803763195
       Player_Attack_3: -658733805
       Player_Attack_4: -1829067614
