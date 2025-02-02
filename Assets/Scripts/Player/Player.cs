@@ -28,7 +28,6 @@ public partial class Player : MonoBehaviour
     [Space]
 
     [Header("Rigidbody")]   //Used for PlayerMovement
-
     public Rigidbody2D rb;		
     [Space]
 
