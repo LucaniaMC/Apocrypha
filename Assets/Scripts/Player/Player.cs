@@ -43,6 +43,7 @@ public partial class Player : MonoBehaviour
 
     [Header("Attack Hitboxes")]     //Used for PlayerAttack
     public Collider2D attackCollider;
+    public Collider2D chargeAttackCollider;
 
 
     #region Loop

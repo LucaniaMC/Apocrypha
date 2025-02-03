@@ -75,6 +75,10 @@ public class PlayerWalkState : PlayerState
         {
             player.TransitionToState(new PlayerAttackState(player, input, data));
         }
+        if(input.ChargeAttack()) 
+        {
+            player.TransitionToState(new PlayerChargeAttackState(player, input, data));
+        }
     }
 }
 #endregion
@@ -385,6 +389,61 @@ public class PlayerAttackState : PlayerState
     {
         player.SetAttackAnimator(false);
         player.SetAltAttack();
+    }
+
+    public override void Transitions() 
+    {
+        player.TransitionToState(new PlayerWalkState(player, input, data));
+    }
+}
+#endregion
+
+
+#region Charge Attack State
+public class PlayerChargeAttackState : PlayerState
+{
+    public PlayerChargeAttackState(Player player, PlayerInput input, PlayerData data) : base(player, input, data) {}
+
+    float startTime = Time.time;    // When did the state start
+    float forwardTime = 0.2f;       // How long does the player move forward
+    float totalTime = 0.7f;         // How long does the state last
+    float moveVelocity = 15f;      // How fast the player moves forward
+
+    public override void OnEnter() 
+    {
+        player.rb.velocity = new Vector2(0f, 0f);
+        player.SetChargeAttackAnimator(true);
+        player.StartCoroutine(player.ChargeAttackCoroutine());
+
+        if (!player.facingRight) //moves player left if facing left
+        {
+            moveVelocity = -moveVelocity;
+        }
+    }
+
+    public override void StateUpdate() 
+    {
+        if (Time.time >= startTime + totalTime) // Transition to other states when timer is over
+        {
+            Transitions();
+        }
+    }
+
+    public override void StateFixedUpdate() 
+    {
+        if ((Time.time <= startTime + forwardTime) & !player.EdgeCheck()) //Move player forward, stops on edge
+        {
+            player.rb.velocity = new Vector2(moveVelocity, player.rb.velocity.y);
+        }
+        else //Stops moving
+        {
+            player.rb.velocity = new Vector2(0f, player.rb.velocity.y);
+        }
+    }
+
+    public override void OnExit() 
+    {
+        player.SetChargeAttackAnimator(false);
     }
 
     public override void Transitions() 

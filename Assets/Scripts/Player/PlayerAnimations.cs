@@ -64,6 +64,11 @@ public partial class Player
         altAttack = !altAttack;
         animator.SetBool("AltAttack", altAttack);
     }
+
+    public void SetChargeAttackAnimator(bool isAttacking) 
+    {
+        animator.SetBool("IsChargeAttacking", isAttacking);
+    }
     #endregion
 
 	#region Fall Time

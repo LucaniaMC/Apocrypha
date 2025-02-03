@@ -13,4 +13,11 @@ public partial class Player
         yield return new WaitForSeconds(0.2f);
         attackCollider.enabled = false;
     }
+
+    public IEnumerator ChargeAttackCoroutine() 
+    {
+        chargeAttackCollider.enabled = true;
+        yield return new WaitForSeconds(0.2f);
+        chargeAttackCollider.enabled = false;
+    }
 }
