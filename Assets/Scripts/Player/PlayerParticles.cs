@@ -7,13 +7,13 @@ public partial class Player
 {
     public void SpawnLandingParticle()
     {
-        Instantiate(landingParticle, new Vector3(this.transform.position.x , this.transform.position.y , -1), Quaternion.identity);
+        Instantiate(landingParticle, new Vector3(this.transform.position.x , this.transform.position.y , 0), Quaternion.identity);
     }
 
 
     public void SpawnJumpParticle()
     {
-        Instantiate(jumpParticle, new Vector3(this.transform.position.x , this.transform.position.y , -1), Quaternion.identity);
+        Instantiate(jumpParticle, new Vector3(this.transform.position.x , this.transform.position.y , 0), Quaternion.identity);
     }
 
 
