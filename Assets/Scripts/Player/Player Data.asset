@@ -26,7 +26,6 @@ MonoBehaviour:
   coyoteTime: 0.1
   wallCoyoteTime: 0.15
   jumpBuffer: 0.1
-  wallJumpBuffer: 0.1
   slideVelocity: -5
   limitVelocity: 25
   gravity: 4

@@ -36,7 +36,7 @@ public class PlayerWalkState : PlayerState
     public override void OnEnter() 
     {
         player.SetWalkBoolAnimator(true);
-        player.DashRefill();
+        player.DashRefill();    //Refills dash on ground
     }
 
     public override void StateUpdate() 
@@ -46,13 +46,13 @@ public class PlayerWalkState : PlayerState
 
     public override void StateFixedUpdate() 
     {
+        //enables horizontal movement
         player.Move(input.moveInput, data.runSpeed, data.movementSmoothing);
     }
 
     public override void OnExit() 
     {
         player.SetWalkBoolAnimator(false);
-        player.ResetCoyoteTime();
         player.ResetTurnAnimator(); //Prevents turn animator from staying active when the player leaves the state
     }
 
@@ -65,12 +65,13 @@ public class PlayerWalkState : PlayerState
         if (!player.GroundCheck())  //To fall state
         {
             player.TransitionToState(new PlayerFallState(player, input, data));
+            player.ResetCoyoteTime();   //Starts coyote time when the player falls from ground
         }
         if (input.dashInput && player.CanDash())    //To dash state
         {
             player.TransitionToState(new PlayerDashState(player, input, data));
         }
-        if(input.attackInput) //test attack state
+        if(input.attackInput) //attack state
         {
             player.TransitionToState(new PlayerAttackState(player, input, data));
         }
@@ -201,7 +202,7 @@ public class PlayerWallState : PlayerState
     public override void OnEnter() 
     {
         player.SetWallAnimator(true);
-        player.DashRefill();
+        player.DashRefill();    //refills dash on wall
     }
 
     public override void StateUpdate() 
@@ -212,14 +213,13 @@ public class PlayerWallState : PlayerState
     public override void StateFixedUpdate() 
     {
         //Enable air movement
-        player.WallSlide(data.slideVelocity);
         player.Move(input.moveInput, data.runSpeed, data.movementSmoothing);
+        player.WallSlide(data.slideVelocity);
     }
 
     public override void OnExit() 
     {
         player.SetWallAnimator(false);
-        player.ResetWallCoyoteTime();
     }
 
     public override void Transitions() 
@@ -231,6 +231,7 @@ public class PlayerWallState : PlayerState
         if (!player.WallCheck()) //To wall state
         {
             player.TransitionToState(new PlayerFallState(player, input, data));
+            player.ResetWallCoyoteTime(); //starts wall coyote time when the player falls from the wall
         }
         if (input.JumpBuffer()) // To wall jump state
         {
@@ -250,6 +251,7 @@ public class PlayerWallJumpState : PlayerState
     {
         player.WallJump(data.jumpForce);
         player.SetJumpAnimator(true);
+        input.ResetJumpBuffer();
     }
 
     public override void StateUpdate() 
