@@ -345,7 +345,7 @@ public class PlayerAttackState : PlayerState
     float startTime = Time.time;    // When did the state start
     float forwardTime = 0.2f;       // How long does the player move forward
     float totalTime = 0.5f;         // How long does the state last
-    float moveVelocity = 6f;      // How fast the player moves forward
+    float moveVelocity = 5f;      // How fast the player moves forward
 
     public override void OnEnter() 
     {
