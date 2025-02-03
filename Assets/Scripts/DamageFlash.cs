@@ -7,7 +7,7 @@ public class DamageFlash : MonoBehaviour
     //Attach this script to the main control objects, not the sprite objects
 
     [SerializeField] private Color flashColor = Color.white;    //Default flash color
-    [SerializeField] private float flashTime = 0.2f;            //How long is the flash effect
+    [SerializeField] private float flashTime = 0.1f;            //How long is the flash effect
 
 
     //Private fields
@@ -52,6 +52,11 @@ public class DamageFlash : MonoBehaviour
     {
         float currentFlashAmount = 0f;
         float elapsedTime = 0f;
+
+        currentFlashAmount = 1f;
+        SetFlashAmount(currentFlashAmount);
+
+        yield return new WaitForSeconds(0.1f);
 
         while (elapsedTime < flashTime) 
         {
