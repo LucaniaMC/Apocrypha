@@ -39,6 +39,7 @@ public partial class Player : MonoBehaviour
     public GameObject landingParticle;
     public GameObject jumpParticle;
     public ParticleSystem dashParticle;
+    public ParticleSystem wallParticle;
     [Space]
 
     [Header("Attack Hitboxes")]     //Used for PlayerAttack

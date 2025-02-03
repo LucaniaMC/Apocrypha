@@ -207,6 +207,7 @@ public class PlayerWallState : PlayerState
     {
         player.SetWallAnimator(true);
         player.DashRefill();    //refills dash on wall
+        player.SetWallParticle(true);
     }
 
     public override void StateUpdate() 
@@ -224,6 +225,7 @@ public class PlayerWallState : PlayerState
     public override void OnExit() 
     {
         player.SetWallAnimator(false);
+        player.SetWallParticle(false);
     }
 
     public override void Transitions() 

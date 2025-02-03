@@ -29,4 +29,16 @@ public partial class Player
             dashParticle.Stop();
         } 
     }
+
+    public void SetWallParticle(bool isActive) 
+    {
+        if (isActive) 
+        {
+            wallParticle.Play();
+        }
+        else 
+        {
+            wallParticle.Stop();
+        } 
+    }
 }
