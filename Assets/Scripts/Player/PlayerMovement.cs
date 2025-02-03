@@ -15,6 +15,7 @@ public partial class Player
 	[HideInInspector] public Vector3 velocity = Vector3.zero;	// Used as ref for movement smoothdamp
 	private float lastDashTime;					// Used to calculate dash cooldown
 	private float lastGroundedTime;	 			// Used for coyote time
+	private float lastOnWallTime;				// Used for wall coyote time
 
 
     #region Ground Check
@@ -78,15 +79,31 @@ public partial class Player
 
 
     #region Coyote Time
-	// returns true if coyote time is active, allowing the player to jump for a bit after falling off ground, allowing small input inaccuracy
+	// returns true if coyote time is active, allowing the player to jump for a bit after falling off ground
     public bool CoyoteTime()
     {
         return Time.time - lastGroundedTime <= data.coyoteTime;
     }
 
+	// sets coyote time, called after exiting ground state to record last grounded time
 	public void ResetCoyoteTime() 
 	{
 		lastGroundedTime = Time.time;
+	}
+    #endregion
+
+
+	#region Wall Coyote Time
+	// returns true if coyote time is active, allowing the player to jump for a bit after falling off ground
+    public bool WallCoyoteTime()
+    {
+        return Time.time - lastOnWallTime <= data.wallCoyoteTime;
+    }
+
+	// sets coyote time, called after exiting ground state to record last grounded time
+	public void ResetWallCoyoteTime() 
+	{
+		lastOnWallTime = Time.time;
 	}
     #endregion
 

@@ -58,7 +58,7 @@ public class PlayerWalkState : PlayerState
 
     public override void Transitions() 
     {
-        if (input.jumpHoldInput) // To jump state
+        if (input.JumpBuffer()) // To jump state
         {
             player.TransitionToState(new PlayerJumpState(player, input, data));
         }
@@ -89,6 +89,7 @@ public class PlayerJumpState : PlayerState
         player.Jump(data.jumpForce);
         player.SetJumpAnimator(true);
         player.SpawnJumpParticle();
+        input.ResetJumpBuffer();
     }
 
     public override void StateUpdate() 
@@ -175,9 +176,13 @@ public class PlayerFallState : PlayerState
         {
             player.TransitionToState(new PlayerWallState(player, input, data));
         }
-        if (player.CoyoteTime() && input.jumpHoldInput) //To jump state, if jumped during coyote time
+        if (player.CoyoteTime() && input.JumpBuffer()) //To jump state, if jumped during coyote time
         {
             player.TransitionToState(new PlayerJumpState(player, input, data));
+        }
+        if (player.WallCoyoteTime() && input.JumpBuffer()) //To wall jump state, if jumped during wall coyote time
+        {
+            player.TransitionToState(new PlayerWallJumpState(player, input, data));
         }
         if (input.dashInput && player.CanDash())    //To dash state
         {
@@ -214,6 +219,7 @@ public class PlayerWallState : PlayerState
     public override void OnExit() 
     {
         player.SetWallAnimator(false);
+        player.ResetWallCoyoteTime();
     }
 
     public override void Transitions() 
@@ -226,7 +232,7 @@ public class PlayerWallState : PlayerState
         {
             player.TransitionToState(new PlayerFallState(player, input, data));
         }
-        if (input.jumpHoldInput) // To wall jump state
+        if (input.JumpBuffer()) // To wall jump state
         {
             player.TransitionToState(new PlayerWallJumpState(player, input, data));
         }
@@ -339,7 +345,7 @@ public class PlayerAttackState : PlayerState
     float startTime = Time.time;    // When did the state start
     float forwardTime = 0.2f;       // How long does the player move forward
     float totalTime = 0.5f;         // How long does the state last
-    float moveVelocity = 8f;      // How fast the player moves forward
+    float moveVelocity = 6f;      // How fast the player moves forward
 
     public override void OnEnter() 
     {

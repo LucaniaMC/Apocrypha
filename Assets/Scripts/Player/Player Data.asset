@@ -24,7 +24,7 @@ MonoBehaviour:
   attackCooldown: 0.1
   attackDamage: 10
   coyoteTime: 0.1
-  wallCoyoteTime: 0.1
+  wallCoyoteTime: 0.15
   jumpBuffer: 0.1
   wallJumpBuffer: 0.1
   slideVelocity: -5

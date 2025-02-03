@@ -12,7 +12,7 @@ public class PlayerInput : MonoBehaviour
     public bool dashInput {get; private set;}
     public bool attackInput {get; private set;}
 
-    public float jumpBufferCounter {get; private set;} = 0f;
+    public float lastJumpInputTime {get; private set;} = 0f;
 
 
     void Update()
@@ -22,5 +22,22 @@ public class PlayerInput : MonoBehaviour
         jumpHoldInput = Input.GetButton("Jump");
         dashInput = Input.GetKeyDown(KeyCode.LeftShift);
         attackInput = Input.GetMouseButtonDown(0);
+
+        if(jumpInput) 
+        {
+            lastJumpInputTime = Time.time;
+        }
     }
+
+
+    public bool JumpBuffer()
+    {
+        return Time.time - lastJumpInputTime <= data.jumpBuffer;
+    }
+
+
+    public void ResetJumpBuffer() 
+	{
+		lastJumpInputTime = 0f;
+	}
 }
