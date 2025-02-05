@@ -20,9 +20,8 @@ MonoBehaviour:
   dashSpeed: 30
   dashCooldown: 0.5
   dashTime: 0.1
-  attackTime: 0.2
-  attackCooldown: 0.1
   attackDamage: 10
+  attackChargeTime: 1
   coyoteTime: 0.1
   wallCoyoteTime: 0.15
   jumpBuffer: 0.1

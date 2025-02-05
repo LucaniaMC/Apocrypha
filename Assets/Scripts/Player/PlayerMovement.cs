@@ -202,7 +202,7 @@ public partial class Player
 		lastDashTime = Time.time;	// Set dash cooldown
 	}
 
-	// Called when grounded to enable dash again
+	// Called when entering ground/wall state to enable dash again
 	public void DashRefill() 
 	{
 		hasAirDashed = false;

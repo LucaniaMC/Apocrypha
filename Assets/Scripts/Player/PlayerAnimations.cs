@@ -52,6 +52,11 @@ public partial class Player
         animator.SetBool("IsDashing", isDashing);
     }
 
+    public void SetChargeEffectAnimator(bool isCharged) 
+    {
+        chargeAnimator.SetBool("IsCharged", isCharged);
+    }
+
     #region Attack
     public void SetAttackAnimator(bool isAttacking) 
     {

@@ -23,9 +23,8 @@ public class PlayerData : ScriptableObject
 	[Space]
 
     [Header("Attack")]
-    public float attackTime;        // How long the attack hitbox stay active
-    public float attackCooldown;    // Cooldown time between attacks
     public int attackDamage;        // How much damage does the player deal
+    public float attackChargeTime;  // How long the player need to hold down attack button for charged attack
     [Space]
 
 	[Header("Assists")]

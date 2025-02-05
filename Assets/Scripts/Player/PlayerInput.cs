@@ -17,13 +17,11 @@ public class PlayerInput : MonoBehaviour
     public bool attackReleaseInput {get; private set;}
 
 
-    //Hold Input Time
-    private float attackHoldTime = 1f;  //How long the player should hold down attack button for hold attack
-
     //Timers
     private float lastJumpInputTime = float.NaN; //NaN prevents the player from jumping on initialization
     private float attackHoldStartTime = 0f;
-    private bool isCharging = false; //If the player is charing up attack
+    private bool isHolding = false; //If the player is charing up attack
+    private float heldTime = 0f;
 
 
     void Update()
@@ -42,10 +40,6 @@ public class PlayerInput : MonoBehaviour
             lastJumpInputTime = Time.time;
         }
 
-        if(attackInput) //Time for hold attack
-        {
-            attackHoldStartTime = Time.time;
-        }
     }
 
     #region Jump Buffer
@@ -70,20 +64,37 @@ public class PlayerInput : MonoBehaviour
         // When the button is first pressed
         if (attackInput)
         {
-            isCharging = true;
+            isHolding = true;
             attackHoldStartTime = Time.time;
         }
 
-        // When the button is released
-        if (Input.GetMouseButtonUp(0) && isCharging)
+        if (attackHoldInput) 
         {
-            float heldTime = Time.time - attackHoldStartTime;
-            isCharging = false; // Reset state
+            heldTime = Time.time - attackHoldStartTime;
+        }
 
-            if (heldTime >= attackHoldTime)
+        // When the button is released
+        if (attackReleaseInput && isHolding)
+        {
+            isHolding = false; // Reset flag
+
+            if (heldTime >= data.attackChargeTime)
             {
+                heldTime = 0f; // Reset timer
                 return true;
             }
+            heldTime = 0f; // Reset timer even if not held long enough
+        }
+        return false;
+    }
+
+    //returns true if the player held down the attack button for long enough
+    public bool CheckAttackHold()
+    {
+        // If holding, check if the hold time has been reached
+        if (isHolding && (heldTime >= data.attackChargeTime))
+        {
+            return true;
         }
         return false;
     }

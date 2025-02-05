@@ -32,7 +32,8 @@ public partial class Player : MonoBehaviour
     [Space]
 
     [Header("Animators")]       //Used for PlayerAnimator
-	public Animator animator;	
+	public Animator animator;
+    public Animator chargeAnimator;	
     [Space]
 
     [Header("Particles")]   //Used for PlayerParticles
@@ -59,6 +60,7 @@ public partial class Player : MonoBehaviour
     {
         currentState.StateUpdate();
         SetWalkAnimator(input.moveInput);
+        SetChargeEffectAnimator(input.CheckAttackHold());
     }
 
 
