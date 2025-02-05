@@ -75,7 +75,7 @@ public class PlayerWalkState : PlayerState
         {
             player.TransitionToState(new PlayerAttackState(player, input, data));
         }
-        if(input.ChargeAttack()) 
+        if(input.attackReleaseInput && input.CanChargeAttack()) 
         {
             player.TransitionToState(new PlayerChargeAttackState(player, input, data));
         }

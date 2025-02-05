@@ -60,7 +60,7 @@ public partial class Player : MonoBehaviour
     {
         currentState.StateUpdate();
         SetWalkAnimator(input.moveInput);
-        SetChargeEffectAnimator(input.CheckAttackHold());
+        SetChargeEffectAnimator(input.CanChargeAttack());
     }
 
 

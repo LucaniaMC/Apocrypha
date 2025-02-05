@@ -20,8 +20,7 @@ public class PlayerInput : MonoBehaviour
     //Timers
     private float lastJumpInputTime = float.NaN; //NaN prevents the player from jumping on initialization
     private float attackHoldStartTime = 0f;
-    private bool isHolding = false; //If the player is charing up attack
-    private float heldTime = 0f;
+    private float heldTime = 0f;    //How long has the player been holding down attack
 
 
     void Update()
@@ -39,7 +38,6 @@ public class PlayerInput : MonoBehaviour
         {
             lastJumpInputTime = Time.time;
         }
-
     }
 
     #region Jump Buffer
@@ -58,45 +56,31 @@ public class PlayerInput : MonoBehaviour
 
 
     #region Charge Attack
-    //Returns true if the player held down the attack button for long enough then release
-    public bool ChargeAttack()
+    // Returns true if the player held down the attack button for long enough
+    public bool CanChargeAttack()
     {
+        bool canChargeAttack = false;
         // When the button is first pressed
         if (attackInput)
         {
-            isHolding = true;
             attackHoldStartTime = Time.time;
         }
-
+        // When the button is held
         if (attackHoldInput) 
         {
             heldTime = Time.time - attackHoldStartTime;
         }
-
-        // When the button is released
-        if (attackReleaseInput && isHolding)
-        {
-            isHolding = false; // Reset flag
-
-            if (heldTime >= data.attackChargeTime)
-            {
-                heldTime = 0f; // Reset timer
-                return true;
-            }
-            heldTime = 0f; // Reset timer even if not held long enough
-        }
-        return false;
-    }
-
-    //returns true if the player held down the attack button for long enough
-    public bool CheckAttackHold()
-    {
         // If holding, check if the hold time has been reached
-        if (isHolding && (heldTime >= data.attackChargeTime))
+        if (heldTime >= data.attackChargeTime)
         {
-            return true;
+            canChargeAttack = true;
         }
-        return false;
+        
+        if (!attackHoldInput) 
+        {
+            heldTime = 0f;
+        }
+        return canChargeAttack;
     }
     #endregion
 }
