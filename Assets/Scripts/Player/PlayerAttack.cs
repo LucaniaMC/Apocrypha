@@ -7,17 +7,11 @@ using UnityEngine;
 
 public partial class Player
 {
-    public IEnumerator AttackCoroutine() 
+    // Turns on a given hitbox for a given amount of time
+    public IEnumerator AttackCoroutine(Collider2D attackHitbox, float attackTime) 
     {
-        attackCollider.enabled = true;
-        yield return new WaitForSeconds(0.2f);
-        attackCollider.enabled = false;
-    }
-
-    public IEnumerator ChargeAttackCoroutine() 
-    {
-        chargeAttackCollider.enabled = true;
-        yield return new WaitForSeconds(0.2f);
-        chargeAttackCollider.enabled = false;
+        attackHitbox.enabled = true;
+        yield return new WaitForSeconds(attackTime);
+        attackHitbox.enabled = false;
     }
 }

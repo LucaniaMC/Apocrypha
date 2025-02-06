@@ -363,7 +363,7 @@ public class PlayerAttackState : PlayerState
     {
         player.rb.velocity = new Vector2(0f, 0f);
         player.SetAttackAnimator(true);
-        player.StartCoroutine(player.AttackCoroutine());
+        player.StartCoroutine(player.AttackCoroutine(player.attackCollider, 0.2f));
 
         if (!player.facingRight) //moves player left if facing left
         {
@@ -419,7 +419,7 @@ public class PlayerChargeAttackState : PlayerState
     {
         player.rb.velocity = new Vector2(0f, 0f);
         player.SetChargeAttackAnimator(true);
-        player.StartCoroutine(player.ChargeAttackCoroutine());
+        player.StartCoroutine((player.AttackCoroutine(player.chargeAttackCollider, 0.2f)));
 
         if (!player.facingRight) //moves player left if facing left
         {
