@@ -75,9 +75,13 @@ public class PlayerWalkState : PlayerState
         {
             player.TransitionToState(new PlayerAttackState(player, input, data));
         }
-        if(input.attackReleaseInput && input.CanChargeAttack()) 
+        if(input.attackReleaseInput && input.CanChargeAttack()) //Charge attack state
         {
             player.TransitionToState(new PlayerChargeAttackState(player, input, data));
+        }
+        if(input.sitInput) //Sit state
+        {
+            player.TransitionToState(new PlayerSitState(player, input, data));
         }
     }
 }
@@ -451,6 +455,45 @@ public class PlayerChargeAttackState : PlayerState
     public override void Transitions() 
     {
         player.TransitionToState(new PlayerWalkState(player, input, data));
+    }
+}
+#endregion
+
+
+#region Sit State
+public class PlayerSitState : PlayerWalkState
+{
+    public PlayerSitState(Player player, PlayerInput input, PlayerData data) : base(player, input, data) {}
+
+    public override void OnEnter() 
+    {
+        base.OnEnter();
+        player.SetSitAnimator(true);
+    }
+
+    public override void StateUpdate() 
+    {
+        base.StateUpdate();
+    }
+
+    public override void StateFixedUpdate() 
+    {
+        base.StateFixedUpdate();
+    }
+
+    public override void OnExit() 
+    {
+        base.OnExit();
+        player.SetSitAnimator(false);
+    }
+
+    public override void Transitions() 
+    {
+        base.Transitions();
+        if(input.sitInput || input.moveInput != 0f) // To walk state
+        {
+            player.TransitionToState(new PlayerWalkState(player, input, data));
+        }
     }
 }
 #endregion

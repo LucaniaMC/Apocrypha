@@ -32,8 +32,8 @@ public partial class Player : MonoBehaviour
     [Space]
 
     [Header("Animators")]       //Used for PlayerAnimator
-	public Animator animator;
-    public Animator chargeAnimator;	
+	public Animator animator;       //Player sprite animator
+    public Animator chargeAnimator;	//Animator for charge effect
     [Space]
 
     [Header("Particles")]   //Used for PlayerParticles

@@ -8,9 +8,11 @@ public class PlayerInput : MonoBehaviour
 
     //Movement
     public float moveInput {get; private set;}
+    public float verticalInput {get; private set;}
     public bool jumpInput {get; private set;}
     public bool jumpHoldInput {get; private set;}
     public bool dashInput {get; private set;}
+    public bool sitInput {get; private set;}
     //Attack
     public bool attackInput {get; private set;}
     public bool attackHoldInput {get; private set;}
@@ -26,9 +28,11 @@ public class PlayerInput : MonoBehaviour
     void Update()
     {
         moveInput = Input.GetAxisRaw("Horizontal");
+        verticalInput = Input.GetAxisRaw("Vertical");
         jumpInput = Input.GetButtonDown("Jump");
         jumpHoldInput = Input.GetButton("Jump");
         dashInput = Input.GetKeyDown(KeyCode.LeftShift);
+        sitInput = Input.GetKeyDown(KeyCode.X);
 
         attackInput = Input.GetMouseButtonDown(0);
         attackHoldInput = Input.GetMouseButton(0);
@@ -60,12 +64,12 @@ public class PlayerInput : MonoBehaviour
     public bool CanChargeAttack()
     {
         bool canChargeAttack = false;
-        // When the button is first pressed
+        // When the button is first pressed, set timer start time
         if (attackInput)
         {
             attackHoldStartTime = Time.time;
         }
-        // When the button is held
+        // When the button is held, calculate timer
         if (attackHoldInput) 
         {
             heldTime = Time.time - attackHoldStartTime;
@@ -76,7 +80,7 @@ public class PlayerInput : MonoBehaviour
             canChargeAttack = true;
         }
         // Resets timer when not holding
-        if (!attackHoldInput) 
+        if (!attackHoldInput && heldTime != 0f) 
         {
             heldTime = 0f;
         }

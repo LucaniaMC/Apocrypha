@@ -51,6 +51,11 @@ public partial class Player
     {
         animator.SetBool("IsDashing", isDashing);
     }
+    
+    public void SetSitAnimator(bool isSitting) 
+    {
+        animator.SetBool("IsSitting", isSitting);
+    }
 
     public void SetChargeEffectAnimator(bool isCharged) 
     {
