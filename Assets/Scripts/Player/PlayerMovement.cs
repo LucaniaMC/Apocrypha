@@ -19,7 +19,7 @@ public partial class Player
 
 
     #region Ground Check
-	//Ground check, call in fixed update, return true if the player's grounded
+	//Ground check, return true if the player's grounded
 	public bool GroundCheck() 
 	{
 		bool grounded = false;	//Grounded is false unless the ground check cast hits something
@@ -39,7 +39,7 @@ public partial class Player
 
 
     #region Wall Check
-    //Wall check, called in fixed update, returns true if the player is on wall
+    //Wall check, returns true if the player is on wall
 	public bool WallCheck() 
 	{
 		bool onWall = false;
@@ -59,7 +59,7 @@ public partial class Player
 
 
 	#region Edge Check
-    //Edge check, called in fixed update, returns true if the player is near an edge
+    //Edge check, returns true if the player is near an edge
 	public bool EdgeCheck() 
 	{
 		bool onEdge = true;
@@ -86,7 +86,7 @@ public partial class Player
     }
 
 	// sets coyote time, called after exiting ground state to record last grounded time
-	public void ResetCoyoteTime() 
+	public void SetCoyoteTime() 
 	{
 		lastGroundedTime = Time.time;
 	}
@@ -101,7 +101,7 @@ public partial class Player
     }
 
 	// sets coyote time, called after exiting ground state to record last grounded time
-	public void ResetWallCoyoteTime() 
+	public void SetWallCoyoteTime() 
 	{
 		lastOnWallTime = Time.time;
 	}

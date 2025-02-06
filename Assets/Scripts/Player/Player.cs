@@ -59,8 +59,10 @@ public partial class Player : MonoBehaviour
     void Update() 
     {
         currentState.StateUpdate();
-        SetWalkAnimator(input.moveInput);
-        SetChargeEffectAnimator(input.CanChargeAttack());
+        
+        //Universal animators
+        SetWalkAnimator(input.moveInput);   //Needs to be used for state transitions
+        SetChargeEffectAnimator(input.CanChargeAttack());   //Is not limited to any state
     }
 
 

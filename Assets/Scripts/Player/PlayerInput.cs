@@ -75,7 +75,7 @@ public class PlayerInput : MonoBehaviour
         {
             canChargeAttack = true;
         }
-        
+        // Resets timer when not holding
         if (!attackHoldInput) 
         {
             heldTime = 0f;

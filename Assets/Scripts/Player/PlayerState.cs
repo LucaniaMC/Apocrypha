@@ -65,7 +65,7 @@ public class PlayerWalkState : PlayerState
         if (!player.GroundCheck())  //To fall state
         {
             player.TransitionToState(new PlayerFallState(player, input, data));
-            player.ResetCoyoteTime();   //Starts coyote time when the player falls from ground
+            player.SetCoyoteTime();   //Starts coyote time when the player falls from ground
         }
         if (input.dashInput && player.CanDash())    //To dash state
         {
@@ -237,7 +237,7 @@ public class PlayerWallState : PlayerState
         if (!player.WallCheck()) //To wall state
         {
             player.TransitionToState(new PlayerFallState(player, input, data));
-            player.ResetWallCoyoteTime(); //starts wall coyote time when the player falls from the wall
+            player.SetWallCoyoteTime(); //starts wall coyote time when the player falls from the wall
         }
         if (input.JumpBuffer()) // To wall jump state
         {
