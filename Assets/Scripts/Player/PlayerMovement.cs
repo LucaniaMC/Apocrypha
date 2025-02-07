@@ -6,7 +6,7 @@ using UnityEngine;
 //Only Player.cs needs to be attatched to an object
 
 public partial class Player
-{	
+{
     //Readable variables
     [HideInInspector] public bool facingRight {get; private set;} = true;		// For determining which way the player is currently facing.	
 	[HideInInspector] public bool hasAirDashed {get; private set;}				// Keeps the player from dashing in air again if already dashed in air

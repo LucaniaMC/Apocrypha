@@ -354,9 +354,9 @@ public class PlayerAttackState : PlayerState
 {
     public PlayerAttackState(Player player, PlayerInput input, PlayerData data) : base(player, input, data) {}
 
-    float startTime = Time.time;    // When did the state start
-    float forwardTime = 0.2f;       // How long does the player move forward
-    float totalTime = 0.5f;         // How long does the state last
+    readonly float startTime = Time.time;    // When did the state start
+    readonly float forwardTime = 0.2f;       // How long does the player move forward
+    readonly float totalTime = 0.5f;         // How long does the state last
     float moveVelocity = 5f;      // How fast the player moves forward
 
     public override void OnEnter() 
@@ -410,9 +410,9 @@ public class PlayerChargeAttackState : PlayerState
 {
     public PlayerChargeAttackState(Player player, PlayerInput input, PlayerData data) : base(player, input, data) {}
 
-    float startTime = Time.time;    // When did the state start
-    float forwardTime = 0.2f;       // How long does the player move forward
-    float totalTime = 0.7f;         // How long does the state last
+    readonly float startTime = Time.time;    // When did the state start
+    readonly float forwardTime = 0.2f;       // How long does the player move forward
+    readonly float totalTime = 0.7f;         // How long does the state last
     float moveVelocity = 15f;      // How fast the player moves forward
 
     public override void OnEnter() 
@@ -502,12 +502,12 @@ public class PlayerSitState : PlayerWalkState
 #region Knockback State
 public class PlayerKnockbackState : PlayerState
 {
-    float startTime = Time.time;
-    float stateTime; //How long does the state last, set in constructor
+    readonly float startTime = Time.time;
+    readonly float stateTime; //How long does the state last, set in constructor
 
     public PlayerKnockbackState(Player player, PlayerInput input, PlayerData data, float time) : base(player, input, data) 
     {
-        this.stateTime = time;
+        stateTime = time;
     }
 
     public override void OnEnter() 

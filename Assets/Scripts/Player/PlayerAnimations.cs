@@ -5,7 +5,11 @@ using UnityEngine;
 
 public partial class Player 
 {
+    [Header("Animators")]       //Used for PlayerAnimator
+	public Animator animator;       //Player sprite animator
+    public Animator chargeAnimator;	//Animator for charge effect
     [HideInInspector] public float fallTime {get; private set;}		// How long has the player been falling
+    
     
     public void SetWalkAnimator(float moveInput) 
     {
@@ -16,21 +20,6 @@ public partial class Player
     {
         animator.SetBool("IsWalking", isWalking);
     }
-
-    #region Turn Trigger
-    public void SetTurnAnimator()
-    {
-        if(GroundCheck()) 
-        {
-            animator.SetTrigger("Turn");
-        }
-    }
-
-    public void ResetTurnAnimator() 
-    {
-        animator.ResetTrigger("Turn");
-    }
-    #endregion
 
     public void SetJumpAnimator(bool isJumping) 
     {
@@ -66,6 +55,21 @@ public partial class Player
     {
         animator.SetBool("KnockedBack", knockedBack);
     }
+
+    #region Turn Trigger
+    public void SetTurnAnimator()
+    {
+        if(GroundCheck()) 
+        {
+            animator.SetTrigger("Turn");
+        }
+    }
+
+    public void ResetTurnAnimator() 
+    {
+        animator.ResetTrigger("Turn");
+    }
+    #endregion
 
     #region Attack
     public void SetAttackAnimator(bool isAttacking) 

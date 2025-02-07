@@ -7,9 +7,9 @@ public class Healthbar : MonoBehaviour
     public Slider effectSlider;     //A second slider for smooth damage effect
 
     //Variables for damage effect, an effect that displays how much the player's health has decreased
-    const float effectTimerMax = 1f;
+    readonly float effectTimerMax = 1f;     //How long after not taking damage does the effect start
     float effectTimerCounter = 1f;
-    const float effectSpeedMin = 20f;   //Minimum speed of the decrease effect
+    readonly float effectSpeedMin = 20f;   //Minimum speed of the decrease effect
     float effectSpeed;                  //Current effect speed
 
     public HealthSystem health;
@@ -37,7 +37,7 @@ public class Healthbar : MonoBehaviour
         //Smoothly move the damage effect bar towards the current health bar position
         if (effectTimerCounter <= 0 && effectSlider.value > health.health) 
         {
-            effectSlider.value = (Mathf.MoveTowards(effectSlider.value, slider.value, effectSpeed * Time.deltaTime));
+            effectSlider.value = Mathf.MoveTowards(effectSlider.value, slider.value, effectSpeed * Time.deltaTime);
         }
     }
 

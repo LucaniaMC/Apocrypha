@@ -11,7 +11,6 @@ public partial class Player : MonoBehaviour
 
     [HideInInspector] public PlayerState currentState {get; private set;}   
     [HideInInspector] public PlayerState defaultState {get; private set;}
-    [Space]
 
     [Header("Checks")]	//Used for PlayerMovement
 
@@ -24,25 +23,11 @@ public partial class Player : MonoBehaviour
 	[SerializeField] Vector2 wallCheckSize = new Vector2(.1f, 1.5f);	// Dimensions of the wall check box size.
     [Space]
     [SerializeField] private LayerMask edgeLayer;						
-	[SerializeField] private Transform edgeCheck;						// A position marking where to check if the player is on edge.
-    [Space]
+	[SerializeField] private Transform edgeCheck;						// A position marking where to check if the player is on edge.	
 
-    [Header("Rigidbody")]   //Used for PlayerMovement
-    public Rigidbody2D rb;		
-    [Space]
-
-    [Header("Animators")]       //Used for PlayerAnimator
-	public Animator animator;       //Player sprite animator
-    public Animator chargeAnimator;	//Animator for charge effect
-    [Space]
-
-    [Header("Particles")]   //Used for PlayerParticles
-    public GameObject landingParticle;
-    public GameObject jumpParticle;
-    public ParticleSystem dashParticle;
-    public ParticleSystem wallParticle;
-    [Space]
-
+	[Header("Rigidbody")]   //Used for PlayerMovement
+    public Rigidbody2D rb;	
+    
     [Header("Attack Hitboxes")]     //Used for PlayerAttack
     public Collider2D attackCollider;
     public Collider2D chargeAttackCollider;

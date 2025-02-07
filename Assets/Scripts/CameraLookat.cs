@@ -8,8 +8,8 @@ public class CameraLookat : MonoBehaviour
     public CinemachineVirtualCamera lowCamera;
 
     //Priorities are used to set which camera is currently active
-    int activePriority = 10;
-    int inactivePriority = 5;
+    readonly int activePriority = 10;
+    readonly int inactivePriority = 5;
 
 
     public void SetHighCamera() 

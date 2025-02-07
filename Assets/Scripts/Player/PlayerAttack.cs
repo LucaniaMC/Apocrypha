@@ -7,7 +7,7 @@ using UnityEngine;
 
 public partial class Player
 {
-    // Turns on a given hitbox for a given amount of time
+    // Turns on a given hitbox for a given amount of time, then turns off
     public IEnumerator AttackCoroutine(Collider2D attackHitbox, float attackTime) 
     {
         attackHitbox.enabled = true;

@@ -71,7 +71,9 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
-
+# Visual Studio Config
+.vscode/
+.editorconfig
 
 # PSD files
 /[Aa]ssets/PSDfiles/

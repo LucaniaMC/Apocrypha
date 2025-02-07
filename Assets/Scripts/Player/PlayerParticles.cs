@@ -5,6 +5,13 @@ using UnityEngine;
 
 public partial class Player
 {
+    [Header("Particles")]   //Used for PlayerParticles
+    public GameObject landingParticle;
+    public GameObject jumpParticle;
+    public ParticleSystem dashParticle;
+    public ParticleSystem wallParticle;
+
+
     public void SpawnLandingParticle()
     {
         Instantiate(landingParticle, new Vector3(this.transform.position.x , this.transform.position.y , 0), Quaternion.identity);
