@@ -62,6 +62,11 @@ public partial class Player
         chargeAnimator.SetBool("IsCharged", isCharged);
     }
 
+    public void SetKnockbackAnimator(bool knockedBack) 
+    {
+        animator.SetBool("KnockedBack", knockedBack);
+    }
+
     #region Attack
     public void SetAttackAnimator(bool isAttacking) 
     {

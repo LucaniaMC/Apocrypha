@@ -21,7 +21,7 @@ public class PlayerInput : MonoBehaviour
 
     //Timers
     private float lastJumpInputTime = float.NaN; //NaN prevents the player from jumping on initialization
-    private float attackHoldStartTime = 0f;
+    private float attackHoldStartTime = float.NaN;
     private float heldTime = 0f;    //How long has the player been holding down attack
 
 
@@ -85,6 +85,12 @@ public class PlayerInput : MonoBehaviour
             heldTime = 0f;
         }
         return canChargeAttack;
+    }
+
+    public void CancelChargeAttack() 
+    {
+        attackHoldStartTime = float.NaN;
+        heldTime = 0f;
     }
     #endregion
 }

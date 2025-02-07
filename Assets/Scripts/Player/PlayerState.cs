@@ -497,3 +497,46 @@ public class PlayerSitState : PlayerWalkState
     }
 }
 #endregion
+
+
+#region Knockback State
+public class PlayerKnockbackState : PlayerState
+{
+    float startTime = Time.time;
+    float stateTime; //How long does the state last, set in constructor
+
+    public PlayerKnockbackState(Player player, PlayerInput input, PlayerData data, float time) : base(player, input, data) 
+    {
+        this.stateTime = time;
+    }
+
+    public override void OnEnter() 
+    {
+        player.SetKnockbackAnimator(true);
+        input.CancelChargeAttack();
+    }
+
+    public override void StateUpdate() 
+    {
+        if (Time.time >= startTime + stateTime || (player.GroundCheck() && player.rb.velocity.y < 0)) // Transition to other states when timer is over
+        {
+            Transitions();
+        }
+    }
+
+    public override void StateFixedUpdate() 
+    {
+
+    }
+
+    public override void OnExit() 
+    {
+        player.SetKnockbackAnimator(false);
+    }
+
+    public override void Transitions() 
+    {
+        player.TransitionToState(new PlayerFallState(player, input, data));
+    }
+}
+#endregion

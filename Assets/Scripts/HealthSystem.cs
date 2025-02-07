@@ -44,7 +44,7 @@ public class HealthSystem : MonoBehaviour
 
         if (invincibleTime > 0f)
         {
-            StartCoroutine(Invincible(invincibleTime)); //Start invincibility time after taking damage
+            SetInvincible(invincibleTime); //Start invincibility time after taking damage
         }
         Check();
     }
@@ -82,7 +82,7 @@ public class HealthSystem : MonoBehaviour
 
 
     //Manually set invincibility with a set time during which the player is invincible
-     public void SetInvincible(float time) 
+    public void SetInvincible(float time) 
     {
         StartCoroutine(Invincible(time));
     }

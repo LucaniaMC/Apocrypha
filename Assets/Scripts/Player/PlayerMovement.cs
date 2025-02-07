@@ -235,11 +235,12 @@ public partial class Player
 
 
     #region Knockback
-    //knock the player towards a direction and temporarily disables movement control. 
-	//Takes input float x as horizontal velocity, y as vertical velocity, and float time >= 0 as time takes for the player to regain control
+    //knock the player towards a direction and transition to knockback state.
+	//Takes input float x as horizontal velocity, y as vertical velocity, and float time >= 0 as knockback state length
 	public void Knockback(float x, float y, float time)
 	{		
 		rb.velocity = new Vector2(x, y);	//Set x and y to knockback velocity
+		TransitionToState(new PlayerKnockbackState(this, input, data, time));	//Enter knockback state with given time
 	}
     #endregion
 }
