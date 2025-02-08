@@ -22,6 +22,7 @@ MonoBehaviour:
   dashTime: 0.1
   attackDamage: 10
   attackChargeTime: 1
+  invincibleTime: 1
   coyoteTime: 0.1
   wallCoyoteTime: 0.15
   jumpBuffer: 0.1

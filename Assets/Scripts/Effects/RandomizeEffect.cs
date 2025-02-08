@@ -1,9 +1,11 @@
 using UnityEngine;
 
+//Attach this script to any effect objects with multiple variations to randomly pick one of them
+
 public class RandomizeEffect : MonoBehaviour
 {
-    public int randomCap;       //Number of random animations
-    public Animator animator;   //Animator should have a Random parameter for animations
+    public int randomCap;       //Number of random animations the object have
+    public Animator animator;   //Animator should have an int Random parameter
 
 
     void Start()

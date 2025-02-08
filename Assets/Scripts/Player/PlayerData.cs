@@ -22,9 +22,10 @@ public class PlayerData : ScriptableObject
     public float dashTime;      // How long do dashes last
 
 
-    [Header("Attack")]
+    [Header("Combat")]
     public int attackDamage;        // How much damage does the player deal
     public float attackChargeTime;  // How long the player need to hold down attack button for charged attack
+    public float invincibleTime;    // How long after the player takes damage does it remain invincible
 
 
 	[Header("Assists")]

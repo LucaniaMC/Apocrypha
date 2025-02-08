@@ -8,8 +8,8 @@ using UnityEngine;
 public partial class Player
 {
     //Readable variables
-    [HideInInspector] public bool facingRight {get; private set;} = true;		// For determining which way the player is currently facing.	
-	[HideInInspector] public bool hasAirDashed {get; private set;}				// Keeps the player from dashing in air again if already dashed in air
+    public bool facingRight {get; private set;} = true;		// For determining which way the player is currently facing.	
+	public bool hasAirDashed {get; private set;}				// Keeps the player from dashing in air again if already dashed in air
 
 	//Private variables
 	[HideInInspector] public Vector3 velocity = Vector3.zero;	// Used as ref for movement smoothdamp
@@ -231,16 +231,5 @@ public partial class Player
     {
         rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(rb.velocity.y, -limitVelocity));
     }
-    #endregion
-
-
-    #region Knockback
-    //knock the player towards a direction and transition to knockback state.
-	//Takes input float x as horizontal velocity, y as vertical velocity, and float time >= 0 as knockback state length
-	public void Knockback(float x, float y, float time)
-	{		
-		rb.velocity = new Vector2(x, y);	//Set x and y to knockback velocity
-		TransitionToState(new PlayerKnockbackState(this, input, data, time));	//Enter knockback state with given time
-	}
     #endregion
 }

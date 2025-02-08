@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public partial class Player : MonoBehaviour
@@ -8,6 +6,7 @@ public partial class Player : MonoBehaviour
 
     public PlayerData data;
     public PlayerInput input;
+    public HealthSystem health;
 
     [HideInInspector] public PlayerState currentState {get; private set;}   
     [HideInInspector] public PlayerState defaultState {get; private set;}
@@ -28,7 +27,7 @@ public partial class Player : MonoBehaviour
 	[Header("Rigidbody")]   //Used for PlayerMovement
     public Rigidbody2D rb;	
     
-    [Header("Attack Hitboxes")]     //Used for PlayerAttack
+    [Header("Attack Hitboxes")]     //Used for PlayerCombat
     public Collider2D attackCollider;
     public Collider2D chargeAttackCollider;
 
@@ -36,7 +35,7 @@ public partial class Player : MonoBehaviour
     #region Loop
     void Start() 
     {
-        defaultState = new PlayerWalkState(this, input, data);
+        defaultState = new PlayerWalkState(this);
         Initialize();
     }
 

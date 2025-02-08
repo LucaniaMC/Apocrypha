@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class Sludge : MonoBehaviour
 {
-
     public GameObject sprite;
     public GameObject spark;
 
@@ -11,7 +10,7 @@ public class Sludge : MonoBehaviour
     {
         if (other.gameObject.layer == 3)    //Check collision with player layer
         {
-            float knockbackDirection = 0; //Multiplies with x knockback force to determine which direction is the knockback
+            float knockbackDirection; //Multiplies with x knockback force to determine which direction is the knockback
 
             //Compare the x position of the player and itself to see which direction to knock the player back
             if (other.transform.position.x < transform.position.x) //if the player is on the left side...
@@ -22,13 +21,10 @@ public class Sludge : MonoBehaviour
             {
                 knockbackDirection = 1f;    //knock the player to the right.
             }
-
-            Player player;  //The player's class
+            Player player;
             player = other.gameObject.GetComponent<Player>();   //Get player class
 
-            player.Knockback(10 * knockbackDirection , 10, 0.5f); //Apply knockback
-
-            other.gameObject.GetComponent<HealthSystem>().Damage(10);    
+            player.Knockback(new Vector2(10 * knockbackDirection , 10f), 0.2f, 10); //Apply knockback   
             //Damage after knockback, so invisibility is only switched on after the player received knockback, otherwise knockback would not work
         }
     }

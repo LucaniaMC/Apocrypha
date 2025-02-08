@@ -8622,8 +8622,8 @@ MonoBehaviour:
   maxHealth: 100
   damageModifier: 1
   invincibleTime: 0
-  isInvincible: 0
-  isDead: 0
+  <isInvincible>k__BackingField: 0
+  <isDead>k__BackingField: 0
   OnDamageEvent:
     m_PersistentCalls:
       m_Calls:
@@ -27406,8 +27406,8 @@ MonoBehaviour:
   maxHealth: 100
   damageModifier: 1
   invincibleTime: 1
-  isInvincible: 0
-  isDead: 0
+  <isInvincible>k__BackingField: 0
+  <isDead>k__BackingField: 0
   OnDamageEvent:
     m_PersistentCalls:
       m_Calls:
@@ -27623,6 +27623,7 @@ MonoBehaviour:
   chargeAttackCollider: {fileID: 1194361111}
   animator: {fileID: 1119788021}
   chargeAnimator: {fileID: 1775350199}
+  health: {fileID: 2121693411}
   velocity: {x: 0, y: 0, z: 0}
   landingParticle: {fileID: 9064148963762782749, guid: 992e8dba597bf974a8af6c11e64e88d8, type: 3}
   jumpParticle: {fileID: 599155002226572451, guid: 90a7936b6c00da14fafb90fc9ebd6527, type: 3}
