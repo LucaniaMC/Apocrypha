@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//This is a partial class for Player.cs containing functions that handle player attacks
+//This is a partial class for Player.cs containing functions that handle player attack and knockback
 //Only Player.cs needs to be attatched to an object
 
 public partial class Player
@@ -28,7 +28,7 @@ public partial class Player
             rb.velocity = direction;    //Set x and y to knockback velocity
 
             if (damage != 0) 
-                health.Damage(damage);
+                health.Damage(damage);  //Damage needs to be called before invincibility
             
             input.CancelChargeAttack();
             TransitionToState(new PlayerKnockbackState(this, time));    //Enter knockback state with given time

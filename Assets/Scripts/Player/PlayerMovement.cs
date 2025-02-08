@@ -129,7 +129,7 @@ public partial class Player
 		}
 	}
 
-    //Flip player depending on movement direction, call in Move()
+    //Flip player depending on movement input direction.
 	private void Flip()
 	{
 		// Switch the way the player is labelled as facing.
@@ -150,7 +150,7 @@ public partial class Player
 	public void Jump(float jumpForce) 
 	{
 		rb.velocity = new Vector2(rb.velocity.x, 0);	// Reset player veritcal velocity when jumping to prevent irregular jump heights.
-		rb.AddForce(new Vector2(0f, jumpForce));		// Add a new vertical force to the player to jump.
+		rb.AddForce(new Vector2(0f, jumpForce));		// Add a new vertical force.
 	}
     #endregion
 
@@ -160,7 +160,7 @@ public partial class Player
 	public void WallJump(float jumpForce) 
 	{
 		rb.velocity = new Vector2(rb.velocity.x, 0);	// Reset player veritcal velocity when jumping to prevent irregular jump heights.
-		rb.AddForce(new Vector2(0, jumpForce));			// Add a new vertical force to the player to jump.W
+		rb.AddForce(new Vector2(0, jumpForce));			// Add a new vertical force.
 	}
     #endregion
 
@@ -175,7 +175,7 @@ public partial class Player
 
 
     #region Dash
-	// Called at the beginning to dash to set gravity to 0, so the player stays on the same y axis
+	// Called at the beginning of dash to set gravity to 0, so the player stays on the same y axis
 	public void DashStart() 
 	{
 		rb.gravityScale = 0f;
@@ -232,4 +232,12 @@ public partial class Player
         rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(rb.velocity.y, -limitVelocity));
     }
     #endregion
+
+
+	#region Limit Velocity
+	public void SetVelocity(Vector2 velocity)
+	{
+		rb.velocity = velocity;
+	}
+	#endregion
 }

@@ -1,8 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 
 //This script is shared by the player and enemies to give them a health system, damage and death functions and events
 public class HealthSystem : MonoBehaviour

@@ -7,11 +7,16 @@ public abstract class PlayerState
 {
     //References
     protected Player player;
+    protected PlayerData data;
+    protected PlayerInput input;
+    protected HealthSystem health;
 
-    //Constructor set references
     public PlayerState(Player player) 
     {
         this.player = player;
+        this.data = player.data;
+        this.input = player.input;
+        this.health = player.health;
     }
 
     public abstract void OnEnter();              //Called once when the state is entered
@@ -43,7 +48,7 @@ public class PlayerWalkState : PlayerState
     public override void StateFixedUpdate() 
     {
         //enables horizontal movement
-        player.Move(player.input.moveInput, player.data.runSpeed, player.data.movementSmoothing);
+        player.Move(input.moveInput, data.runSpeed, data.movementSmoothing);
     }
 
     public override void OnExit() 
@@ -54,7 +59,7 @@ public class PlayerWalkState : PlayerState
 
     public override void Transitions() 
     {
-        if (player.input.JumpBuffer()) // To jump state
+        if (input.JumpBuffer()) // To jump state
         {
             player.TransitionToState(new PlayerJumpState(player));
         }
@@ -63,19 +68,19 @@ public class PlayerWalkState : PlayerState
             player.TransitionToState(new PlayerFallState(player));
             player.SetCoyoteTime();   //Starts coyote time when the player falls from ground
         }
-        if (player.input.dashInput && player.CanDash())    //To dash state
+        if (input.dashInput && player.CanDash())    //To dash state
         {
             player.TransitionToState(new PlayerDashState(player));
         }
-        if(player.input.attackInput) //attack state
+        if(input.attackInput) //attack state
         {
             player.TransitionToState(new PlayerAttackState(player));
         }
-        if(player.input.attackReleaseInput && player.input.CanChargeAttack()) //Charge attack state
+        if(input.attackReleaseInput && input.CanChargeAttack()) //Charge attack state
         {
             player.TransitionToState(new PlayerChargeAttackState(player));
         }
-        if(player.input.sitInput) //Sit state
+        if(input.sitInput) //Sit state
         {
             player.TransitionToState(new PlayerSitState(player));
         }
@@ -91,10 +96,10 @@ public class PlayerJumpState : PlayerState
 
     public override void OnEnter() 
     {
-        player.Jump(player.data.jumpForce);
+        player.Jump(data.jumpForce);
         player.SetJumpAnimator(true);
         player.SpawnJumpParticle();
-        player.input.ResetJumpBuffer();
+        input.ResetJumpBuffer();
     }
 
     public override void StateUpdate() 
@@ -105,12 +110,12 @@ public class PlayerJumpState : PlayerState
     public override void StateFixedUpdate() 
     {
         //Enable air movement
-        player.Move(player.input.moveInput, player.data.runSpeed, player.data.airMovementSmoothing);
+        player.Move(input.moveInput, data.runSpeed, data.airMovementSmoothing);
 
         //Jump cut
-        if(!player.input.jumpHoldInput) 
+        if(!input.jumpHoldInput) 
         {
-            player.JumpCut(player.data.jumpCutRate);
+            player.JumpCut(data.jumpCutRate);
         }
     }
 
@@ -129,7 +134,7 @@ public class PlayerJumpState : PlayerState
         {
             player.TransitionToState(new PlayerWallState(player));
         }
-        if (player.input.dashInput && player.CanDash())    //To dash state
+        if (input.dashInput && player.CanDash())    //To dash state
         {
             player.TransitionToState(new PlayerDashState(player));
         }
@@ -156,8 +161,8 @@ public class PlayerFallState : PlayerState
     public override void StateFixedUpdate() 
     {
         //Enable air movement
-        player.Move(player.input.moveInput, player.data.runSpeed, player.data.airMovementSmoothing);
-        player.LimitFallVelocity(player.data.limitVelocity);
+        player.Move(input.moveInput, data.runSpeed, data.airMovementSmoothing);
+        player.LimitFallVelocity(data.limitVelocity);
         player.CalculateFallTime();
     }
 
@@ -181,15 +186,15 @@ public class PlayerFallState : PlayerState
         {
             player.TransitionToState(new PlayerWallState(player));
         }
-        if (player.CoyoteTime() && player.input.JumpBuffer()) //To jump state, if jumped during coyote time
+        if (player.CoyoteTime() && input.JumpBuffer()) //To jump state, if jumped during coyote time
         {
             player.TransitionToState(new PlayerJumpState(player));
         }
-        if (player.WallCoyoteTime() && player.input.JumpBuffer()) //To wall jump state, if jumped during wall coyote time
+        if (player.WallCoyoteTime() && input.JumpBuffer()) //To wall jump state, if jumped during wall coyote time
         {
             player.TransitionToState(new PlayerWallJumpState(player));
         }
-        if (player.input.dashInput && player.CanDash())    //To dash state
+        if (input.dashInput && player.CanDash())    //To dash state
         {
             player.TransitionToState(new PlayerDashState(player));
         }
@@ -218,8 +223,8 @@ public class PlayerWallState : PlayerState
     public override void StateFixedUpdate() 
     {
         //Enable air movement
-        player.Move(player.input.moveInput, player.data.runSpeed, player.data.movementSmoothing);
-        player.WallSlide(player.data.slideVelocity);
+        player.Move(input.moveInput, data.runSpeed, data.movementSmoothing);
+        player.WallSlide(data.slideVelocity);
     }
 
     public override void OnExit() 
@@ -239,7 +244,7 @@ public class PlayerWallState : PlayerState
             player.TransitionToState(new PlayerFallState(player));
             player.SetWallCoyoteTime(); //starts wall coyote time when the player falls from the wall
         }
-        if (player.input.JumpBuffer()) // To wall jump state
+        if (input.JumpBuffer()) // To wall jump state
         {
             player.TransitionToState(new PlayerWallJumpState(player));
         }
@@ -255,9 +260,9 @@ public class PlayerWallJumpState : PlayerState
 
     public override void OnEnter() 
     {
-        player.WallJump(player.data.jumpForce);
+        player.WallJump(data.jumpForce);
         player.SetJumpAnimator(true);
-        player.input.ResetJumpBuffer();
+        input.ResetJumpBuffer();
     }
 
     public override void StateUpdate() 
@@ -268,12 +273,12 @@ public class PlayerWallJumpState : PlayerState
     public override void StateFixedUpdate() 
     {
         //Enable air movement
-        player.Move(player.input.moveInput, player.data.runSpeed, player.data.airMovementSmoothing);
+        player.Move(input.moveInput, data.runSpeed, data.airMovementSmoothing);
 
         //Jump cut
-        if(!player.input.jumpHoldInput) 
+        if(!input.jumpHoldInput) 
         {
-            player.JumpCut(player.data.jumpCutRate);
+            player.JumpCut(data.jumpCutRate);
         }
     }
 
@@ -288,7 +293,7 @@ public class PlayerWallJumpState : PlayerState
         {
             player.TransitionToState(new PlayerFallState(player));
         }
-        if (player.input.dashInput && player.CanDash())    //To dash state
+        if (input.dashInput && player.CanDash())    //To dash state
         {
             player.TransitionToState(new PlayerDashState(player));
         }
@@ -310,25 +315,25 @@ public class PlayerDashState : PlayerState
         player.SetDashAnimator(true);
         player.SetDashParticle(true);
         player.DashStart();
-        player.health.SetInvincible(player.data.dashTime + invisTimeAfterDash);
+        health.SetInvincible(data.dashTime + invisTimeAfterDash);
     }                                
     public override void StateUpdate() 
     {
-        if (Time.time >= dashStartTime + player.data.dashTime) //if dash ended, transition to other states
+        if (Time.time >= dashStartTime + data.dashTime) //if dash ended, transition to other states
         {
             Transitions();
         }
     }         
     public override void StateFixedUpdate() 
     {
-        player.Dash(player.data.dashSpeed);
+        player.Dash(data.dashSpeed);
     }    
     
     public override void OnExit() 
     {
         player.SetDashAnimator(false);
         player.SetDashParticle(false);
-        player.DashEnd(player.data.gravity);
+        player.DashEnd(data.gravity);
     }          
 
     public override void Transitions() 
@@ -354,11 +359,11 @@ public class PlayerAttackState : PlayerState
     readonly float startTime = Time.time;    // When did the state start
     readonly float forwardTime = 0.2f;       // How long does the player move forward
     readonly float totalTime = 0.5f;         // How long does the state last
-    float moveVelocity = 5f;      // How fast the player moves forward
+    float moveVelocity = 5f;                 // How fast the player moves forward
 
     public override void OnEnter() 
     {
-        player.rb.velocity = new Vector2(0f, 0f);
+        player.SetVelocity(new Vector2(0f, 0f));    // Reset player velocity for consistent movement
         player.SetAttackAnimator(true);
         player.StartCoroutine(player.AttackCoroutine(player.attackCollider, 0.2f));
 
@@ -380,11 +385,11 @@ public class PlayerAttackState : PlayerState
     {
         if ((Time.time <= startTime + forwardTime) & !player.EdgeCheck()) //Move player forward, stops on edge
         {
-            player.rb.velocity = new Vector2(moveVelocity, player.rb.velocity.y);
+            player.SetVelocity(new Vector2(moveVelocity, player.rb.velocity.y));
         }
         else //Stops moving
         {
-            player.rb.velocity = new Vector2(0f, player.rb.velocity.y);
+            player.SetVelocity(new Vector2(0f, player.rb.velocity.y));
         }
     }
 
@@ -410,13 +415,13 @@ public class PlayerChargeAttackState : PlayerState
     readonly float startTime = Time.time;    // When did the state start
     readonly float forwardTime = 0.2f;       // How long does the player move forward
     readonly float totalTime = 0.7f;         // How long does the state last
-    float moveVelocity = 15f;      // How fast the player moves forward
+    float moveVelocity = 15f;                // How fast the player moves forward
 
     public override void OnEnter() 
     {
-        player.rb.velocity = new Vector2(0f, 0f);
+        player.SetVelocity(new Vector2(0f, 0f));    // Reset player velocity for consistent movement
         player.SetChargeAttackAnimator(true);
-        player.StartCoroutine((player.AttackCoroutine(player.chargeAttackCollider, 0.2f)));
+        player.StartCoroutine(player.AttackCoroutine(player.chargeAttackCollider, 0.2f));
 
         if (!player.facingRight) //moves player left if facing left
         {
@@ -436,11 +441,11 @@ public class PlayerChargeAttackState : PlayerState
     {
         if ((Time.time <= startTime + forwardTime) & !player.EdgeCheck()) //Move player forward, stops on edge
         {
-            player.rb.velocity = new Vector2(moveVelocity, player.rb.velocity.y);
+            player.SetVelocity(new Vector2(moveVelocity, player.rb.velocity.y));
         }
         else //Stops moving
         {
-            player.rb.velocity = new Vector2(0f, player.rb.velocity.y);
+            player.SetVelocity(new Vector2(0f, player.rb.velocity.y));
         }
     }
 
@@ -487,7 +492,7 @@ public class PlayerSitState : PlayerWalkState
     public override void Transitions() 
     {
         base.Transitions();
-        if(player.input.sitInput || player.input.moveInput != 0f) // To walk state
+        if(input.sitInput || input.moveInput != 0f) // To walk state
         {
             player.TransitionToState(new PlayerWalkState(player));
         }
@@ -510,7 +515,7 @@ public class PlayerKnockbackState : PlayerState
     public override void OnEnter() 
     {
         player.SetKnockbackAnimator(true);
-        player.health.SetInvincible(stateTime + player.data.invincibleTime);    // Give player invincible time after state is over, so the player can reposition
+        health.SetInvincible(stateTime + data.invincibleTime);    // Give player invincible time after state is over, so the player can reposition
     }
 
     public override void StateUpdate() 
@@ -536,4 +541,38 @@ public class PlayerKnockbackState : PlayerState
         player.TransitionToState(new PlayerFallState(player));
     }
 }
+#endregion
+
+
+#region Death State
+public class PlayerDeathState : PlayerState
+{
+    public PlayerDeathState(Player player) : base(player) {}
+
+    public override void OnEnter()
+    {
+        
+    }
+
+    public override void OnExit()
+    {
+        
+    }
+
+    public override void StateFixedUpdate()
+    {
+        
+    }
+
+    public override void StateUpdate()
+    {
+        
+    }
+
+    public override void Transitions()
+    {
+        
+    }
+}
+
 #endregion
