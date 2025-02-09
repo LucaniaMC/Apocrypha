@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Common;
 using UnityEngine;
 
 //This is a partial class for Player.cs containing functions that handle player movements
@@ -12,7 +13,8 @@ public partial class Player
 	public bool hasAirDashed {get; private set;}				// Keeps the player from dashing in air again if already dashed in air
 
 	//Private variables
-	[HideInInspector] public Vector3 velocity = Vector3.zero;	// Used as ref for movement smoothdamp
+	private Vector3 velocity = Vector3.zero;	// Used as ref for movement smoothdamp
+	public float jumpForce {get; private set;}	// The force to apply for the player to jump
 	private float lastDashTime;					// Used to calculate dash cooldown
 	private float lastGroundedTime;	 			// Used for coyote time
 	private float lastOnWallTime;				// Used for wall coyote time
@@ -145,12 +147,21 @@ public partial class Player
     #endregion
 
 
+	#region Calculate Jump Force
+	//calculate the impulse force needed to reach a given jump height
+	public void SetJumpForce()
+    {
+        jumpForce = rb.mass * Mathf.Sqrt(-2f * (Physics2D.gravity.y * rb.gravityScale) * data.jumpHeight);
+    }
+	#endregion
+
+
     #region Jump
     // Apply a vertical force to the player to jump
 	public void Jump(float jumpForce) 
 	{
-		rb.velocity = new Vector2(rb.velocity.x, 0);	// Reset player veritcal velocity when jumping to prevent irregular jump heights.
-		rb.AddForce(new Vector2(0f, jumpForce));		// Add a new vertical force.
+		rb.velocity = new Vector2(rb.velocity.x, 0f);	// Reset player veritcal velocity when jumping to prevent irregular jump heights.
+		rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);		// Add a new vertical force.
 	}
     #endregion
 
@@ -160,13 +171,13 @@ public partial class Player
 	public void WallJump(float jumpForce) 
 	{
 		rb.velocity = new Vector2(rb.velocity.x, 0);	// Reset player veritcal velocity when jumping to prevent irregular jump heights.
-		rb.AddForce(new Vector2(0, jumpForce));			// Add a new vertical force.
+		rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);			// Add a new vertical force.
 	}
     #endregion
 
 
     #region Jump Cut
-    //lower vertical velocity if the player releases jump button early, so the player can control how high they jump
+    //lower vertical velocity if the player releases jump button early (not holding jump button), so the player can control how high they jump
 	public void JumpCut(float jumpCutRate) 
 	{	
 		rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * jumpCutRate);
@@ -234,7 +245,7 @@ public partial class Player
     #endregion
 
 
-	#region Limit Velocity
+	#region Set Velocity
 	public void SetVelocity(Vector2 velocity)
 	{
 		rb.velocity = velocity;

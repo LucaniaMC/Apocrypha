@@ -21,11 +21,11 @@ public partial class Player
     #region Knockback
     //knock the player towards a direction and transition to knockback state.
 	//Takes input float x as horizontal velocity, y as vertical velocity, and float time >= 0 as knockback state length
-	public void Knockback(Vector2 direction, float time, int damage)
+	public void Knockback(Vector2 knockbackVelocity, float time, int damage)
     {
         if (!health.isInvincible)
         {
-            rb.velocity = direction;    //Set x and y to knockback velocity
+            SetVelocity(knockbackVelocity);    //Set player's velocity to knockback velocity
 
             if (damage != 0) 
                 health.Damage(damage);  //Damage needs to be called before invincibility

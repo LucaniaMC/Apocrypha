@@ -15,7 +15,7 @@ MonoBehaviour:
   runSpeed: 10
   movementSmoothing: 0.05
   airMovementSmoothing: 0.1
-  jumpForce: 850
+  jumpHeight: 3.5
   jumpCutRate: 0.5
   dashSpeed: 30
   dashCooldown: 0.5

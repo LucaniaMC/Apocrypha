@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 #region Default State
 public abstract class PlayerState
@@ -96,7 +97,7 @@ public class PlayerJumpState : PlayerState
 
     public override void OnEnter() 
     {
-        player.Jump(data.jumpForce);
+        player.Jump(player.jumpForce);
         player.SetJumpAnimator(true);
         player.SpawnJumpParticle();
         input.ResetJumpBuffer();
@@ -112,7 +113,7 @@ public class PlayerJumpState : PlayerState
         //Enable air movement
         player.Move(input.moveInput, data.runSpeed, data.airMovementSmoothing);
 
-        //Jump cut
+        //Jump cut if jump button isn't held down
         if(!input.jumpHoldInput) 
         {
             player.JumpCut(data.jumpCutRate);
@@ -260,7 +261,7 @@ public class PlayerWallJumpState : PlayerState
 
     public override void OnEnter() 
     {
-        player.WallJump(data.jumpForce);
+        player.WallJump(player.jumpForce);
         player.SetJumpAnimator(true);
         input.ResetJumpBuffer();
     }
@@ -574,5 +575,4 @@ public class PlayerDeathState : PlayerState
         
     }
 }
-
 #endregion

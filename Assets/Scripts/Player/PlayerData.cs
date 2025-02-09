@@ -12,7 +12,7 @@ public class PlayerData : ScriptableObject
 
 
     [Header("Jump")]
-	public float jumpForce;                     // Amount of force added when the player jumps
+	public float jumpHeight;                     // Amount of force added when the player jumps
 	[Range(0f, 1f)] public float jumpCutRate;   // Multiplier for the player's vertical velocity if jump button is released during jump
 
 
