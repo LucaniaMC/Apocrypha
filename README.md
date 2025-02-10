@@ -2,6 +2,10 @@
 
 A 2D Platformer project.
 
+Itch.io Page: https://bestlucania.itch.io/apocrypha
+
+Password: 60
+
 ## Installation
 
 1. `git clone https://github.com/LucaniaMC/Apocrypha.git`
@@ -22,7 +26,9 @@ The project is made with Unity version 2021.3.31f1.
 
 **Attack** - Left mouse click
 
-**Look Up/Down** - W/S or up/down arrow keys
+**Charge attack** - Hold left mouse click & release
+
+(In Progress) **Look Up/Down** - W/S or up/down arrow keys
 
 ## Assets Used
 
