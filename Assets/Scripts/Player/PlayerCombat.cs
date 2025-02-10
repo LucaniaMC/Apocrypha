@@ -30,7 +30,6 @@ public partial class Player
             if (damage != 0) 
                 health.Damage(damage);  //Damage needs to be called before invincibility
             
-            input.CancelChargeAttack();
             TransitionToState(new PlayerKnockbackState(this, time));    //Enter knockback state with given time
         }
     }

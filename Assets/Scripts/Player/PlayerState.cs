@@ -1,7 +1,4 @@
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
 
 #region Default State
 public abstract class PlayerState
@@ -538,6 +535,11 @@ public class PlayerKnockbackState : PlayerState
     {
         player.SetKnockbackAnimator(true);
         health.SetInvincible(stateTime + data.invincibleTime);    // Give player invincible time after state is over, so the player can reposition
+
+        if(input.CanChargeAttack())     // If the player has charged up attack, cancel it so the player has to recharge
+        {
+            input.CancelChargeAttack();
+        }
     }
 
     public override void StateUpdate() 
