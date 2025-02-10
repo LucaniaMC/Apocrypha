@@ -16,6 +16,7 @@ MonoBehaviour:
   movementSmoothing: 0.05
   airMovementSmoothing: 0.1
   jumpHeight: 3.5
+  wallJumpHeight: 2.75
   jumpCutRate: 0.5
   dashSpeed: 30
   dashCooldown: 0.5

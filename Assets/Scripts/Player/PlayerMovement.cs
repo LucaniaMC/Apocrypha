@@ -31,6 +31,7 @@ public partial class Player
 	//Private variables
 	private Vector3 velocity = Vector3.zero;	// Used as ref for movement smoothdamp
 	public float jumpForce {get; private set;}	// The force to apply for the player to jump
+	public float wallJumpForce {get; private set;}	// The force to apply for the player to wall jump
 	private float lastDashTime;					// Used to calculate dash cooldown
 	private float lastGroundedTime;	 			// Used for coyote time
 	private float lastOnWallTime;				// Used for wall coyote time
@@ -175,6 +176,7 @@ public partial class Player
 	public void SetJumpForce()
     {
         jumpForce = rb.mass * Mathf.Sqrt(-2f * (Physics2D.gravity.y * rb.gravityScale) * data.jumpHeight);
+		wallJumpForce = rb.mass * Mathf.Sqrt(-2f * (Physics2D.gravity.y * rb.gravityScale) * data.wallJumpHeight);
     }
 	#endregion
 
