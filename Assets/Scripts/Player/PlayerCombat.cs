@@ -31,19 +31,24 @@ public partial class Player
 
 
     #region Knockback
+    //Use this method for enemy attacks on player
+    public void DamageAndKnockback(int damage, Vector2 knockbackVelocity, float time) 
+    {
+        if (!health.isInvincible) 
+        {   
+            health.Damage(damage);  //Damage needs to be called before invincibility
+            Knockback(knockbackVelocity, time);
+        }     
+    }
+
     //knock the player towards a direction and transition to knockback state.
 	//Takes input float x as horizontal velocity, y as vertical velocity, and float time >= 0 as knockback state length
-	public void Knockback(Vector2 knockbackVelocity, float time, int damage)
+	private void Knockback(Vector2 knockbackVelocity, float time)
     {
-        if (!health.isInvincible)
-        {
-            SetVelocity(knockbackVelocity);    //Set player's velocity to knockback velocity
-
-            if (damage != 0) 
-                health.Damage(damage);  //Damage needs to be called before invincibility
-            
-            TransitionToState(new PlayerKnockbackState(this, time));    //Enter knockback state with given time
-        }
+        SetVelocity(knockbackVelocity);    //Set player's velocity to knockback velocity   
+        TransitionToState(new PlayerKnockbackState(this, time));    //Enter knockback state with given time
     }
+
+
     #endregion
 }

@@ -7,8 +7,8 @@ public class HealthSystem : MonoBehaviour
 {
     [Header("Parameters")]
 
-    public int health = 100;            //The object's current health
-    public int maxHealth = 100;         //The object's maximum health
+    public int health = 100;       //The object's current health
+    public int maxHealth = 100;     //The object's maximum health
     public float damageModifier = 1f;   //Multiply the damage taken, 0-1
     
     public bool isInvincible {get; private set;} = false;   //Is the object invincible
@@ -31,11 +31,12 @@ public class HealthSystem : MonoBehaviour
     #region Damage Functions
     public void Damage(int damageAmount)
     {
-        if (isInvincible) return; //No damage if the player's dead or invincible
-
-        health -= (int)(damageAmount * damageModifier);
-        OnDamageEvent.Invoke();
-        Check();
+        if (!isInvincible)
+        {      
+            health -= (int)(damageAmount * damageModifier);
+            OnDamageEvent.Invoke();
+            Check();
+        }
     }
 
     //Heal function

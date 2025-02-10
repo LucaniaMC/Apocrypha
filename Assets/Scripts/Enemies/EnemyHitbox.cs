@@ -5,11 +5,13 @@ using UnityEngine;
 
 public class EnemyHitbox : MonoBehaviour
 {
+    [Header("Parameters")]
     [SerializeField] private float damage;                //How much damage does this attack deal
     [SerializeField] private Vector2 knockbackVelocity;   // Velocity to knock the player back with
     [SerializeField] private float knockbackTime;         // How long will the player be knocked back from this attack
-    [SerializeField] private float attackMultiplier = 1f; //Damage modifier for this attack
-    [SerializeField] private Player player;
+
+    [Header("References")]
+    [SerializeField] private Player player;             // The player class
     [SerializeField] private GameObject self;           // Reference the main gameobject, not the object this script is attached to
 
 
@@ -24,8 +26,7 @@ public class EnemyHitbox : MonoBehaviour
             {
                 adjustedKnockbackVelocity.x *= -1;   // Change knockback direction to the left
             }
-            
-            player.Knockback(adjustedKnockbackVelocity, knockbackTime, Mathf.RoundToInt(damage * attackMultiplier)); //Apply knockback and damage
+            player.DamageAndKnockback(Mathf.RoundToInt(damage), adjustedKnockbackVelocity, knockbackTime); //Apply knockback and damage
         }
     }
 }
