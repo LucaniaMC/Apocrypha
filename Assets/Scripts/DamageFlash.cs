@@ -14,7 +14,7 @@ public class DamageFlash : MonoBehaviour
     private SpriteRenderer[] spriteRenderer;    //Array of all sprite renderers
     private Material[] material;                //Array of all materials used by sprite renderers
 
-    private Coroutine flashRoutine;     //Coroutine for flashing effect
+    private Coroutine activeFlashRoutine;     //Coroutine for flashing effect
 
 
     void Awake()
@@ -37,23 +37,22 @@ public class DamageFlash : MonoBehaviour
     public void Flash()
     {
         // If the flashRoutine is not null, then it is currently running.
-        if (flashRoutine != null)
+        if (activeFlashRoutine != null)
         {
             // In this case, we should stop it first. Multiple FlashRoutines the same time would cause bugs.
-            StopCoroutine(flashRoutine);
+            StopCoroutine(activeFlashRoutine);
         }
         // Start the Coroutine, and store the reference for it.
-        flashRoutine = StartCoroutine(FlashRoutine());
+        activeFlashRoutine = StartCoroutine(FlashRoutine());
     }
 
 
     //Flash corontine
     private IEnumerator FlashRoutine()
     {
-        float currentFlashAmount = 0f;
         float elapsedTime = 0f;
 
-        currentFlashAmount = 1f;
+        float currentFlashAmount = 1f;
         SetFlashAmount(currentFlashAmount);
 
         yield return new WaitForSeconds(0.1f);

@@ -8539,6 +8539,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 786575642}
+  - component: {fileID: 786575645}
   - component: {fileID: 786575641}
   - component: {fileID: 786575640}
   - component: {fileID: 786575643}
@@ -8680,6 +8681,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   flashColor: {r: 1, g: 0, b: 0, a: 1}
   flashTime: 0.2
+--- !u!114 &786575645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 786575639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e01ef2c77b8188e4ebeabfb591fdf0e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 10
+  knockbackVelocity: {x: 10, y: 10}
+  knockbackTime: 0.2
+  attackMultiplier: 1
+  player: {fileID: 2121693417}
+  self: {fileID: 786575639}
 --- !u!1 &811836405
 GameObject:
   m_ObjectHideFlags: 0

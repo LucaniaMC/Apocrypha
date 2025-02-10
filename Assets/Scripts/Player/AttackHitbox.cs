@@ -2,7 +2,8 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-//Attach this script to the hitbox
+//Attach this script to the hitbox object
+[RequireComponent(typeof(Collider2D))]
 
 public class AttackHitbox : MonoBehaviour
 {

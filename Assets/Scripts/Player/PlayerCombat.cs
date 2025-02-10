@@ -7,9 +7,21 @@ using UnityEngine;
 
 public partial class Player
 {
+    private Coroutine activeAttackRoutine;     //Currently active attack coroutine
+
+
     #region Attack
     // Turns on a given hitbox for a given amount of time, then turns off
-    public IEnumerator AttackCoroutine(Collider2D attackHitbox, float attackTime) 
+    public void Attack(Collider2D attackHitbox, float attackTime) 
+    {
+        if(activeAttackRoutine != null)     // Stops currently active coroutine if any
+            StopCoroutine(activeAttackRoutine);
+        
+        activeAttackRoutine = StartCoroutine(AttackCoroutine(attackHitbox, attackTime));
+
+    }
+
+    private IEnumerator AttackCoroutine(Collider2D attackHitbox, float attackTime) 
     {
         attackHitbox.enabled = true;
         yield return new WaitForSeconds(attackTime);

@@ -14,7 +14,7 @@ public class HealthSystem : MonoBehaviour
     public bool isInvincible {get; private set;} = false;   //Is the object invincible
     public bool isDead {get; private set;} = false;         //Is the object dead
 
-    private IEnumerator invincibleCoroutine;    //active invincible coroutine
+    private Coroutine activeInvisRoutine;    //active invincible coroutine
 
     [Header("Events")] 
 	[Space]
@@ -66,21 +66,23 @@ public class HealthSystem : MonoBehaviour
     //Manually set invincibility to true or false
     public void SetInvincible(bool invincible) 
     {
+        if(activeInvisRoutine != null)    //if there's a couritine active, stop it to prevent bugs
+            StopCoroutine(activeInvisRoutine);
+
         isInvincible = invincible;
     }
 
     //Manually set invincibility with a set time during which the player is invincible
     public void SetInvincible(float time) 
     {
-        //stop curretly active coroutine. Only one of them should be running at a time
-        if(invincibleCoroutine != null) 
-            StopCoroutine(invincibleCoroutine);
+        //stop curretly active coroutine, and start a new one
+        if(activeInvisRoutine != null) 
+            StopCoroutine(activeInvisRoutine);
 
-        invincibleCoroutine = Invincible(time); //set and start new coroutine
-        StartCoroutine(invincibleCoroutine);
+        activeInvisRoutine = StartCoroutine(Invincible(time));
     }
 
-    //Corontine for invincible time after damage or manually set
+    //Corontine for SetInvincible with time input
     private IEnumerator Invincible(float time) 
     {
         isInvincible = true;

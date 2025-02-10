@@ -366,7 +366,7 @@ public class PlayerAttackState : PlayerState
         player.FlipCheck(input.moveInput);          // Allows the player to turn during combo
         player.SetVelocity(new Vector2(0f, 0f));    // Reset player velocity for consistent movement
         player.SetAttackAnimator(true);
-        player.StartCoroutine(player.AttackCoroutine(player.attackCollider, 0.2f));
+        player.Attack(player.attackCollider, 0.2f);
 
         if (!player.facingRight) //moves player left if facing left
         {
@@ -432,7 +432,7 @@ public class PlayerChargeAttackState : PlayerState
         player.FlipCheck(input.moveInput);          // Allows the player to turn during combo
         player.SetVelocity(new Vector2(0f, 0f));    // Reset player velocity for consistent movement
         player.SetChargeAttackAnimator(true);
-        player.StartCoroutine(player.AttackCoroutine(player.chargeAttackCollider, 0.2f));
+        player.Attack(player.chargeAttackCollider, 0.2f);
 
         if (!player.facingRight) //moves player left if facing left
         {
