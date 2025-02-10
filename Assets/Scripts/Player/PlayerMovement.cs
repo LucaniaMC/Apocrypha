@@ -8,6 +8,22 @@ using UnityEngine;
 
 public partial class Player
 {
+	[Header("Checks")]	//Used for PlayerMovement
+
+	[SerializeField] private LayerMask groundLayer;						// A mask determining what is ground to the character
+	[SerializeField] private Transform groundCheck;						// A position marking where to check if the player is grounded.
+	[SerializeField] Vector2 groundCheckSize = new Vector2(.68f, .1f);	// Dimensions of the ground check box size.
+	[Space]
+	[SerializeField] private LayerMask wallLayer;						// A mask determining what is wall to the character
+	[SerializeField] private Transform wallCheck;						// A position marking where to check if the player is on wall.
+	[SerializeField] Vector2 wallCheckSize = new Vector2(.1f, 1.5f);	// Dimensions of the wall check box size.
+    [Space]
+    [SerializeField] private LayerMask edgeLayer;						
+	[SerializeField] private Transform edgeCheck;						// A position marking where to check if the player is on edge.	
+
+	[Header("Rigidbody")]   //Used for PlayerMovement
+    public Rigidbody2D rb;	
+
     //Readable variables
     public bool facingRight {get; private set;} = true;		// For determining which way the player is currently facing.	
 	public bool hasAirDashed {get; private set;}				// Keeps the player from dashing in air again if already dashed in air
@@ -119,8 +135,15 @@ public partial class Player
 		// And then smoothing it out and applying it to the character
 		rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, smoothing);
 
-		// If the player is moving towards the opposite direction it's facing, flip the player
-		// So it's clear which way the player's moving, and its attack would align with the movement direction 
+		FlipCheck(moveInput);
+	}
+	#endregion
+
+
+	#region Flip
+	// If the player is moving towards the opposite direction it's facing, flip the player
+	public void FlipCheck(float moveInput) 
+	{
 		if (moveInput > 0 && !facingRight)
 		{
 			Flip();
@@ -132,7 +155,7 @@ public partial class Player
 	}
 
     //Flip player depending on movement input direction.
-	private void Flip()
+	void Flip()
 	{
 		// Switch the way the player is labelled as facing.
 		facingRight = !facingRight;
@@ -162,16 +185,6 @@ public partial class Player
 	{
 		rb.velocity = new Vector2(rb.velocity.x, 0f);	// Reset player veritcal velocity when jumping to prevent irregular jump heights.
 		rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);		// Add a new vertical force.
-	}
-    #endregion
-
-
-    #region Wall Jump
-	// Add a vertical force to the player to jump on wall
-	public void WallJump(float jumpForce) 
-	{
-		rb.velocity = new Vector2(rb.velocity.x, 0);	// Reset player veritcal velocity when jumping to prevent irregular jump heights.
-		rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);			// Add a new vertical force.
 	}
     #endregion
 

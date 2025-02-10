@@ -261,7 +261,7 @@ public class PlayerWallJumpState : PlayerState
 
     public override void OnEnter() 
     {
-        player.WallJump(player.jumpForce);
+        player.Jump(player.wallJumpForce);
         player.SetJumpAnimator(true);
         input.ResetJumpBuffer();
     }
@@ -313,10 +313,11 @@ public class PlayerDashState : PlayerState
 
     public override void OnEnter() 
     {
+        player.FlipCheck(input.moveInput);    // Allows the player to turn when dashing out of immobile states
         player.SetDashAnimator(true);
         player.SetDashParticle(true);
         player.DashStart();
-        health.SetInvincible(data.dashTime + invisTimeAfterDash);
+        health.SetInvincible(data.dashTime + invisTimeAfterDash);   //Player is invincible during and a bit after dash
     }                                
     public override void StateUpdate() 
     {
@@ -360,10 +361,12 @@ public class PlayerAttackState : PlayerState
     readonly float startTime = Time.time;    // When did the state start
     readonly float forwardTime = 0.2f;       // How long does the player move forward
     readonly float totalTime = 0.5f;         // How long does the state last
+    readonly float comboTime = 0.1f;         // Time frame for the player to combo attack or dash out before the end of state
     float moveVelocity = 5f;                 // How fast the player moves forward
 
     public override void OnEnter() 
     {
+        player.FlipCheck(input.moveInput);          // Allows the player to turn during combo
         player.SetVelocity(new Vector2(0f, 0f));    // Reset player velocity for consistent movement
         player.SetAttackAnimator(true);
         player.StartCoroutine(player.AttackCoroutine(player.attackCollider, 0.2f));
@@ -376,10 +379,7 @@ public class PlayerAttackState : PlayerState
 
     public override void StateUpdate() 
     {
-        if (Time.time >= startTime + totalTime) // Transition to other states when timer is over
-        {
-            Transitions();
-        }
+        Transitions();  
     }
 
     public override void StateFixedUpdate() 
@@ -402,7 +402,18 @@ public class PlayerAttackState : PlayerState
 
     public override void Transitions() 
     {
-        player.TransitionToState(new PlayerWalkState(player));
+        if (Time.time >= startTime + (totalTime - comboTime)) //combo time transitions
+        {
+            if(input.attackInput)       // Start another attack if attacked during combo time
+                player.TransitionToState(new PlayerAttackState(player));
+
+            if (input.dashInput && player.CanDash())    // Allows the player dash out of attack state early
+                player.TransitionToState(new PlayerDashState(player));
+        } 
+        if (Time.time >= startTime + totalTime) // To walk state, when state timer is over
+        {
+            player.TransitionToState(new PlayerWalkState(player));
+        }
     }
 }
 #endregion
@@ -416,10 +427,12 @@ public class PlayerChargeAttackState : PlayerState
     readonly float startTime = Time.time;    // When did the state start
     readonly float forwardTime = 0.2f;       // How long does the player move forward
     readonly float totalTime = 0.7f;         // How long does the state last
+    readonly float comboTime = 0.1f;         // Time frame for the player to combo attack or dash out before the end of state
     float moveVelocity = 15f;                // How fast the player moves forward
 
     public override void OnEnter() 
     {
+        player.FlipCheck(input.moveInput);          // Allows the player to turn during combo
         player.SetVelocity(new Vector2(0f, 0f));    // Reset player velocity for consistent movement
         player.SetChargeAttackAnimator(true);
         player.StartCoroutine(player.AttackCoroutine(player.chargeAttackCollider, 0.2f));
@@ -432,10 +445,7 @@ public class PlayerChargeAttackState : PlayerState
 
     public override void StateUpdate() 
     {
-        if (Time.time >= startTime + totalTime) // Transition to other states when timer is over
-        {
-            Transitions();
-        }
+        Transitions();
     }
 
     public override void StateFixedUpdate() 
@@ -457,7 +467,18 @@ public class PlayerChargeAttackState : PlayerState
 
     public override void Transitions() 
     {
-        player.TransitionToState(new PlayerWalkState(player));
+        if (Time.time >= startTime + (totalTime - comboTime)) //combo time transitions
+        {
+            if(input.attackInput)       // Start another attack if attacked during combo time
+                player.TransitionToState(new PlayerAttackState(player));
+
+            if (input.dashInput && player.CanDash())    // Allows the player dash out of attack state early
+                player.TransitionToState(new PlayerDashState(player));
+        } 
+        if (Time.time >= startTime + totalTime) // To walk state, when state timer is over
+        {
+            player.TransitionToState(new PlayerWalkState(player));
+        }
     }
 }
 #endregion
@@ -505,13 +526,13 @@ public class PlayerSitState : PlayerWalkState
 #region Knockback State
 public class PlayerKnockbackState : PlayerState
 {
-    readonly float startTime = Time.time;
-    readonly float stateTime; //How long does the state last, set in constructor
-
     public PlayerKnockbackState(Player player, float time) : base(player) 
     {
         stateTime = time;
     }
+
+    readonly float startTime = Time.time;
+    readonly float stateTime; //How long does the state last, set in constructor
 
     public override void OnEnter() 
     {

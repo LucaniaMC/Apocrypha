@@ -12,7 +12,8 @@ public class PlayerData : ScriptableObject
 
 
     [Header("Jump")]
-	public float jumpHeight;                     // Amount of force added when the player jumps
+	public float jumpHeight;                     // Maximum height when the player jumps
+    public float wallJumpHeight;                 // Maximum height when the player wall jumps
 	[Range(0f, 1f)] public float jumpCutRate;   // Multiplier for the player's vertical velocity if jump button is released during jump
 
 

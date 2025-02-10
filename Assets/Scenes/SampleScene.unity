@@ -27599,6 +27599,10 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: 12ad7e088a614b545815725bc44747c8, type: 2}
   input: {fileID: 2121693418}
   health: {fileID: 2121693411}
+  attackCollider: {fileID: 640175521}
+  chargeAttackCollider: {fileID: 1194361111}
+  animator: {fileID: 1119788021}
+  chargeAnimator: {fileID: 1775350199}
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -27614,11 +27618,6 @@ MonoBehaviour:
     m_Bits: 64
   edgeCheck: {fileID: 1471054526}
   rb: {fileID: 2121693406}
-  attackCollider: {fileID: 640175521}
-  chargeAttackCollider: {fileID: 1194361111}
-  animator: {fileID: 1119788021}
-  chargeAnimator: {fileID: 1775350199}
-  velocity: {x: 0, y: 0, z: 0}
   landingParticle: {fileID: 9064148963762782749, guid: 992e8dba597bf974a8af6c11e64e88d8, type: 3}
   jumpParticle: {fileID: 599155002226572451, guid: 90a7936b6c00da14fafb90fc9ebd6527, type: 3}
   dashParticle: {fileID: 270198493}
