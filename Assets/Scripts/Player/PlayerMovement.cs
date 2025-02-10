@@ -169,12 +169,12 @@ public partial class Player
 
 
 	#region Calculate Jump Force
-	//calculate the impulse force needed to reach a given jump height
-	public void SetJumpForce()
-    {
-        jumpForce = rb.mass * Mathf.Sqrt(-2f * (Physics2D.gravity.y * rb.gravityScale) * data.jumpHeight);
-		wallJumpForce = rb.mass * Mathf.Sqrt(-2f * (Physics2D.gravity.y * rb.gravityScale) * data.wallJumpHeight);
-    }
+	// Calculate the impulse force needed to reach a given jump height. JumpHeight cannot be negative.
+	float JumpHeightToImpulse(float jumpHeight) 
+	{
+		float jumpForce = rb.mass * Mathf.Sqrt(-2f * (Physics2D.gravity.y * rb.gravityScale) * jumpHeight);
+		return jumpForce;
+	}
 	#endregion
 
 

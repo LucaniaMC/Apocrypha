@@ -20,8 +20,9 @@ public partial class Player : MonoBehaviour
     {
         defaultState = new PlayerWalkState(this);
         Initialize();
-
-        SetJumpForce();
+        
+        jumpForce = JumpHeightToImpulse(data.jumpHeight);
+		wallJumpForce = JumpHeightToImpulse(data.wallJumpHeight);
     }
 
 
