@@ -95,7 +95,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 69208ff3a1966dc448d2225e520156a9, type: 3}
+  m_Sprite: {fileID: -1713603738, guid: 2608af4a9afaccf42bbab0c54b96aef5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -183,9 +183,6 @@ MonoBehaviour:
   health: 100
   maxHealth: 100
   damageModifier: 0
-  invincibleTime: 0
-  isInvincible: 0
-  isDead: 0
   OnDamageEvent:
     m_PersistentCalls:
       m_Calls:

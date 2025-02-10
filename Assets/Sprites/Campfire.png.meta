@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 2608af4a9afaccf42bbab0c54b96aef5
+guid: 6937f879442bcd34a88a3980b40a94eb
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -117,7 +117,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Dummy_0
+      name: Campfire_0
       rect:
         serializedVersion: 2
         x: 0
@@ -131,14 +131,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: aeda4058d2515334ebca3413f77ba30d
-      internalID: -1713603738
+      spriteID: 759e9589f0aeabd43971f693408737d7
+      internalID: -1398519841
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Dummy_1
+      name: Campfire_1
       rect:
         serializedVersion: 2
         x: 20
@@ -152,14 +152,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3b0c24a1abc01b248b2a9f3a1c80f6e0
-      internalID: -1177092100
+      spriteID: c7b3d44b4ed761e43ad091b21ce01e02
+      internalID: 1211823982
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Dummy_2
+      name: Campfire_2
       rect:
         serializedVersion: 2
         x: 40
@@ -173,14 +173,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9d009829f1db2fd44b4675a134b602c4
-      internalID: 693468781
+      spriteID: c1224061f55a5a6468b1fab276f0a209
+      internalID: 1204251578
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Dummy_3
+      name: Campfire_3
       rect:
         serializedVersion: 2
         x: 60
@@ -194,14 +194,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d0570227dd8c328408cf899358217029
-      internalID: 2034263569
+      spriteID: 4ebcadc8b26dd6f4f88ed624aa58f24e
+      internalID: -662582234
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Dummy_4
+      name: Campfire_4
       rect:
         serializedVersion: 2
         x: 80
@@ -215,14 +215,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7205809c58133784595f6c4c73bac903
-      internalID: -1385269664
+      spriteID: 098bd072735f4e447bc22ff23adac1ed
+      internalID: -1043509697
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Dummy_5
+      name: Campfire_5
       rect:
         serializedVersion: 2
         x: 100
@@ -236,8 +236,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fcb5360f75b7a6a4e8e6481c5b384122
-      internalID: -2092302345
+      spriteID: 80ecf19ef244c794495ffdbe824703d3
+      internalID: -1694292245
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Campfire_6
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 0
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 781f5117f5c1e134c9650fe91d3887e3
+      internalID: -1906413223
       vertices: []
       indices: 
       edges: []
@@ -253,12 +274,13 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Dummy_0: -1713603738
-      Dummy_1: -1177092100
-      Dummy_2: 693468781
-      Dummy_3: 2034263569
-      Dummy_4: -1385269664
-      Dummy_5: -2092302345
+      Campfire_0: -1398519841
+      Campfire_1: 1211823982
+      Campfire_2: 1204251578
+      Campfire_3: -662582234
+      Campfire_4: -1043509697
+      Campfire_5: -1694292245
+      Campfire_6: -1906413223
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
