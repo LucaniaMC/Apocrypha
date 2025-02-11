@@ -22,7 +22,7 @@ public abstract class PlayerState
     public abstract void StateFixedUpdate();     //Called in FixexUpdate
     public abstract void OnExit();               //Called once when the state is exited
 
-    public abstract void Transitions();          //Called in State Update, organize all transitions
+    public virtual void Transitions() {}          //Called in State Update, organize all transitions
 }
 #endregion
 

@@ -6,6 +6,7 @@ public class DamageFlash : MonoBehaviour
 {
     //Attach this script to the main control objects, not the sprite objects
 
+    [ColorUsage(true, true)]
     [SerializeField] private Color flashColor = Color.white;    //Default flash color
     [SerializeField] private float flashTime = 0.1f;            //How long is the flash effect
 
