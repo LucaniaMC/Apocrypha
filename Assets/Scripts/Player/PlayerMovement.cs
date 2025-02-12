@@ -80,10 +80,10 @@ public partial class Player
 		bool onEdge = true;
 
 		//Edge check cast. The player is on edge if a cast to the wallcheck position does not hit anything
-		Collider2D[] collidersEdge = Physics2D.OverlapCircleAll(edgeCheck.position, 0.1f, groundLayer);
-		for (int i = 0; i < collidersEdge.Length; i++)
+		RaycastHit2D[] hitObject = Physics2D.CircleCastAll(edgeCheck.position, 0.1f, Vector2.zero, groundLayer);
+		for (int i = 0; i < hitObject.Length; i++)
 		{
-			if (collidersEdge[i].gameObject != gameObject)
+			if (hitObject[i].collider.gameObject != gameObject)
 			{
 				onEdge = false;
 			}
