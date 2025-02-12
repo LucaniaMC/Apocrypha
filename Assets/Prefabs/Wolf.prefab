@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1466580613
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1466580614}
+  m_Layer: 7
+  m_Name: RaycastStart
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1466580614
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1466580613}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4208033379700011550}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4208033379536779811
 GameObject:
   m_ObjectHideFlags: 0
@@ -151,6 +182,7 @@ Transform:
   - {fileID: 4208033379536779810}
   - {fileID: 4208033380221815858}
   - {fileID: 4208033379655540624}
+  - {fileID: 1466580614}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -213,9 +245,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 146f32e45a04a76468c2609f55059862, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pursueRange: 10
-  attackRange: 0
+  pursueRange: 20
+  attackRange: 10
   meleeRange: 2
+  raycastStart: {fileID: 1466580614}
   moveSpeed: 7
   knockbackModifier: 1
   movementSmoothing: 0.2

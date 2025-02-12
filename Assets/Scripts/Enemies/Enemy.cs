@@ -7,10 +7,10 @@ public abstract class Enemy : MonoBehaviour
     public float attackRange;   // Range to start attacking the player
     public float meleeRange;    // Close range to start melee attacking the player
 
-    protected Transform player;
+    public Transform player {get; private set;}
 
-    [HideInInspector] public EnemyState currentState {get; private set;}   
-    [HideInInspector] public EnemyState defaultState {get; private set;}
+    protected EnemyState currentState;  
+    protected EnemyState defaultState;
 
 
     #region Loop Functions
@@ -20,14 +20,23 @@ public abstract class Enemy : MonoBehaviour
         Initialize();
     }
 
-    protected virtual void Update() {}
-    protected virtual void FixedUpdate() {}
+    protected virtual void Update() 
+    {
+        if (currentState != null)
+        currentState.StateUpdate();
+    }
+
+    protected virtual void FixedUpdate() 
+    {
+        if (currentState != null)
+        currentState.StateFixedUpdate();
+    }
     #endregion
 
 
     #region State Machine Functions
     // Called in Awake/Start on the player script
-    public void Initialize() 
+    public virtual void Initialize() 
     {
         TransitionToState(defaultState);
     }
@@ -49,27 +58,33 @@ public abstract class Enemy : MonoBehaviour
 
     #region Player Detection
     //returns true if the player is within detection range
-    protected bool IsPlayerInPursueRange()
+    public bool IsPlayerInPursueRange()
     {
-        return Vector2.Distance(transform.position, player.position) <= pursueRange;
+        return DistanceToPlayer() <= pursueRange;
     }
 
     //returns true if the player is within attack range
-    protected bool IsPlayerInAttackRange() 
+    public bool IsPlayerInAttackRange() 
     {
-        return Vector2.Distance(transform.position, player.position) <= attackRange;
+        return DistanceToPlayer() <= attackRange;
     }
 
     //returns true if the player is within melee range
-    protected bool IsPlayerInMeleeRange() 
+    public bool IsPlayerInMeleeRange() 
     {
-        return Vector2.Distance(transform.position, player.position) <= meleeRange;
+        return DistanceToPlayer() <= meleeRange;
     }
 
     //returns -1 if the player is on the left, 1 if the player is on the right
-    protected float PlayerDirection()
+    public float PlayerDirection()
     {
         return player.position.x < transform.position.x ? -1 : 1;
+    }
+
+    //return the distance between the player and enemy
+    public float DistanceToPlayer() 
+    {
+        return Vector2.Distance(transform.position, player.position);
     }
     #endregion
 
@@ -80,7 +95,7 @@ public abstract class Enemy : MonoBehaviour
 
 
 #region Ground Enemy
-public class GroundEnemy : Enemy
+public abstract class GroundEnemy : Enemy
 {
     [Header("Movement Parameters")]
     public float moveSpeed = 0f;
@@ -96,15 +111,15 @@ public class GroundEnemy : Enemy
 	[SerializeField] private Transform edgeCheck;		// A position marking where to check if the player is on edge.	
 
     //Private variables
-    protected Rigidbody2D rb;
+    public Rigidbody2D rb {get; private set;}
     private Vector3 velocity = Vector3.zero;	// Used as ref for movement smoothdamp
     private bool facingRight = true;
 
 
     protected override void Start()
     {
-        base.Start();
         rb = GetComponent<Rigidbody2D>();
+        base.Start();
     }
 
 
@@ -207,6 +222,9 @@ public class GroundEnemy : Enemy
 	//Ground check, return true if the player's grounded
 	public bool GroundCheck() 
 	{
+        if(rb.velocity.y > 0.1f)
+            return false;
+
 		bool grounded = false;	//Grounded is false unless the ground check cast hits something
 
 		// Ground check cast, the player is grounded if a cast to the groundcheck position hits anything designated as ground
@@ -246,7 +264,7 @@ public class GroundEnemy : Enemy
 
 
 #region Air Enemy
-public class AirEnemy : Enemy 
+public abstract class AirEnemy : Enemy 
 {
     [Header("Movement Parameters")]
     public float moveSpeed = 0f;

@@ -3668,6 +3668,7 @@ MonoBehaviour:
   pursueRange: 0
   attackRange: 0
   meleeRange: 0
+  raycastStart: {fileID: 0}
   moveSpeed: 0
   knockbackModifier: 1
   movementSmoothing: 0
@@ -22072,7 +22073,6 @@ GameObject:
   - component: {fileID: 1977105901}
   - component: {fileID: 1977105906}
   - component: {fileID: 1977105903}
-  - component: {fileID: 1977105907}
   - component: {fileID: 1977105905}
   - component: {fileID: 1977105904}
   m_Layer: 7
@@ -22189,7 +22189,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1977105907}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Wolf, Assembly-CSharp
         m_MethodName: OnDamage
         m_Mode: 1
@@ -22204,7 +22204,7 @@ MonoBehaviour:
   OnDeathEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1977105907}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Wolf, Assembly-CSharp
         m_MethodName: OnDeath
         m_Mode: 1
@@ -22245,35 +22245,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 4, y: 2}
   m_EdgeRadius: 0
---- !u!114 &1977105907
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1977105900}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 146f32e45a04a76468c2609f55059862, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pursueRange: 0
-  attackRange: 0
-  meleeRange: 0
-  moveSpeed: 5
-  knockbackModifier: 1
-  movementSmoothing: 0
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  groundCheck: {fileID: 0}
-  groundCheckSize: {x: 0, y: 0}
-  edgeLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  edgeCheck: {fileID: 0}
-  sprite: {fileID: 1583987035}
-  spark: {fileID: 5257125201645060266, guid: 3bb842a14803cca43b9dc80ef240311b, type: 3}
 --- !u!1 &2021401080
 GameObject:
   m_ObjectHideFlags: 0
@@ -22846,13 +22817,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wolf
       objectReference: {fileID: 0}
+    - target: {fileID: 4208033379700011549, guid: 3fd1008131b3afa45a6da8ce9f673934, type: 3}
+      propertyPath: attackRange
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4208033379700011549, guid: 3fd1008131b3afa45a6da8ce9f673934, type: 3}
+      propertyPath: pursueRange
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 4208033379700011550, guid: 3fd1008131b3afa45a6da8ce9f673934, type: 3}
       propertyPath: m_RootOrder
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4208033379700011550, guid: 3fd1008131b3afa45a6da8ce9f673934, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 72.5
+      value: 88.5
       objectReference: {fileID: 0}
     - target: {fileID: 4208033379700011550, guid: 3fd1008131b3afa45a6da8ce9f673934, type: 3}
       propertyPath: m_LocalPosition.y
