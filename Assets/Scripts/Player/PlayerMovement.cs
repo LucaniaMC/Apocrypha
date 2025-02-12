@@ -6,7 +6,6 @@ using UnityEngine;
 public partial class Player
 {
 	[Header("Checks")]	//Used for PlayerMovement
-
 	[SerializeField] private LayerMask groundLayer;						// A mask determining what is ground to the character
 	[SerializeField] private Transform groundCheck;						// A position marking where to check if the player is grounded.
 	[SerializeField] Vector2 groundCheckSize = new Vector2(.68f, .1f);	// Dimensions of the ground check box size.
@@ -81,7 +80,7 @@ public partial class Player
 		bool onEdge = true;
 
 		//Edge check cast. The player is on edge if a cast to the wallcheck position does not hit anything
-		Collider2D[] collidersEdge = Physics2D.OverlapCircleAll(edgeCheck.position, 0.1f, wallLayer);
+		Collider2D[] collidersEdge = Physics2D.OverlapCircleAll(edgeCheck.position, 0.1f, groundLayer);
 		for (int i = 0; i < collidersEdge.Length; i++)
 		{
 			if (collidersEdge[i].gameObject != gameObject)

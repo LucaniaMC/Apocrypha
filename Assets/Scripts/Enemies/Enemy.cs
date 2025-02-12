@@ -79,6 +79,7 @@ public abstract class Enemy : MonoBehaviour
 }
 
 
+#region Ground Enemy
 public class GroundEnemy : Enemy
 {
     [Header("Movement Parameters")]
@@ -86,9 +87,19 @@ public class GroundEnemy : Enemy
     public float knockbackModifier = 1f;
     [Range(0f, 1f)] public float movementSmoothing = 0f;
 
+    [Header("Checks")]	//Used for PlayerMovement
+	[SerializeField] private LayerMask groundLayer;		// A mask determining what is ground to the character
+	[SerializeField] private Transform groundCheck;		// A position marking where to check if the player is grounded.
+	[SerializeField] Vector2 groundCheckSize;	        // Dimensions of the ground check box size.
+    [Space]
+    [SerializeField] private LayerMask edgeLayer;						
+	[SerializeField] private Transform edgeCheck;		// A position marking where to check if the player is on edge.	
+
+    //Private variables
     protected Rigidbody2D rb;
     private Vector3 velocity = Vector3.zero;	// Used as ref for movement smoothdamp
     private bool facingRight = true;
+
 
     protected override void Start()
     {
@@ -97,7 +108,7 @@ public class GroundEnemy : Enemy
     }
 
 
-    #region Movement Functions
+    #region Movement
     // Move to a given position with a given speed (x-axis only)
     public void MoveToPosition(Vector2 targetPosition, float speed)
     {
@@ -139,20 +150,30 @@ public class GroundEnemy : Enemy
         // Apply the force as an impulse
         rb.AddForce(jumpVelocity * rb.mass, ForceMode2D.Impulse);
     }
-
+    
 
     public void KnockBack() 
     {
 
     }
 
-    	
+    
+    // Manually set velocity
     public void SetVelocity(Vector2 velocity)
 	{
 		rb.velocity = velocity;
 	}
 
 
+	// Hard fall velocity limit
+    public void LimitFallVelocity(float limitVelocity) 
+    {
+        rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(rb.velocity.y, -limitVelocity));
+    }
+    #endregion
+
+
+    #region Flip
     // Flip the object to face a target position
 	public void FlipToTarget(Vector2 targetPosition) 
 	{
@@ -169,7 +190,7 @@ public class GroundEnemy : Enemy
 	}
 
 
-    public void Flip()
+    private void Flip()
 	{
 		// Switch the way the player is labelled as facing.
 		facingRight = !facingRight;
@@ -180,9 +201,51 @@ public class GroundEnemy : Enemy
 		transform.localScale = flipScale;
 	}
     #endregion
+
+
+    #region Ground Check
+	//Ground check, return true if the player's grounded
+	public bool GroundCheck() 
+	{
+		bool grounded = false;	//Grounded is false unless the ground check cast hits something
+
+		// Ground check cast, the player is grounded if a cast to the groundcheck position hits anything designated as ground
+		Collider2D[] colliders = Physics2D.OverlapBoxAll(groundCheck.position, groundCheckSize, 0, groundLayer);
+		for (int i = 0; i < colliders.Length; i++)
+		{
+			if (colliders[i].gameObject != gameObject)	//Do not check for colliding with self
+			{
+				grounded = true;
+			}
+		}
+        return grounded;
+	}
+    #endregion
+
+
+	#region Edge Check
+    //Edge check, returns true if the player is near an edge
+	public bool EdgeCheck() 
+	{
+		bool onEdge = true;
+
+		//Edge check cast. The player is on edge if a cast to the wallcheck position does not hit anything
+		Collider2D[] collidersEdge = Physics2D.OverlapCircleAll(edgeCheck.position, 0.1f, groundLayer);
+		for (int i = 0; i < collidersEdge.Length; i++)
+		{
+			if (collidersEdge[i].gameObject != gameObject)
+			{
+				onEdge = false;
+			}
+		}
+        return onEdge;
+	}
+    #endregion
 }
+#endregion
 
 
+#region Air Enemy
 public class AirEnemy : Enemy 
 {
     [Header("Movement Parameters")]
@@ -214,3 +277,4 @@ public class AirEnemy : Enemy
     }
     #endregion
 }
+#endregion

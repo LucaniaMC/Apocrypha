@@ -13,6 +13,7 @@ public class Wolf : GroundEnemy
         if(IsPlayerInPursueRange()) 
         {
             FlipToTarget(player.position);
+
             if(!IsPlayerInMeleeRange()) 
             {
                 MoveToPosition(player.position, moveSpeed);
