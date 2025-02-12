@@ -852,7 +852,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 15, y: 5}
-  m_SizeDelta: {x: 136, y: 8}
+  m_SizeDelta: {x: 128, y: 4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &225255908
 MonoBehaviour:
@@ -20272,8 +20272,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -14.2, y: -4}
-  m_SizeDelta: {x: 74, y: 6}
+  m_AnchoredPosition: {x: -14.1, y: -4}
+  m_SizeDelta: {x: 66, y: 2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1477089618
 MonoBehaviour:
@@ -22056,7 +22056,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 15, y: 5}
-  m_SizeDelta: {x: 136, y: 8}
+  m_SizeDelta: {x: 128, y: 4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1945899841
 MonoBehaviour:
@@ -22204,7 +22204,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0
   m_GravityScale: 4
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: e72bc7c330d4e4a4ea9ab2deb137e6fd, type: 2}
   m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
@@ -22267,7 +22267,19 @@ MonoBehaviour:
         m_CallState: 2
   OnDeathEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1977105907}
+        m_TargetAssemblyTypeName: Wolf, Assembly-CSharp
+        m_MethodName: Death
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnHealEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -22358,8 +22370,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1300100472a213c4eb8b13061e459deb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 600
-  maxHealth: 600
+  health: 50
+  maxHealth: 50
   damageModifier: 1
   OnDamageEvent:
     m_PersistentCalls:
@@ -22390,7 +22402,19 @@ MonoBehaviour:
         m_CallState: 2
   OnDeathEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1996342566}
+        m_TargetAssemblyTypeName: Wolf, Assembly-CSharp
+        m_MethodName: Death
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnHealEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -22410,7 +22434,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0
   m_GravityScale: 4
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: e72bc7c330d4e4a4ea9ab2deb137e6fd, type: 2}
   m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
