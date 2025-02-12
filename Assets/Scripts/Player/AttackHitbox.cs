@@ -8,7 +8,7 @@ using System.Collections.Generic;
 public class AttackHitbox : MonoBehaviour
 {
     public PlayerData data;
-    [SerializeField] private float attackMultiplier = 1f; //Damage modifier for individual attack hitboxes
+    [SerializeField] private float attackModifier = 1f; //Damage modifier for individual attack hitboxes
 
     //Damage all enemies in attack hitbox
     void OnTriggerEnter2D(Collider2D other) 
@@ -22,7 +22,7 @@ public class AttackHitbox : MonoBehaviour
             //Get the HealthSystem component of each enemy, and damages them
             foreach (GameObject enemy in attackedEnemy) 
             {
-                enemy.GetComponent<HealthSystem>().Damage(Mathf.RoundToInt(data.attackDamage * attackMultiplier));
+                enemy.GetComponent<HealthSystem>().Damage(Mathf.RoundToInt(data.attackDamage * attackModifier));
             }
         }
     }

@@ -187,8 +187,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 3644150817739113258}
-        m_TargetAssemblyTypeName: DummyHurt, Assembly-CSharp
-        m_MethodName: onDamage
+        m_TargetAssemblyTypeName: Dummy, Assembly-CSharp
+        m_MethodName: OnDamage
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -214,8 +214,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 3644150817739113258}
-        m_TargetAssemblyTypeName: DummyHurt, Assembly-CSharp
-        m_MethodName: Death
+        m_TargetAssemblyTypeName: Dummy, Assembly-CSharp
+        m_MethodName: OnDeath
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -240,6 +240,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 229381cc8367f124aabb75cdb1a71d7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rb: {fileID: 0}
   sprite: {fileID: 3644150817391774454}
   spark: {fileID: 5257125201645060266, guid: 3bb842a14803cca43b9dc80ef240311b, type: 3}
 --- !u!114 &1737036465

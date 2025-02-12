@@ -169,9 +169,14 @@ public partial class Player
 
 
 	#region Calculate Jump Force
-	// Calculate the impulse force needed to reach a given jump height. JumpHeight cannot be negative.
+	// Calculate the impulse force needed to reach a given jump height.
 	float JumpHeightToImpulse(float jumpHeight) 
 	{
+		if(jumpHeight <= 0) 	//Jump Height needs to be positive
+		{
+			Debug.LogError("Invalid jump parameters. jumpHeight needs to be positive.");
+			return 0;
+		}
 		float jumpForce = rb.mass * Mathf.Sqrt(-2f * (Physics2D.gravity.y * rb.gravityScale) * jumpHeight);
 		return jumpForce;
 	}

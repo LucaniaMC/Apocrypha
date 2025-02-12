@@ -1,18 +1,37 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Wolf : MonoBehaviour
+public class Wolf : GroundEnemy
 {
+    [Header("Visual Effect References")]
     public GameObject sprite;
     public GameObject spark;
 
-    public void onDamage()
+
+    protected override void FixedUpdate()
     {
-        Instantiate(spark, new Vector3(sprite.transform.position.x , sprite.transform.position.y , 0), Quaternion.identity); 
+        //Simple test behavior, replace with state behavior later
+        if(IsPlayerInPursueRange()) 
+        {
+            FlipToTarget(player.position);
+            if(!IsPlayerInMeleeRange()) 
+            {
+                MoveToPosition(player.position, moveSpeed);
+            }  
+            else 
+            {
+                SetVelocity(new Vector2(0f, rb.velocity.y));
+            }  
+        }
     }
 
-    public void Death()
+
+    public override void OnDamage()
+    {
+        Instantiate(spark, new Vector3(sprite.transform.position.x , sprite.transform.position.y , 0), Quaternion.identity); 
+        KnockBack();
+    }
+
+    public override void OnDeath()
     {
         Destroy(gameObject);
     }

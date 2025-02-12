@@ -17,7 +17,7 @@ public partial class Player
         if(activeAttackRoutine != null)     // Stops currently active coroutine if any
             StopCoroutine(activeAttackRoutine);
             
-        attackHitbox.enabled = false;
+        attackHitbox.enabled = false;   
         activeAttackRoutine = StartCoroutine(AttackCoroutine(attackHitbox, attackTime));
 
     }
