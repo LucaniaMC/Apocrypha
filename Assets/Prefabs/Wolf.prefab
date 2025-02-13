@@ -245,10 +245,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 146f32e45a04a76468c2609f55059862, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pursueRange: 20
-  attackRange: 10
+  pursueRange: 15
+  attackRange: 7
   meleeRange: 2
-  raycastStart: {fileID: 1466580614}
+  attackPauseTime: 2
+  numberOfAttack: 1
   moveSpeed: 7
   knockbackModifier: 1
   movementSmoothing: 0.2

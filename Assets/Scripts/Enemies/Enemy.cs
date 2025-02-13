@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public abstract class Enemy : MonoBehaviour
 {
@@ -6,6 +7,10 @@ public abstract class Enemy : MonoBehaviour
     public float pursueRange;    // Range to start pursuing the player
     public float attackRange;   // Range to start attacking the player
     public float meleeRange;    // Close range to start melee attacking the player
+
+    [Header("Attack Parameters")]
+    public float attackPauseTime;
+    public int numberOfAttack;
 
     public Transform player {get; private set;}
 
@@ -16,7 +21,7 @@ public abstract class Enemy : MonoBehaviour
     #region Loop Functions
     protected virtual void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+        player = GameObject.FindGameObjectWithTag("Player").transform;  // Set reference to the player
         Initialize();
     }
 
@@ -89,6 +94,15 @@ public abstract class Enemy : MonoBehaviour
     #endregion
 
 
+    #region Attack Selection
+    public int SelectRandomizeAttack() 
+    {
+        int selectedAttack = Random.Range(1, numberOfAttack + 1);
+        return selectedAttack;
+    }
+    #endregion
+
+
     public virtual void OnDamage() {}
     public virtual void OnDeath() {}
 }
@@ -101,10 +115,11 @@ public abstract class GroundEnemy : Enemy
     public float moveSpeed = 0f;
     public float knockbackModifier = 1f;
     [Range(0f, 1f)] public float movementSmoothing = 0f;
+    public float maxFallVelocity = -25f;
 
     [Header("Checks")]	//Used for PlayerMovement
 	[SerializeField] private LayerMask groundLayer;		// A mask determining what is ground to the character
-	[SerializeField] private Transform groundCheck;		// A position marking where to check if the player is grounded.
+	[SerializeField] private Transform groundCheck;		// A position marking where to check if the character is grounded.
 	[SerializeField] Vector2 groundCheckSize;	        // Dimensions of the ground check box size.
     [Space]
     [SerializeField] private LayerMask edgeLayer;						
@@ -113,7 +128,7 @@ public abstract class GroundEnemy : Enemy
     //Private variables
     public Rigidbody2D rb {get; private set;}
     private Vector3 velocity = Vector3.zero;	// Used as ref for movement smoothdamp
-    private bool facingRight = true;
+    private bool facingRight = true;            // Is the character facing right
 
 
     protected override void Start()
@@ -123,12 +138,18 @@ public abstract class GroundEnemy : Enemy
     }
 
 
+    protected override void Update()
+    {
+        base.Update();
+    }
+
+
     #region Movement
-    // Move to a given position with a given speed (x-axis only)
-    public void MoveToPosition(Vector2 targetPosition, float speed)
+    // Pursue the player with a given speed with smoothing (x-axis only)
+    public void PursuePlayer(float speed)
     {
         float direction; // Value is 1 if target's on the right, -1 on the left
-        direction = targetPosition.x < transform.position.x ? -1 : 1;   
+        direction = player.position.x < transform.position.x ? -1 : 1;   
 
         // Move the object by finding the target velocity, then smooth it out
 		Vector3 targetVelocity = new Vector2(direction * speed, rb.velocity.y);
@@ -136,36 +157,56 @@ public abstract class GroundEnemy : Enemy
     }
 
 
-    // Jump to a given position with a given height and time
-    public void JumpToPosition(Vector2 targetPosition, float jumpHeight, float timeToTarget)
+    // Move to a set position (x-axis only)
+    public void MoveToPosition(Vector2 targetPosition, float speed)
     {
-        if(jumpHeight <= 0 || timeToTarget <= 0)    // Jump Height and Time to target needs to be positive
-        {
-            Debug.LogError("Invalid jump parameters. jumpHeight or timeToTarget needs to be positive.");
-            return;
-        }
-
-        Vector2 currentPosition = rb.position;
-        
-        float gravity = Mathf.Abs(Physics2D.gravity.y * rb.gravityScale);
-        float verticalVelocity = Mathf.Sqrt(2 * gravity * jumpHeight);
-        float timeToPeak = verticalVelocity / gravity;
-        float totalDescentTime = timeToTarget - timeToPeak;
-
-        // Check if the totalDescentTime is valid (should be positive)
-        if (totalDescentTime < 0)
-        {
-            Debug.LogError("Invalid jump parameters. Increase timeToTarget or decrease jumpHeight.");
-            return;
-        }
-        
-        float horizontalVelocity = (targetPosition.x - currentPosition.x) / timeToTarget;
-        Vector2 jumpVelocity = new Vector2(horizontalVelocity, verticalVelocity);
-        
-        // Apply the force as an impulse
-        rb.AddForce(jumpVelocity * rb.mass, ForceMode2D.Impulse);
+        float newX = Mathf.MoveTowards(rb.position.x, targetPosition.x, speed * Time.deltaTime);
+        Vector2 newPosition = new Vector2(newX, rb.position.y);
+        rb.MovePosition(newPosition);
     }
-    
+    #endregion
+
+
+    #region Jump
+    //Jump up vertically
+    public void Jump(float jumpHeight) 
+    {
+        if(jumpHeight <= 0) 	//Jump Height needs to be positive
+			Debug.LogError("Invalid jump parameters. jumpHeight needs to be positive.");
+		
+		float jumpForce = rb.mass * Mathf.Sqrt(-2f * (Physics2D.gravity.y * rb.gravityScale) * jumpHeight);
+        rb.velocity = new Vector2(rb.velocity.x, 0f);	// Reset vertical velocity to prevent irregular jump heights.
+		rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);		// Add a new vertical force.
+    }
+
+
+    // Jump to a given position with a given height and time
+    public void JumpToPosition(float jumpHeight, Vector2 targetPosition)
+    {
+        if(jumpHeight <= 0) 	//Jump Height needs to be positive
+			Debug.LogError("Invalid jump parameters. jumpHeight needs to be positive.");
+
+        //Jump force calculation
+        float effectiveGravity = Physics2D.gravity.y * rb.gravityScale;
+        float jumpSpeed = Mathf.Sqrt(-2f * effectiveGravity * jumpHeight);
+		float jumpForce = rb.mass * jumpSpeed;
+
+        rb.velocity = new Vector2(rb.velocity.x, 0f);
+		rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);   //Apply a new vertical force to jump
+
+        //Calculate jump time
+        float timeToApex = jumpSpeed / -effectiveGravity;
+        float jumpDuration = timeToApex * 2f;
+
+        //Calculate horizontal velocity required to move to the target position during jump duration
+        float distanceToTarget = targetPosition.x - transform.position.x;
+        float horizontalVelocity = distanceToTarget / jumpDuration;
+
+        //Set horizontal velocity
+        rb.velocity = new Vector2(horizontalVelocity, rb.velocity.y);
+    }
+    #endregion
+
 
     public void KnockBack() 
     {
@@ -181,11 +222,10 @@ public abstract class GroundEnemy : Enemy
 
 
 	// Hard fall velocity limit
-    public void LimitFallVelocity(float limitVelocity) 
+    public void LimitFallVelocity() 
     {
-        rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(rb.velocity.y, -limitVelocity));
+        rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(rb.velocity.y, maxFallVelocity));
     }
-    #endregion
 
 
     #region Flip
@@ -222,7 +262,7 @@ public abstract class GroundEnemy : Enemy
 	//Ground check, return true if the player's grounded
 	public bool GroundCheck() 
 	{
-        if(rb.velocity.y > 0.1f)
+        if(rb.velocity.y > 0.1f)    //Prevents being immediately grounded after jumping
             return false;
 
 		bool grounded = false;	//Grounded is false unless the ground check cast hits something

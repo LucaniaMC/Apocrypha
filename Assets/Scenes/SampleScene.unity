@@ -3668,7 +3668,8 @@ MonoBehaviour:
   pursueRange: 0
   attackRange: 0
   meleeRange: 0
-  raycastStart: {fileID: 0}
+  attackPauseTime: 0
+  numberOfAttack: 0
   moveSpeed: 0
   knockbackModifier: 1
   movementSmoothing: 0
@@ -22816,14 +22817,6 @@ PrefabInstance:
     - target: {fileID: 4208033379700011547, guid: 3fd1008131b3afa45a6da8ce9f673934, type: 3}
       propertyPath: m_Name
       value: Wolf
-      objectReference: {fileID: 0}
-    - target: {fileID: 4208033379700011549, guid: 3fd1008131b3afa45a6da8ce9f673934, type: 3}
-      propertyPath: attackRange
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 4208033379700011549, guid: 3fd1008131b3afa45a6da8ce9f673934, type: 3}
-      propertyPath: pursueRange
-      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 4208033379700011550, guid: 3fd1008131b3afa45a6da8ce9f673934, type: 3}
       propertyPath: m_RootOrder

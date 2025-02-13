@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Dummy : GroundEnemy
+public class Dummy : Enemy
 {
     [Header("Visual Effect References")]
     public GameObject sprite;

@@ -33,9 +33,9 @@ public class WolfIdleState : EnemyState
 
     public override void Transitions() 
     {
-        if(enemy.IsPlayerInPursueRange()) 
+        if(wolf.IsPlayerInPursueRange()) 
         {
-            enemy.TransitionToState(new WolfPursueState(enemy, wolf));
+            wolf.TransitionToState(new WolfPursueState(enemy, wolf));
         }
     }
 }
@@ -76,14 +76,14 @@ public class WolfPursueState : EnemyState
 
     public override void Transitions() 
     {
-        if(!enemy.IsPlayerInPursueRange()) 
+        if(!wolf.IsPlayerInPursueRange()) 
         {
-            enemy.TransitionToState(new WolfIdleState(enemy, wolf));
+            wolf.TransitionToState(new WolfIdleState(enemy, wolf));
         }
 
-        if(enemy.IsPlayerInAttackRange()) 
+        if(wolf.IsPlayerInAttackRange()) 
         {
-            enemy.TransitionToState(new WolfLeapState(enemy, wolf));
+            wolf.TransitionToState(new WolfLeapState(enemy, wolf));
         }
     }
 }
@@ -95,7 +95,7 @@ public class WolfPauseState : EnemyState
 {
     protected Wolf wolf;
     readonly float startTime = Time.time;    // When did the state start
-    readonly float stateTime = 2f;
+    float stateTime;    //How long does the state last
 
     public WolfPauseState(Enemy enemy, Wolf wolf) : base(enemy) 
     {
@@ -103,6 +103,7 @@ public class WolfPauseState : EnemyState
     }
     public override void OnEnter()
     {
+        stateTime = wolf.attackPauseTime;
         wolf.SetVelocity(new Vector2(0f, wolf.rb.velocity.y)); //Stays in place
     }
     
@@ -125,19 +126,19 @@ public class WolfPauseState : EnemyState
     {
         if(Time.time >= startTime + stateTime) //If the state time is over
         {
-            if(!enemy.IsPlayerInPursueRange()) 
+            if(!wolf.IsPlayerInAttackRange() && wolf.IsPlayerInPursueRange())
             {
-                enemy.TransitionToState(new WolfIdleState(enemy, wolf));
+                wolf.TransitionToState(new WolfPursueState(enemy, wolf));
             }
 
-            if(enemy.IsPlayerInAttackRange()) 
+            if(!wolf.IsPlayerInPursueRange()) 
             {
-                enemy.TransitionToState(new WolfLeapState(enemy, wolf));
+                wolf.TransitionToState(new WolfIdleState(enemy, wolf));
             }
 
-            if(enemy.IsPlayerInPursueRange()) 
+            if(wolf.IsPlayerInAttackRange()) 
             {
-                enemy.TransitionToState(new WolfPursueState(enemy, wolf));
+                wolf.TransitionToState(new WolfLeapState(enemy, wolf));
             }
         }
     }
@@ -157,7 +158,7 @@ public class WolfLeapState : EnemyState
     }
     public override void OnEnter()
     {
-        wolf.JumpToPosition(wolf.player.position, 1f, 1f);
+        wolf.JumpToPosition(1f, wolf.player.transform.position);
     }
     
     public override void StateUpdate()
@@ -180,7 +181,7 @@ public class WolfLeapState : EnemyState
 
     public override void Transitions() 
     {
-        enemy.TransitionToState(new WolfPauseState(enemy, wolf));
+        wolf.TransitionToState(new WolfPauseState(enemy, wolf));
     }
 }
 #endregion
