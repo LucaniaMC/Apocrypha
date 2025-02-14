@@ -3670,18 +3670,6 @@ MonoBehaviour:
   meleeRange: 0
   attackPauseTime: 0
   numberOfAttack: 0
-  moveSpeed: 0
-  knockbackModifier: 1
-  movementSmoothing: 0
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  groundCheck: {fileID: 0}
-  groundCheckSize: {x: 0, y: 0}
-  edgeLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  edgeCheck: {fileID: 0}
   sprite: {fileID: 1101525476}
   spark: {fileID: 5257125201645060266, guid: 3bb842a14803cca43b9dc80ef240311b, type: 3}
 --- !u!61 &786575641

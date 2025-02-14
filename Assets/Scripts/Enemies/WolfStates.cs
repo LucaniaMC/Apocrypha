@@ -66,7 +66,15 @@ public class WolfPursueState : EnemyState
     public override void StateFixedUpdate()
     {
         wolf.FlipToTarget(wolf.player.position);
-        wolf.MoveToPosition(wolf.player.position, wolf.moveSpeed);
+
+        if (!wolf.EdgeCheck()) 
+        {
+            wolf.MoveToPosition(wolf.player.position, wolf.moveSpeed);
+        }
+        else 
+        {
+            wolf.SetVelocity(new Vector2(0f, wolf.rb.velocity.y));
+        }
     }
 
     public override void OnExit()
@@ -81,16 +89,16 @@ public class WolfPursueState : EnemyState
             wolf.TransitionToState(new WolfIdleState(enemy, wolf));
         }
 
-        if(wolf.IsPlayerInAttackRange()) 
+        if(wolf.IsPlayerInMeleeRange()) 
         {
-            wolf.TransitionToState(new WolfLeapState(enemy, wolf));
+            wolf.TransitionToState(new WolfMeleeState(enemy, wolf));
         }
     }
 }
 #endregion
 
 #region Pause State
-//Pause for a given time during attacks, face the player
+// Pause for a given time during attacks, face the player
 public class WolfPauseState : EnemyState
 {
     protected Wolf wolf;
@@ -126,7 +134,7 @@ public class WolfPauseState : EnemyState
     {
         if(Time.time >= startTime + stateTime) //If the state time is over
         {
-            if(!wolf.IsPlayerInAttackRange() && wolf.IsPlayerInPursueRange())
+            if(wolf.IsPlayerInPursueRange() && !wolf.IsPlayerInMeleeRange()) 
             {
                 wolf.TransitionToState(new WolfPursueState(enemy, wolf));
             }
@@ -136,9 +144,9 @@ public class WolfPauseState : EnemyState
                 wolf.TransitionToState(new WolfIdleState(enemy, wolf));
             }
 
-            if(wolf.IsPlayerInAttackRange()) 
+            if(wolf.IsPlayerInMeleeRange()) 
             {
-                wolf.TransitionToState(new WolfLeapState(enemy, wolf));
+                wolf.TransitionToState(new WolfMeleeState(enemy, wolf));
             }
         }
     }
@@ -146,27 +154,26 @@ public class WolfPauseState : EnemyState
 #endregion
 
 
-#region Leap State
-//Jump towards the player, exit state when grounded
-public class WolfLeapState : EnemyState
+#region Melee State
+// Attack the player
+public class WolfMeleeState : EnemyState
 {
     protected Wolf wolf;
+    readonly float startTime = Time.time;    // When did the state start
+    readonly float stateTime = 1f;    //How long does the state last
 
-    public WolfLeapState(Enemy enemy, Wolf wolf) : base(enemy) 
+    public WolfMeleeState(Enemy enemy, Wolf wolf) : base(enemy) 
     {
         this.wolf = wolf;
     }
     public override void OnEnter()
     {
-        wolf.JumpToPosition(1f, wolf.player.transform.position);
+        wolf.SetVelocity(new Vector2(0f, wolf.rb.velocity.y));
     }
     
     public override void StateUpdate()
     {
-        if(wolf.GroundCheck()) 
-        {
-            Transitions();
-        }
+        Transitions();
     }
 
     public override void StateFixedUpdate()
@@ -181,7 +188,10 @@ public class WolfLeapState : EnemyState
 
     public override void Transitions() 
     {
-        wolf.TransitionToState(new WolfPauseState(enemy, wolf));
+        if(Time.time >= startTime + stateTime) //If the state time is over
+        {
+            wolf.TransitionToState(new WolfPauseState(enemy, wolf));
+        }
     }
 }
 #endregion

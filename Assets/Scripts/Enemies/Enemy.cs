@@ -127,8 +127,8 @@ public abstract class GroundEnemy : Enemy
 
     //Private variables
     public Rigidbody2D rb {get; private set;}
-    private Vector3 velocity = Vector3.zero;	// Used as ref for movement smoothdamp
-    private bool facingRight = true;            // Is the character facing right
+    protected Vector3 velocity = Vector3.zero;	// Used as ref for movement smoothdamp
+    protected bool facingRight = true;            // Is the character facing right
 
 
     protected override void Start()
