@@ -132,14 +132,14 @@ public partial class Player
 		// And then smoothing it out and applying it to the character
 		rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, smoothing);
 
-		FlipCheck(moveInput);
+		FlipToInput(moveInput);
 	}
 	#endregion
 
 
 	#region Flip
 	// If the player is moving towards the opposite direction it's facing, flip the player
-	public void FlipCheck(float moveInput) 
+	public void FlipToInput(float moveInput) 
 	{
 		if (moveInput > 0 && !facingRight)
 		{

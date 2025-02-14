@@ -310,7 +310,7 @@ public class PlayerDashState : PlayerState
 
     public override void OnEnter() 
     {
-        player.FlipCheck(input.moveInput);    // Allows the player to turn when dashing out of immobile states
+        player.FlipToInput(input.moveInput);    // Allows the player to turn when dashing out of immobile states
         player.SetDashAnimator(true);
         player.SetDashParticle(true);
         player.DashStart();
@@ -363,7 +363,7 @@ public class PlayerAttackState : PlayerState
 
     public override void OnEnter() 
     {
-        player.FlipCheck(input.moveInput);          // Allows the player to turn during combo
+        player.FlipToInput(input.moveInput);          // Allows the player to turn during combo
         player.SetVelocity(new Vector2(0f, 0f));    // Reset player velocity for consistent movement
         player.SetAttackAnimator(true);
         player.Attack(player.attackCollider, 0.2f);
@@ -429,7 +429,7 @@ public class PlayerChargeAttackState : PlayerState
 
     public override void OnEnter() 
     {
-        player.FlipCheck(input.moveInput);          // Allows the player to turn during combo
+        player.FlipToInput(input.moveInput);          // Allows the player to turn during combo
         player.SetVelocity(new Vector2(0f, 0f));    // Reset player velocity for consistent movement
         player.SetChargeAttackAnimator(true);
         player.Attack(player.chargeAttackCollider, 0.2f);
