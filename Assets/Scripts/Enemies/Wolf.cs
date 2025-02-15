@@ -6,6 +6,13 @@ public class Wolf : GroundEnemy
     public GameObject sprite;
     public GameObject spark;
 
+    [Header("Animator")]
+    public Animator animator;
+
+    [Header("Attack Parameters")]
+    public float attackPauseTime;
+    public Collider2D attackCollider;
+
 
     public override void OnDamage()
     {

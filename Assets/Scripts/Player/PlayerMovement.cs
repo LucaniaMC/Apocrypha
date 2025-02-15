@@ -167,6 +167,14 @@ public partial class Player
     #endregion
 
 
+	#region Get Facing Direction
+    public float GetFacingDirection() 
+    {
+        return facingRight ? -1 : 1;
+    }
+	#endregion
+
+
 	#region Calculate Jump Force
 	// Calculate the impulse force needed to reach a given jump height.
 	float JumpHeightToImpulse(float jumpHeight) 

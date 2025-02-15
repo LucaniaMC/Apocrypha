@@ -8,11 +8,9 @@ public abstract class Enemy : MonoBehaviour
     public float attackRange;   // Range to start attacking the player
     public float meleeRange;    // Close range to start melee attacking the player
 
-    [Header("Attack Parameters")]
-    public float attackPauseTime;
-    public int numberOfAttack;
 
     public Transform player {get; private set;}
+    protected bool facingRight = true;            // Is the character facing right
 
     protected EnemyState currentState;  
     protected EnemyState defaultState;
@@ -95,7 +93,7 @@ public abstract class Enemy : MonoBehaviour
 
 
     #region Attack Selection
-    public int SelectRandomizeAttack() 
+    public int SelectRandomAttack(int numberOfAttack) 
     {
         int selectedAttack = Random.Range(1, numberOfAttack + 1);
         return selectedAttack;
@@ -103,8 +101,17 @@ public abstract class Enemy : MonoBehaviour
     #endregion
 
 
+    // returns -1 when facing left, 1 when facing right
+    #region Other
+    public float GetFacingDirection() 
+    {
+        return facingRight ? -1 : 1;
+    }
+
+
     public virtual void OnDamage() {}
     public virtual void OnDeath() {}
+    #endregion
 }
 
 
@@ -128,7 +135,6 @@ public abstract class GroundEnemy : Enemy
     //Private variables
     public Rigidbody2D rb {get; private set;}
     protected Vector3 velocity = Vector3.zero;	// Used as ref for movement smoothdamp
-    protected bool facingRight = true;            // Is the character facing right
 
 
     protected override void Start()

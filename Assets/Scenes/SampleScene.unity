@@ -3668,8 +3668,6 @@ MonoBehaviour:
   pursueRange: 0
   attackRange: 0
   meleeRange: 0
-  attackPauseTime: 0
-  numberOfAttack: 0
   sprite: {fileID: 1101525476}
   spark: {fileID: 5257125201645060266, guid: 3bb842a14803cca43b9dc80ef240311b, type: 3}
 --- !u!61 &786575641
@@ -22802,6 +22800,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2003585791, guid: 3fd1008131b3afa45a6da8ce9f673934, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 2121693417}
     - target: {fileID: 4208033379700011547, guid: 3fd1008131b3afa45a6da8ce9f673934, type: 3}
       propertyPath: m_Name
       value: Wolf
@@ -22812,7 +22814,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4208033379700011550, guid: 3fd1008131b3afa45a6da8ce9f673934, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 88.5
+      value: 72
       objectReference: {fileID: 0}
     - target: {fileID: 4208033379700011550, guid: 3fd1008131b3afa45a6da8ce9f673934, type: 3}
       propertyPath: m_LocalPosition.y

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 #region Idle State
@@ -55,7 +56,7 @@ public class WolfPursueState : EnemyState
 
     public override void OnEnter()
     {
-
+        wolf.animator.SetBool("IsWalking", true);
     }
     
     public override void StateUpdate()
@@ -79,7 +80,7 @@ public class WolfPursueState : EnemyState
 
     public override void OnExit()
     {
-        
+        wolf.animator.SetBool("IsWalking", false);
     }
 
     public override void Transitions() 
@@ -160,7 +161,10 @@ public class WolfMeleeState : EnemyState
 {
     protected Wolf wolf;
     readonly float startTime = Time.time;    // When did the state start
-    readonly float stateTime = 1f;    //How long does the state last
+    readonly float stateTime = 2f;    //How long does the state last
+
+    private Coroutine activeAttackRoutine;
+    private bool earlyExit = false;
 
     public WolfMeleeState(Enemy wolf) : base(wolf) 
     {
@@ -169,6 +173,8 @@ public class WolfMeleeState : EnemyState
     public override void OnEnter()
     {
         wolf.SetVelocity(new Vector2(0f, wolf.rb.velocity.y));
+        //Start attack coroutine
+        activeAttackRoutine = wolf.StartCoroutine(AttackRoutine());
     }
     
     public override void StateUpdate()
@@ -183,7 +189,13 @@ public class WolfMeleeState : EnemyState
 
     public override void OnExit()
     {
-        
+        if (activeAttackRoutine != null)    //In case if the state ends before the end of coroutine
+        {
+            wolf.StopCoroutine(activeAttackRoutine);
+            wolf.animator.SetBool("AttackStart", false);
+            wolf.animator.SetBool("IsAttacking", false);
+            wolf.attackCollider.enabled = false;
+        }
     }
 
     public override void Transitions() 
@@ -192,6 +204,40 @@ public class WolfMeleeState : EnemyState
         {
             wolf.TransitionToState(new WolfPauseState(wolf));
         }
+        if(earlyExit)
+        {
+            wolf.TransitionToState(new WolfPursueState(wolf));
+        }
+    }
+
+    //coroutine for attack
+    private IEnumerator AttackRoutine() 
+    {
+        //Start of anticipation, total 0.6 seconds
+        wolf.animator.SetBool("AttackStart", true);
+
+        yield return new WaitForSeconds(1f);
+
+        //Do not attack if the player is too far away, exit state
+        if(!wolf.IsPlayerInAttackRange()) 
+        {
+            earlyExit = true;
+            yield break;
+        }
+
+        //Start of attack, total 1 seconds
+        wolf.animator.SetBool("IsAttacking", true);
+        wolf.animator.SetBool("AttackStart", false);
+
+        //Turn on and off collider
+        yield return new WaitForSeconds(0.1f);
+        wolf.attackCollider.enabled = true;
+        yield return new WaitForSeconds(0.1f);
+        wolf.attackCollider.enabled = false;
+        yield return new WaitForSeconds(0.6f);
+
+        //End of attack
+        wolf.animator.SetBool("IsAttacking", false);
     }
 }
 #endregion

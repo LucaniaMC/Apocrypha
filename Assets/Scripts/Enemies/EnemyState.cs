@@ -1,5 +1,3 @@
-using UnityEngine;
-
 #region Default State
 public abstract class EnemyState
 {
