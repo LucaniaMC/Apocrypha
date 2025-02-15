@@ -20,7 +20,7 @@ public class Wolf : GroundEnemy
 
     public override void Initialize()
     {
-        defaultState = new WolfIdleState(this, this);
+        defaultState = new WolfIdleState(this);
         base.Initialize();
     }
 }

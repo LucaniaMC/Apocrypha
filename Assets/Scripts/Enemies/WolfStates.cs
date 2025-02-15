@@ -6,9 +6,9 @@ public class WolfIdleState : EnemyState
 {
     protected Wolf wolf;
 
-    public WolfIdleState(Enemy enemy, Wolf wolf) : base(enemy) 
+    public WolfIdleState(Enemy wolf) : base(wolf) 
     {
-        this.wolf = wolf;
+        this.wolf = (Wolf)wolf;
     }
 
     public override void OnEnter()
@@ -35,7 +35,7 @@ public class WolfIdleState : EnemyState
     {
         if(wolf.IsPlayerInPursueRange()) 
         {
-            wolf.TransitionToState(new WolfPursueState(enemy, wolf));
+            wolf.TransitionToState(new WolfPursueState(wolf));
         }
     }
 }
@@ -48,9 +48,9 @@ public class WolfPursueState : EnemyState
 {
     protected Wolf wolf;
 
-    public WolfPursueState(Enemy enemy, Wolf wolf) : base(enemy) 
+    public WolfPursueState(Enemy wolf) : base(wolf) 
     {
-        this.wolf = wolf;
+        this.wolf = (Wolf)wolf;
     }
 
     public override void OnEnter()
@@ -86,12 +86,12 @@ public class WolfPursueState : EnemyState
     {
         if(!wolf.IsPlayerInPursueRange()) 
         {
-            wolf.TransitionToState(new WolfIdleState(enemy, wolf));
+            wolf.TransitionToState(new WolfIdleState(wolf));
         }
 
         if(wolf.IsPlayerInMeleeRange()) 
         {
-            wolf.TransitionToState(new WolfMeleeState(enemy, wolf));
+            wolf.TransitionToState(new WolfMeleeState(wolf));
         }
     }
 }
@@ -105,9 +105,9 @@ public class WolfPauseState : EnemyState
     readonly float startTime = Time.time;    // When did the state start
     float stateTime;    //How long does the state last
 
-    public WolfPauseState(Enemy enemy, Wolf wolf) : base(enemy) 
+    public WolfPauseState(Enemy wolf) : base(wolf) 
     {
-        this.wolf = wolf;
+        this.wolf = (Wolf)wolf;
     }
     public override void OnEnter()
     {
@@ -136,17 +136,17 @@ public class WolfPauseState : EnemyState
         {
             if(wolf.IsPlayerInPursueRange() && !wolf.IsPlayerInMeleeRange()) 
             {
-                wolf.TransitionToState(new WolfPursueState(enemy, wolf));
+                wolf.TransitionToState(new WolfPursueState(wolf));
             }
 
             if(!wolf.IsPlayerInPursueRange()) 
             {
-                wolf.TransitionToState(new WolfIdleState(enemy, wolf));
+                wolf.TransitionToState(new WolfIdleState(wolf));
             }
 
             if(wolf.IsPlayerInMeleeRange()) 
             {
-                wolf.TransitionToState(new WolfMeleeState(enemy, wolf));
+                wolf.TransitionToState(new WolfMeleeState(wolf));
             }
         }
     }
@@ -162,9 +162,9 @@ public class WolfMeleeState : EnemyState
     readonly float startTime = Time.time;    // When did the state start
     readonly float stateTime = 1f;    //How long does the state last
 
-    public WolfMeleeState(Enemy enemy, Wolf wolf) : base(enemy) 
+    public WolfMeleeState(Enemy wolf) : base(wolf) 
     {
-        this.wolf = wolf;
+        this.wolf = (Wolf)wolf;
     }
     public override void OnEnter()
     {
@@ -190,7 +190,7 @@ public class WolfMeleeState : EnemyState
     {
         if(Time.time >= startTime + stateTime) //If the state time is over
         {
-            wolf.TransitionToState(new WolfPauseState(enemy, wolf));
+            wolf.TransitionToState(new WolfPauseState(wolf));
         }
     }
 }
