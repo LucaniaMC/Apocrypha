@@ -102,7 +102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e01ef2c77b8188e4ebeabfb591fdf0e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
+  damage: 15
   knockbackVelocity: {x: 10, y: 5}
   knockbackTime: 0.25
   player: {fileID: 0}
@@ -347,7 +347,7 @@ MonoBehaviour:
   pursueRange: 15
   attackRange: 8
   meleeRange: 2
-  moveSpeed: 7
+  moveSpeed: 8
   knockbackModifier: 1
   movementSmoothing: 0.2
   maxFallVelocity: -25

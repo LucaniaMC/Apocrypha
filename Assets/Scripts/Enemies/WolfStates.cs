@@ -81,6 +81,7 @@ public class WolfPursueState : EnemyState
     public override void OnExit()
     {
         wolf.animator.SetBool("IsWalking", false);
+        wolf.animator.ResetTrigger("Flip");
     }
 
     public override void Transitions() 

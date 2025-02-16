@@ -13,11 +13,16 @@ public class Wolf : GroundEnemy
     public float attackPauseTime;
     public Collider2D attackCollider;
 
+    protected override void Flip()
+    {
+        base.Flip();
+        animator.SetTrigger("Flip");
+    }
 
     public override void OnDamage()
     {
         Instantiate(spark, new Vector3(sprite.transform.position.x , sprite.transform.position.y , 0), Quaternion.identity); 
-        KnockBack();
+        KnockBack(2f, -PlayerDirection());
     }
 
     public override void OnDeath()

@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 
 public abstract class Enemy : MonoBehaviour
 {
@@ -108,7 +107,7 @@ public abstract class Enemy : MonoBehaviour
         return facingRight ? -1 : 1;
     }
 
-
+    public virtual void KnockBack(float distance, float direction) {}
     public virtual void OnDamage() {}
     public virtual void OnDeath() {}
     #endregion
@@ -152,7 +151,7 @@ public abstract class GroundEnemy : Enemy
 
     #region Movement
     // Pursue the player with a given speed with smoothing (x-axis only)
-    public void PursuePlayer(float speed)
+    public virtual void PursuePlayer(float speed)
     {
         float direction; // Value is 1 if target's on the right, -1 on the left
         direction = player.position.x < transform.position.x ? -1 : 1;   
@@ -164,7 +163,7 @@ public abstract class GroundEnemy : Enemy
 
 
     // Move to a set position (x-axis only)
-    public void MoveToPosition(Vector2 targetPosition, float speed)
+    public virtual void MoveToPosition(Vector2 targetPosition, float speed)
     {
         float newX = Mathf.MoveTowards(rb.position.x, targetPosition.x, speed * Time.deltaTime);
         Vector2 newPosition = new Vector2(newX, rb.position.y);
@@ -175,7 +174,7 @@ public abstract class GroundEnemy : Enemy
 
     #region Jump
     //Jump up vertically
-    public void Jump(float jumpHeight) 
+    public virtual void Jump(float jumpHeight) 
     {
         if(jumpHeight <= 0) 	//Jump Height needs to be positive
 			Debug.LogError("Invalid jump parameters. jumpHeight needs to be positive.");
@@ -187,7 +186,7 @@ public abstract class GroundEnemy : Enemy
 
 
     // Jump to a given position with a given height and time
-    public void JumpToPosition(float jumpHeight, Vector2 targetPosition)
+    public virtual void JumpToPosition(float jumpHeight, Vector2 targetPosition)
     {
         if(jumpHeight <= 0) 	//Jump Height needs to be positive
 			Debug.LogError("Invalid jump parameters. jumpHeight needs to be positive.");
@@ -214,9 +213,9 @@ public abstract class GroundEnemy : Enemy
     #endregion
 
 
-    public void KnockBack() 
+    public override void KnockBack(float distance, float direction) 
     {
-
+        rb.MovePosition(new Vector2(transform.position.x + (distance * direction * knockbackModifier), transform.position.y));
     }
 
     
@@ -236,7 +235,7 @@ public abstract class GroundEnemy : Enemy
 
     #region Flip
     // Flip the object to face a target position
-	public void FlipToTarget(Vector2 targetPosition) 
+	public virtual void FlipToTarget(Vector2 targetPosition) 
 	{
         float targetSide = targetPosition.x < transform.position.x ? -1 : 1;
 
@@ -251,7 +250,7 @@ public abstract class GroundEnemy : Enemy
 	}
 
 
-    private void Flip()
+    protected virtual void Flip()
 	{
 		// Switch the way the player is labelled as facing.
 		facingRight = !facingRight;
@@ -328,16 +327,16 @@ public abstract class AirEnemy : Enemy
 
     #region Movement Functions
     // Move to a given position with a given speed
-    public void MoveToPosition(Vector2 targetPosition, float speed)
+    public virtual void MoveToPosition(Vector2 targetPosition, float speed)
     {
         Vector2 newPosition = Vector2.MoveTowards(rb.position, targetPosition, speed * Time.deltaTime);
         rb.MovePosition(newPosition);
     }
 
 
-    public void Knockback() 
+    public override void KnockBack(float distance, float direction) 
     {
-
+        rb.MovePosition(new Vector2(transform.position.x + (distance * direction * knockbackModifier), transform.position.y));
     }
     #endregion
 }
