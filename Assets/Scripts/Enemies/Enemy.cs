@@ -270,18 +270,16 @@ public abstract class GroundEnemy : Enemy
         if(rb.velocity.y > 0.1f)    //Prevents being immediately grounded after jumping
             return false;
 
-		bool grounded = false;	//Grounded is false unless the ground check cast hits something
-
 		// Ground check cast, the player is grounded if a cast to the groundcheck position hits anything designated as ground
 		Collider2D[] colliders = Physics2D.OverlapBoxAll(groundCheck.position, groundCheckSize, 0, groundLayer);
 		for (int i = 0; i < colliders.Length; i++)
 		{
 			if (colliders[i].gameObject != gameObject)	//Do not check for colliding with self
 			{
-				grounded = true;
+				return true;
 			}
 		}
-        return grounded;
+		return false;
 	}
     #endregion
 
@@ -290,18 +288,9 @@ public abstract class GroundEnemy : Enemy
     //Edge check, returns true if the player is near an edge
 	public bool EdgeCheck() 
 	{
-		bool onEdge = true;
-
 		//Edge check cast. The player is on edge if a cast to the wallcheck position does not hit anything
-		RaycastHit2D[] hitObject = Physics2D.CircleCastAll(edgeCheck.position, 0.1f, Vector2.zero, groundLayer);
-		for (int i = 0; i < hitObject.Length; i++)
-		{
-			if (hitObject[i].collider.gameObject != gameObject)
-			{
-				onEdge = false;
-			}
-		}
-        return onEdge;
+		RaycastHit2D[] hitObjects = Physics2D.CircleCastAll(edgeCheck.position, 0.1f, Vector2.zero, groundLayer);
+        return hitObjects.Length == 0;
 	}
     #endregion
 }

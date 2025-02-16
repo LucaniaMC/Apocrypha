@@ -37,18 +37,17 @@ public partial class Player
 	//Ground check, return true if the player's grounded
 	public bool GroundCheck() 
 	{
-		bool grounded = false;	//Grounded is false unless the ground check cast hits something
-
 		// Ground check cast, the player is grounded if a cast to the groundcheck position hits anything designated as ground
 		Collider2D[] colliders = Physics2D.OverlapBoxAll(groundCheck.position, groundCheckSize, 0, groundLayer);
+		// Returns true there is any element in the array that meets the condition
 		for (int i = 0; i < colliders.Length; i++)
 		{
 			if (colliders[i].gameObject != gameObject)	//Do not check for colliding with self
 			{
-				grounded = true;
+				return true;
 			}
 		}
-        return grounded;
+		return false;
 	}
     #endregion
 
@@ -57,18 +56,16 @@ public partial class Player
     //Wall check, returns true if the player is on wall
 	public bool WallCheck() 
 	{
-		bool onWall = false;
-
 		//Wall check cast. The player is on wall if a cast to the wallcheck position hits anything designated as wall
-		Collider2D[] collidersWall = Physics2D.OverlapBoxAll(wallCheck.position, wallCheckSize, 0, wallLayer);
-		for (int i = 0; i < collidersWall.Length; i++)
+		Collider2D[] colliders = Physics2D.OverlapBoxAll(wallCheck.position, wallCheckSize, 0, wallLayer);
+		for (int i = 0; i < colliders.Length; i++)
 		{
-			if (collidersWall[i].gameObject != gameObject)
+			if (colliders[i].gameObject != gameObject)	//Do not check for colliding with self
 			{
-				onWall = true;
+				return true;
 			}
 		}
-        return onWall;
+		return false;
 	}
     #endregion
 
@@ -77,18 +74,9 @@ public partial class Player
     //Edge check, returns true if the player is near an edge
 	public bool EdgeCheck() 
 	{
-		bool onEdge = true;
-
 		//Edge check cast. The player is on edge if a cast to the wallcheck position does not hit anything
-		RaycastHit2D[] hitObject = Physics2D.CircleCastAll(edgeCheck.position, 0.1f, Vector2.zero, groundLayer);
-		for (int i = 0; i < hitObject.Length; i++)
-		{
-			if (hitObject[i].collider.gameObject != gameObject)
-			{
-				onEdge = false;
-			}
-		}
-        return onEdge;
+		RaycastHit2D[] hitObjects = Physics2D.CircleCastAll(edgeCheck.position, 0.1f, Vector2.zero, groundLayer);
+        return hitObjects.Length == 0;
 	}
     #endregion
 

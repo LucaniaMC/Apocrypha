@@ -56,7 +56,7 @@ public class WolfPursueState : EnemyState
 
     public override void OnEnter()
     {
-        wolf.animator.SetBool("IsWalking", true);
+
     }
     
     public override void StateUpdate()
@@ -71,10 +71,12 @@ public class WolfPursueState : EnemyState
         if (!wolf.EdgeCheck()) 
         {
             wolf.MoveToPosition(wolf.player.position, wolf.moveSpeed);
+            wolf.animator.SetBool("IsWalking", true);
         }
-        else 
+        else //stops moving if on edge or wall
         {
             wolf.SetVelocity(new Vector2(0f, wolf.rb.velocity.y));
+            wolf.animator.SetBool("IsWalking", false);
         }
     }
 
