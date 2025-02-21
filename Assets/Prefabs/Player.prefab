@@ -1,5 +1,161 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3065914800793428579
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8608267429986102769}
+  - component: {fileID: 4588205090603654420}
+  - component: {fileID: 3785640581915779592}
+  m_Layer: 8
+  m_Name: UpAttackCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8608267429986102769
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3065914800793428579}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.125, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8576932692285485973}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!60 &4588205090603654420
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3065914800793428579}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.75, y: 3.6}
+      - {x: 0, y: 2.6}
+      - {x: 2, y: -0.8}
+      - {x: 2.4, y: 2.5}
+      - {x: 1.7, y: 3.6}
+--- !u!114 &3785640581915779592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3065914800793428579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da4bb4c128b264f469e127130abf6ea7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data: {fileID: 11400000, guid: 12ad7e088a614b545815725bc44747c8, type: 2}
+  attackModifier: 1
+--- !u!1 &5243278192224006033
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2640524487307696561}
+  - component: {fileID: 2326695139759594393}
+  - component: {fileID: 8497772007276398083}
+  m_Layer: 8
+  m_Name: DownAttackCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2640524487307696561
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5243278192224006033}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.125, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8576932692285485973}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!60 &2326695139759594393
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5243278192224006033}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.5, y: 1}
+      - {x: 0.5, y: -1.1}
+      - {x: 2.7, y: -1.1}
+      - {x: 2.6, y: 1.1}
+      - {x: 1.1, y: 2.6}
+      - {x: -1.1, y: 2.6}
+      - {x: -1.1782485, y: 2.1532996}
+--- !u!114 &8497772007276398083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5243278192224006033}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da4bb4c128b264f469e127130abf6ea7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data: {fileID: 11400000, guid: 12ad7e088a614b545815725bc44747c8, type: 2}
+  attackModifier: 1
 --- !u!1 &8576932690918283127
 GameObject:
   m_ObjectHideFlags: 0
@@ -5095,8 +5251,10 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: 12ad7e088a614b545815725bc44747c8, type: 2}
   input: {fileID: 8576932691297525288}
   health: {fileID: 8576932691297525281}
-  attackCollider: {fileID: 8576932692240067427}
-  chargeAttackCollider: {fileID: 8576932691688007637}
+  attackCollider: {fileID: 5146440420599747705}
+  chargeAttackCollider: {fileID: 50990993590002281}
+  upAttackCollider: {fileID: 4588205090603654420}
+  downAttackCollider: {fileID: 2326695139759594393}
   animator: {fileID: 8576932691645152567}
   chargeAnimator: {fileID: 8576932690918283125}
   groundLayer:
@@ -5151,7 +5309,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Healthbar, Assembly-CSharp
-        m_MethodName: ResetEffectTimer
+        m_MethodName: SliderUpdate
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5163,7 +5321,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Healthbar, Assembly-CSharp
-        m_MethodName: SliderUpdate
+        m_MethodName: ResetEffectTimer
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5193,7 +5351,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Healthbar, Assembly-CSharp
-        m_MethodName: ResetEffect
+        m_MethodName: SliderUpdate
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5205,7 +5363,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Healthbar, Assembly-CSharp
-        m_MethodName: SliderUpdate
+        m_MethodName: ResetEffect
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5524,7 +5682,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8576932691688007639}
-  - component: {fileID: 8576932691688007637}
+  - component: {fileID: 50990993590002281}
   - component: {fileID: 8576932691688007636}
   m_Layer: 8
   m_Name: ChargeAttackCollider
@@ -5541,15 +5699,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8576932691688007638}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.125, z: -1}
+  m_LocalPosition: {x: 0, y: 1.125, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8576932692285485973}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!70 &8576932691688007637
-CapsuleCollider2D:
+--- !u!60 &50990993590002281
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -5561,9 +5719,23 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 4, y: 0}
-  m_Size: {x: 8, y: 1.5}
-  m_Direction: 1
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 7, y: 0.4}
+      - {x: 1, y: 0.4}
+      - {x: 1, y: -0.5}
+      - {x: 7, y: -0.5}
+      - {x: 7.5, y: -0.1}
 --- !u!114 &8576932691688007636
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5577,7 +5749,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: 12ad7e088a614b545815725bc44747c8, type: 2}
-  attackMultiplier: 2.5
+  attackModifier: 1
 --- !u!1 &8576932691811503428
 GameObject:
   m_ObjectHideFlags: 0
@@ -5731,7 +5903,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8576932692240067420}
-  - component: {fileID: 8576932692240067427}
+  - component: {fileID: 5146440420599747705}
   - component: {fileID: 8576932692240067424}
   m_Layer: 8
   m_Name: AttackCollider
@@ -5748,15 +5920,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8576932692240067423}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.125, z: -1}
+  m_LocalPosition: {x: 0, y: 1.125, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8576932692285485973}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!70 &8576932692240067427
-CapsuleCollider2D:
+--- !u!60 &5146440420599747705
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -5768,9 +5940,24 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 2, y: 0}
-  m_Size: {x: 4, y: 2.2}
-  m_Direction: 1
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 2.8935254, y: 1.0997767}
+      - {x: 0.77840704, y: 1.1072309}
+      - {x: 0.21042973, y: -1.1416061}
+      - {x: 2.5500612, y: -1.108347}
+      - {x: 4.0441356, y: -0.5224555}
+      - {x: 4.0441356, y: 0.5750887}
 --- !u!114 &8576932692240067424
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5784,7 +5971,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: 12ad7e088a614b545815725bc44747c8, type: 2}
-  attackMultiplier: 1
+  attackModifier: 1
 --- !u!1 &8576932692285485972
 GameObject:
   m_ObjectHideFlags: 0
@@ -5815,6 +6002,8 @@ Transform:
   m_Children:
   - {fileID: 8576932692240067420}
   - {fileID: 8576932691688007639}
+  - {fileID: 8608267429986102769}
+  - {fileID: 2640524487307696561}
   m_Father: {fileID: 8576932691297525278}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

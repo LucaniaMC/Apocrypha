@@ -86,9 +86,34 @@ public partial class Player
     #endregion
 
     #region Attack
-    public void SetAttackAnimator(bool isAttacking) 
+    public void SetAttackAnimator() 
     {
-        animator.SetBool("IsAttacking", isAttacking);
+        animator.SetTrigger("Attack");
+    }
+
+    public void ResetAttackAnimator() 
+    {
+        animator.ResetTrigger("Attack");
+    }
+
+    public void SetUpAttackAnimator() 
+    {
+        animator.SetTrigger("UpAttack");
+    }
+
+    public void ResetUpAttackAnimator() 
+    {
+        animator.ResetTrigger("UpAttack");
+    }
+
+    public void SetDownAttackAnimator() 
+    {
+        animator.SetTrigger("DownAttack");
+    }
+
+    public void ResetDownAttackAnimator() 
+    {
+        animator.ResetTrigger("DownAttack");
     }
 
     public void SetAltAttack() 
