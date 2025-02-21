@@ -40,6 +40,7 @@ public class PlayerWalkState : PlayerState
 
     public override void StateUpdate() 
     {
+        player.SetUpDownAnimator();
         Transitions();
     }
 

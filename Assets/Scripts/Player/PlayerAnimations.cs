@@ -56,6 +56,20 @@ public partial class Player
         animator.SetBool("KnockedBack", knockedBack);
     }
 
+    public void SetUpDownAnimator() 
+    {
+        if(input.MoveInput() == 0)
+        {
+            animator.SetBool("LookingUp", input.UpInput());
+            animator.SetBool("LookingDown", input.DownInput());
+        } 
+        else 
+        {
+            animator.SetBool("LookingUp", false);
+            animator.SetBool("LookingDown", false);
+        }
+    }
+
     #region Turn Trigger
     public void SetTurnAnimator()
     {
