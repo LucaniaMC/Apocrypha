@@ -46,7 +46,7 @@ public class PlayerWalkState : PlayerState
     public override void StateFixedUpdate() 
     {
         //enables horizontal movement
-        player.Move(input.moveInput, data.runSpeed, data.movementSmoothing);
+        player.Move(input.MoveInput(), data.runSpeed, data.movementSmoothing);
     }
 
     public override void OnExit() 
@@ -66,19 +66,19 @@ public class PlayerWalkState : PlayerState
             player.TransitionToState(new PlayerFallState(player));
             player.SetCoyoteTime();   //Starts coyote time when the player falls from ground
         }
-        if (input.dashInput && player.CanDash())    //To dash state
+        if (input.DashInput() && player.CanDash())    //To dash state
         {
             player.TransitionToState(new PlayerDashState(player));
         }
-        if(input.attackInput) //attack state
+        if(input.AttackInput()) //attack state
         {
             player.TransitionToState(new PlayerAttackState(player));
         }
-        if(input.attackReleaseInput && input.CanChargeAttack()) //Charge attack state
+        if(input.AttackReleaseInput() && input.CanChargeAttack()) //Charge attack state
         {
             player.TransitionToState(new PlayerChargeAttackState(player));
         }
-        if(input.sitInput) //Sit state
+        if(input.SitInput()) //Sit state
         {
             player.TransitionToState(new PlayerSitState(player));
         }
@@ -108,10 +108,10 @@ public class PlayerJumpState : PlayerState
     public override void StateFixedUpdate() 
     {
         //Enable air movement
-        player.Move(input.moveInput, data.runSpeed, data.airMovementSmoothing);
+        player.Move(input.MoveInput(), data.runSpeed, data.airMovementSmoothing);
 
         //Jump cut if jump button isn't held down
-        if(!input.jumpHoldInput) 
+        if(!input.JumpHoldInput()) 
         {
             player.JumpCut(data.jumpCutRate);
         }
@@ -132,7 +132,7 @@ public class PlayerJumpState : PlayerState
         {
             player.TransitionToState(new PlayerWallState(player));
         }
-        if (input.dashInput && player.CanDash())    //To dash state
+        if (input.DashInput() && player.CanDash())    //To dash state
         {
             player.TransitionToState(new PlayerDashState(player));
         }
@@ -159,7 +159,7 @@ public class PlayerFallState : PlayerState
     public override void StateFixedUpdate() 
     {
         //Enable air movement
-        player.Move(input.moveInput, data.runSpeed, data.airMovementSmoothing);
+        player.Move(input.MoveInput(), data.runSpeed, data.airMovementSmoothing);
         player.LimitFallVelocity(data.limitVelocity);
         player.CalculateFallTime();
     }
@@ -192,7 +192,7 @@ public class PlayerFallState : PlayerState
         {
             player.TransitionToState(new PlayerWallJumpState(player));
         }
-        if (input.dashInput && player.CanDash())    //To dash state
+        if (input.DashInput() && player.CanDash())    //To dash state
         {
             player.TransitionToState(new PlayerDashState(player));
         }
@@ -221,7 +221,7 @@ public class PlayerWallState : PlayerState
     public override void StateFixedUpdate() 
     {
         //Enable air movement
-        player.Move(input.moveInput, data.runSpeed, data.movementSmoothing);
+        player.Move(input.MoveInput(), data.runSpeed, data.movementSmoothing);
         player.WallSlide(data.slideVelocity);
     }
 
@@ -271,10 +271,10 @@ public class PlayerWallJumpState : PlayerState
     public override void StateFixedUpdate() 
     {
         //Enable air movement
-        player.Move(input.moveInput, data.runSpeed, data.airMovementSmoothing);
+        player.Move(input.MoveInput(), data.runSpeed, data.airMovementSmoothing);
 
         //Jump cut
-        if(!input.jumpHoldInput) 
+        if(!input.JumpHoldInput()) 
         {
             player.JumpCut(data.jumpCutRate);
         }
@@ -291,7 +291,7 @@ public class PlayerWallJumpState : PlayerState
         {
             player.TransitionToState(new PlayerFallState(player));
         }
-        if (input.dashInput && player.CanDash())    //To dash state
+        if (input.DashInput() && player.CanDash())    //To dash state
         {
             player.TransitionToState(new PlayerDashState(player));
         }
@@ -310,7 +310,7 @@ public class PlayerDashState : PlayerState
 
     public override void OnEnter() 
     {
-        player.FlipToInput(input.moveInput);    // Allows the player to turn when dashing out of immobile states
+        player.FlipToInput(input.MoveInput());    // Allows the player to turn when dashing out of immobile states
         player.SetDashAnimator(true);
         player.SetDashParticle(true);
         player.DashStart();
@@ -363,7 +363,7 @@ public class PlayerAttackState : PlayerState
 
     public override void OnEnter() 
     {
-        player.FlipToInput(input.moveInput);          // Allows the player to turn during combo
+        player.FlipToInput(input.MoveInput());          // Allows the player to turn during combo
         player.SetVelocity(new Vector2(0f, 0f));    // Reset player velocity for consistent movement
         player.SetAttackAnimator(true);
         player.Attack(player.attackCollider, 0.2f);
@@ -401,10 +401,10 @@ public class PlayerAttackState : PlayerState
     {
         if (Time.time >= startTime + (totalTime - comboTime)) //combo time transitions
         {
-            if(input.attackInput)       // Start another attack if attacked during combo time
+            if(input.AttackInput())       // Start another attack if attacked during combo time
                 player.TransitionToState(new PlayerAttackState(player));
 
-            if (input.dashInput && player.CanDash())    // Allows the player dash out of attack state early
+            if (input.DashInput() && player.CanDash())    // Allows the player dash out of attack state early
                 player.TransitionToState(new PlayerDashState(player));
         } 
         if (Time.time >= startTime + totalTime) // To walk state, when state timer is over
@@ -429,7 +429,7 @@ public class PlayerChargeAttackState : PlayerState
 
     public override void OnEnter() 
     {
-        player.FlipToInput(input.moveInput);          // Allows the player to turn during combo
+        player.FlipToInput(input.MoveInput());          // Allows the player to turn during combo
         player.SetVelocity(new Vector2(0f, 0f));    // Reset player velocity for consistent movement
         player.SetChargeAttackAnimator(true);
         player.Attack(player.chargeAttackCollider, 0.2f);
@@ -466,10 +466,10 @@ public class PlayerChargeAttackState : PlayerState
     {
         if (Time.time >= startTime + (totalTime - comboTime)) //combo time transitions
         {
-            if(input.attackInput)       // Start another attack if attacked during combo time
+            if(input.AttackInput())       // Start another attack if attacked during combo time
                 player.TransitionToState(new PlayerAttackState(player));
 
-            if (input.dashInput && player.CanDash())    // Allows the player dash out of attack state early
+            if (input.DashInput() && player.CanDash())    // Allows the player dash out of attack state early
                 player.TransitionToState(new PlayerDashState(player));
         } 
         if (Time.time >= startTime + totalTime) // To walk state, when state timer is over
@@ -511,7 +511,7 @@ public class PlayerSitState : PlayerWalkState
     public override void Transitions() 
     {
         base.Transitions();
-        if(input.sitInput || input.moveInput != 0f) // To walk state
+        if(input.SitInput() || input.MoveInput() != 0f) // To walk state
         {
             player.TransitionToState(new PlayerWalkState(player));
         }

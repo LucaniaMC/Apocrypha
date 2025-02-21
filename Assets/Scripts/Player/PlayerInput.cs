@@ -4,19 +4,6 @@ public class PlayerInput : MonoBehaviour
 {
     public PlayerData data;
 
-    //Movement
-    public float moveInput {get; private set;}
-    public float verticalInput {get; private set;}
-    public bool jumpInput {get; private set;}
-    public bool jumpHoldInput {get; private set;}
-    public bool dashInput {get; private set;}
-    public bool sitInput {get; private set;}
-    //Attack
-    public bool attackInput {get; private set;}
-    public bool attackHoldInput {get; private set;}
-    public bool attackReleaseInput {get; private set;}
-
-
     //Timers
     private float lastJumpInputTime = float.NaN; //NaN prevents the player from jumping on initialization
     private float attackHoldStartTime = float.NaN;
@@ -25,22 +12,86 @@ public class PlayerInput : MonoBehaviour
 
     void Update()
     {
-        moveInput = Input.GetAxisRaw("Horizontal");
-        verticalInput = Input.GetAxisRaw("Vertical");
-        jumpInput = Input.GetButtonDown("Jump");
-        jumpHoldInput = Input.GetButton("Jump");
-        dashInput = Input.GetKeyDown(KeyCode.LeftShift);
-        sitInput = Input.GetKeyDown(KeyCode.X);
-
-        attackInput = Input.GetMouseButtonDown(0);
-        attackHoldInput = Input.GetMouseButton(0);
-        attackReleaseInput = Input.GetMouseButtonUp(0);
-
-        if(jumpInput) //Timer for jump buffer
-        {
-            lastJumpInputTime = Time.time;
-        }
+        if(JumpInput()) //Timer for jump buffer
+            lastJumpInputTime = Time.time; 
     }
+
+
+    #region Movement Inputs
+    public float MoveInput() //returns 1 if moving right, -1 if moving left, and 0 if not moving
+    {
+        return Input.GetAxisRaw("Horizontal");
+    }
+
+    public float VerticalInput() //returns 1 for up, -1 for down, and 0 for not input
+    {
+        return Input.GetAxisRaw("Vertical");
+    }
+
+    public bool UpInput() 
+    {
+        return Input.GetAxisRaw("Vertical") == 1;
+    }
+
+    public bool DownInput() 
+    {
+        return Input.GetAxisRaw("Vertical") == -1;
+    }
+
+    public bool JumpInput() 
+    {
+        return Input.GetButtonDown("Jump");
+    }
+
+    public bool JumpHoldInput() 
+    {
+        return Input.GetButton("Jump");
+    }
+
+    public bool DashInput() 
+    {
+        return Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift);
+    }
+
+    public bool SitInput() 
+    {
+        return Input.GetKeyDown(KeyCode.X);
+    }
+    #endregion
+
+
+    #region Combat Inputs
+    public bool AttackInput() 
+    {
+        return Input.GetMouseButtonDown(0);
+    }
+
+    public bool AttackHoldInput() 
+    {
+        return Input.GetMouseButton(0);
+    }
+
+    public bool AttackReleaseInput() 
+    {
+        return Input.GetMouseButtonUp(0);
+    }
+
+    public bool SecondaryAttackInput() 
+    {
+        return Input.GetMouseButtonDown(1);
+    }
+
+    public bool SecondaryAttackHoldInput() 
+    {
+        return Input.GetMouseButton(1);
+    }
+
+    public bool SecondaryAttackReleaseInput() 
+    {
+        return Input.GetMouseButtonUp(1);
+    }
+    #endregion
+
 
     #region Jump Buffer
     //Allows the player to input a bit early, and the jump would still register when possible. Returns true if the jump buffer is active
@@ -63,12 +114,12 @@ public class PlayerInput : MonoBehaviour
     {
         bool canChargeAttack = false;
         // When the button is first pressed, set timer start time
-        if (attackInput)
+        if (AttackInput())
         {
             attackHoldStartTime = Time.time;
         }
         // When the button is held, calculate timer
-        if (attackHoldInput) 
+        if (AttackHoldInput()) 
         {
             heldTime = Time.time - attackHoldStartTime;
         }
@@ -78,7 +129,7 @@ public class PlayerInput : MonoBehaviour
             canChargeAttack = true;
         }
         // Resets timer when not holding
-        if (!attackHoldInput && heldTime != 0f) 
+        if (!AttackHoldInput() && heldTime != 0f) 
         {
             heldTime = 0f;
         }

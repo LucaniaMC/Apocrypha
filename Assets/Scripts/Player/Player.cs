@@ -31,7 +31,7 @@ public partial class Player : MonoBehaviour
         currentState.StateUpdate();
         
         //Universal animators
-        SetWalkAnimator(input.moveInput);   //Needs to be used for state transitions
+        SetWalkAnimator(input.MoveInput());   //Needs to be used for state transitions
         SetChargeEffectAnimator(input.CanChargeAttack());   //Is not limited to any state
     }
 
