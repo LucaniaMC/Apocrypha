@@ -159,6 +159,7 @@ public class PlayerFallState : PlayerState
     public override void OnEnter() 
     {
         player.SetFallAnimator(true);
+        player.SetGravity(data.gravity * 1.5f); //Increases gravity scale when falling for faster fall
     }
 
     public override void StateUpdate() 
@@ -177,6 +178,7 @@ public class PlayerFallState : PlayerState
     public override void OnExit() 
     {
         player.SetFallAnimator(false);
+        player.SetGravity(data.gravity);    //resets gravity scale
         player.Invoke("ResetFallTime", 0.02f); //Invoke with a delay so the animator can process the value before it resets to 0
     }
 
