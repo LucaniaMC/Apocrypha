@@ -6,7 +6,7 @@ using UnityEngine;
 public class EnemyAttackHitbox : MonoBehaviour
 {
     [Header("Parameters")]
-    [SerializeField] private float damage;                //How much damage does this attack deal
+    [SerializeField] private int damage;                //How much damage does this attack deal
     [SerializeField] private Vector2 knockbackVelocity;   // Velocity to knock the player back with
     [SerializeField] private float knockbackTime;         // How long will the player be knocked back from this attack
 
