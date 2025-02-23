@@ -73,7 +73,7 @@ public partial class Player
     #region Turn Trigger
     public void SetTurnAnimator()
     {
-        if(GroundCheck()) 
+        if(IsGrounded()) 
         {
             animator.SetTrigger("Turn");
         }
