@@ -265,7 +265,7 @@ public abstract class GroundEnemy : Enemy
 
     #region Ground Check
 	//Ground check, return true if the player's grounded
-	public bool GroundCheck() 
+	public bool IsGrounded() 
 	{
         if(rb.velocity.y > 0.1f)    //Prevents being immediately grounded after jumping
             return false;
@@ -286,7 +286,7 @@ public abstract class GroundEnemy : Enemy
 
 	#region Edge Check
     //Edge check, returns true if the player is near an edge
-	public bool EdgeCheck() 
+	public bool OnEdge() 
 	{
 		//Edge check cast. The player is on edge if a cast to the wallcheck position does not hit anything
 		RaycastHit2D[] hitObjects = Physics2D.CircleCastAll(edgeCheck.position, 0.1f, Vector2.zero, groundLayer);

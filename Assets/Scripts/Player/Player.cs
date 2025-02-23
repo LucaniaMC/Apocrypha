@@ -14,9 +14,8 @@ public partial class Player : MonoBehaviour
     #region Loop
     void Start() 
     {
-        defaultState = new PlayerWalkState(this);
-        InitializeStateMachine();
         InitializeMovement();
+        InitializeStateMachine();
     }
 
 
@@ -41,6 +40,7 @@ public partial class Player : MonoBehaviour
     // Called in Awake/Start on the player script
     public void InitializeStateMachine() 
     {
+        defaultState = new PlayerWalkState(this);
         TransitionToState(defaultState);
     }
 

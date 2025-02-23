@@ -68,7 +68,7 @@ public class WolfPursueState : EnemyState
     {
         wolf.FlipToTarget(wolf.player.position);
 
-        if (!wolf.EdgeCheck()) 
+        if (!wolf.OnEdge()) 
         {
             wolf.MoveToPosition(wolf.player.position, wolf.moveSpeed);
             wolf.animator.SetBool("IsWalking", true);

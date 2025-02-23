@@ -62,7 +62,7 @@ public class PlayerWalkState : PlayerState
         {
             player.TransitionToState(new PlayerJumpState(player));
         }
-        if (!player.GroundCheck())  //To fall state if not on ground, and starts coyote time
+        if (!player.IsGrounded())  //To fall state if not on ground, and starts coyote time
         {
             player.TransitionToState(new PlayerFallState(player));
             player.SetCoyoteTime();
@@ -138,7 +138,7 @@ public class PlayerJumpState : PlayerState
         {
             player.TransitionToState(new PlayerFallState(player));
         }
-        if (player.rb.velocity.y < 0 && player.WallCheck()) // To wall state, if falling and in contact with a wall
+        if (player.rb.velocity.y < 0 && player.OnWall()) // To wall state, if falling and in contact with a wall
         {
             player.TransitionToState(new PlayerWallState(player));
         }
@@ -182,12 +182,12 @@ public class PlayerFallState : PlayerState
 
     public override void Transitions() 
     {
-        if (player.GroundCheck()) //To walk state, spawn particles
+        if (player.IsGrounded()) //To walk state, spawn particles
         {
             player.TransitionToState(new PlayerWalkState(player));
             player.SpawnLandingParticle();
         }
-        if (player.WallCheck()) //To wall state, if in contact with a wall
+        if (player.OnWall()) //To wall state, if in contact with a wall
         {
             player.TransitionToState(new PlayerWallState(player));
         }
@@ -240,11 +240,11 @@ public class PlayerWallState : PlayerState
 
     public override void Transitions() 
     {
-        if (player.GroundCheck()) //To walk state
+        if (player.IsGrounded()) //To walk state
         {
             player.TransitionToState(new PlayerWalkState(player));
         }
-        if (!player.WallCheck()) //To wall state, start wall coyote time if falls from wall
+        if (!player.OnWall()) //To wall state, start wall coyote time if falls from wall
         {
             player.TransitionToState(new PlayerFallState(player));
             player.SetWallCoyoteTime();
@@ -339,12 +339,12 @@ public class PlayerDashState : PlayerState
     {
         player.SetDashAnimator(false);
         player.SetDashParticle(false);
-        player.DashEnd(data.gravity);
+        player.DashEnd();
     }          
 
     public override void Transitions() 
     {
-        if (player.GroundCheck())
+        if (player.IsGrounded())
         {
             player.TransitionToState(new PlayerWalkState(player));
         }
@@ -380,7 +380,7 @@ public abstract class PlayerAttackState : PlayerState
     public override void OnEnter() 
     {
         player.FlipToInput(input.MoveInput());      // Allows turning during combo
-        player.SetVelocity(new Vector2(0f, 0f));    // Reset velocity for consistent movement
+        player.SetVelocity(Vector2.zero);    // Reset velocity for consistent movement
         player.Attack(GetAttackCollider(), 0.2f);   // Trigger the attack using the provided collider
         SetAttackAnimator();
 
@@ -398,7 +398,7 @@ public abstract class PlayerAttackState : PlayerState
     public override void StateFixedUpdate() 
     {
         // Move forward for forwardTime duration if not at an edge
-        if ((Time.time <= startTime + forwardTime) & !player.EdgeCheck())
+        if ((Time.time <= startTime + forwardTime) & !player.OnEdge())
         {
             player.SetVelocity(new Vector2(moveVelocity, player.rb.velocity.y));
         }
@@ -572,7 +572,7 @@ public class PlayerKnockbackState : PlayerState
         {
             player.TransitionToState(new PlayerFallState(player));
         }
-        if (player.GroundCheck() && player.rb.velocity.y < 0) // To walk state, if the player landed while descending, spawn particles
+        if (player.IsGrounded() && player.rb.velocity.y < 0) // To walk state, if the player landed while descending, spawn particles
         {
             player.TransitionToState(new PlayerWalkState(player));
             player.SpawnLandingParticle();

@@ -17,24 +17,25 @@ public partial class Player
     [SerializeField] private LayerMask edgeLayer;						
 	[SerializeField] private Transform edgeCheck;						// A position marking where to check if the player is on edge.	
 
-	[Header("Rigidbody")]   //Used for PlayerMovement
-    public Rigidbody2D rb;	
+	//rigidbody
+	public Rigidbody2D rb {get; private set;}
 
     //Readable variables
     public bool facingRight {get; private set;} = true;		// For determining which way the player is currently facing.	
 	public bool hasAirDashed {get; private set;}			// Prevents dashing in air again if already dashed in air
 
 	//Private variables
-	private Vector3 velocity = Vector3.zero;	// Used as ref for movement smoothdamp
-	public float jumpForce {get; private set;}	// The force to apply for the player to jump
-	public float wallJumpForce {get; private set;}	// The force to apply for the player to wall jump
-	private float lastDashTime;					// Used to calculate dash cooldown
-	private float lastGroundedTime;	 			// Used for coyote time
-	private float lastOnWallTime;				// Used for wall coyote time
+	private Vector3 velocity = Vector3.zero;		// Used as ref for movement smoothdamp
+	public float jumpForce {get; private set;}		// Force to apply for the player to jump
+	public float wallJumpForce {get; private set;}	// Force to apply for the player to wall jump
+	private float lastDashTime;						// Used to calculate dash cooldown
+	private float lastGroundedTime;	 				// Used for coyote time
+	private float lastOnWallTime;					// Used for wall coyote time
 
 
 	void InitializeMovement() 
 	{
+		rb = GetComponent<Rigidbody2D>();
 		jumpForce = JumpHeightToImpulse(data.jumpHeight);
 		wallJumpForce = JumpHeightToImpulse(data.wallJumpHeight);
 		rb.gravityScale = data.gravity;
@@ -43,7 +44,7 @@ public partial class Player
 
     #region Ground Check
 	//Ground check, return true if the player's grounded
-	public bool GroundCheck() 
+	public bool IsGrounded() 
 	{
 		// Ground check cast, the player is grounded if a cast to the groundcheck position hits anything designated as ground
 		Collider2D[] colliders = Physics2D.OverlapBoxAll(groundCheck.position, groundCheckSize, 0, groundLayer);
@@ -61,10 +62,10 @@ public partial class Player
 
 
     #region Wall Check
-    //Wall check, returns true if the player is on wall
-	public bool WallCheck() 
+    // Wall check, returns true if the player is on wall
+	public bool OnWall() 
 	{
-		//Wall check cast. The player is on wall if a cast to the wallcheck position hits anything designated as wall
+		//The player is on wall if a cast to the wallcheck position hits anything designated as wall
 		Collider2D[] colliders = Physics2D.OverlapBoxAll(wallCheck.position, wallCheckSize, 0, wallLayer);
 		for (int i = 0; i < colliders.Length; i++)
 		{
@@ -79,10 +80,10 @@ public partial class Player
 
 
 	#region Edge Check
-    //Edge check, returns true if the player is near an edge
-	public bool EdgeCheck() 
+    // Edge check, returns true if the player is near an edge
+	public bool OnEdge() 
 	{
-		//Edge check cast. The player is on edge if a cast to the wallcheck position does not hit anything
+		//The player is on edge if a cast to the wallcheck position does not hit anything
 		RaycastHit2D[] hitObjects = Physics2D.CircleCastAll(edgeCheck.position, 0.1f, Vector2.zero, groundLayer);
         return hitObjects.Length == 0;
 	}
@@ -90,13 +91,13 @@ public partial class Player
 
 
     #region Coyote Time
-	// returns true if coyote time is active, allowing the player to jump for a bit after falling off ground
+	// Returns true if coyote time is active, allowing the player to jump for a bit after falling off ground
     public bool CoyoteTime()
     {
         return Time.time - lastGroundedTime <= data.coyoteTime;
     }
 
-	// sets coyote time, called after exiting ground state to record last grounded time
+	// Called after exiting ground state to record last grounded time
 	public void SetCoyoteTime() 
 	{
 		lastGroundedTime = Time.time;
@@ -105,13 +106,13 @@ public partial class Player
 
 
 	#region Wall Coyote Time
-	// returns true if coyote time is active, allowing the player to jump for a bit after falling off ground
+	// Returns true if coyote time is active, allowing the player to jump for a bit after falling off ground
     public bool WallCoyoteTime()
     {
         return Time.time - lastOnWallTime <= data.wallCoyoteTime;
     }
 
-	// sets coyote time, called after exiting ground state to record last grounded time
+	// Called after exiting ground state to record last grounded time
 	public void SetWallCoyoteTime() 
 	{
 		lastOnWallTime = Time.time;
@@ -120,7 +121,7 @@ public partial class Player
 
 
     #region Horizontal Move
-    //Horizontally move player, takes player horizontal input float -1 to 1, runSpeed and smoothing from PlayerData
+    // Horizontally move player, takes player horizontal input float -1 to 1, runSpeed and smoothing from PlayerData
     public void Move(float moveInput, float runSpeed, float smoothing)
 	{
 		// Move the player by finding the target velocity
@@ -147,7 +148,7 @@ public partial class Player
 		}
 	}
 
-    //Flip player depending on movement input direction.
+    // Flip player depending on movement input direction.
 	void Flip()
 	{
 		// Switch the way the player is labelled as facing.
@@ -197,7 +198,7 @@ public partial class Player
 
 
     #region Jump Cut
-    //lower vertical velocity if the player releases jump button early (not holding jump button), so the player can control how high they jump
+    // Lower vertical velocity if the player releases jump button early (not holding jump button) to control jump height
 	public void JumpCut(float jumpCutRate) 
 	{	
 		rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * jumpCutRate);
@@ -209,7 +210,7 @@ public partial class Player
 	// Called at the beginning of dash to set gravity to 0, so the player stays on the same y axis
 	public void DashStart() 
 	{
-		rb.gravityScale = 0f;
+		SetGravity(0f);
 		hasAirDashed = true;
 	}
 
@@ -227,9 +228,9 @@ public partial class Player
 	}
 
 	// Called at the end of dash
-	public void DashEnd(float gravity) 
+	public void DashEnd() 
 	{
-		rb.gravityScale = gravity;	// Reset player gravity
+		SetGravity(data.gravity);	// Reset player gravity
 		lastDashTime = Time.time;	// Set dash cooldown
 	}
 
@@ -269,6 +270,14 @@ public partial class Player
 	public void SetVelocity(Vector2 velocity)
 	{
 		rb.velocity = velocity;
+	}
+	#endregion
+
+
+	#region Set Gravity
+	public void SetGravity(float gravity) 
+	{
+		rb.gravityScale = gravity;
 	}
 	#endregion
 }
