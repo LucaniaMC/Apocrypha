@@ -15,23 +15,24 @@ public class Healthbar : MonoBehaviour
     public HealthSystem health;
 
 
-    void Start()
+    protected virtual void Start()
     {
         //Ensures slider positions are in place
         slider.maxValue = health.maxHealth;
         slider.value = health.health;
+        effectSlider.maxValue = slider.maxValue;
         effectSlider.value = slider.value;
     }
 
     
-    void Update()
+    protected virtual void Update()
     {
         //Variable effect speed based on the difference between the slider value and effect slider value, with a minimum speed
         //Bigger difference means faster spped
         effectSpeed = Mathf.Max(effectSpeedMin, (effectSlider.value - slider.value) * 2);
         
         //Smoothly move the damage effect bar towards the current health bar position
-        if (Time.time > effectStartTime + effectTime && effectSlider.value > health.health) 
+        if (Time.time > effectStartTime + effectTime && effectSlider.value > slider.value) 
         {
             effectSlider.value = Mathf.MoveTowards(effectSlider.value, slider.value, effectSpeed * Time.deltaTime);
         }
@@ -39,7 +40,7 @@ public class Healthbar : MonoBehaviour
 
 
     //Called during any event that changes health value to update slider value
-    public void SliderUpdate() 
+    public virtual void SliderUpdate() 
     {
         slider.value = health.health;
     }

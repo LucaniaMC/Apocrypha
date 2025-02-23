@@ -5272,7 +5272,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   edgeCheck: {fileID: 8576932691962864764}
-  rb: {fileID: 8576932691297525276}
   landingParticle: {fileID: 9064148963762782749, guid: 992e8dba597bf974a8af6c11e64e88d8, type: 3}
   jumpParticle: {fileID: 599155002226572451, guid: 90a7936b6c00da14fafb90fc9ebd6527, type: 3}
   dashParticle: {fileID: 8576932692943552543}
@@ -5352,7 +5351,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Healthbar, Assembly-CSharp
-        m_MethodName: SliderUpdate
+        m_MethodName: ResetEffect
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5364,7 +5363,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Healthbar, Assembly-CSharp
-        m_MethodName: ResetEffect
+        m_MethodName: SliderUpdate
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
