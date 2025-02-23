@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 //Attach this script to the enemy hitbox object with a Collider2D component
@@ -11,9 +12,14 @@ public class EnemyAttackHitbox : MonoBehaviour
     [SerializeField] private float knockbackTime;         // How long will the player be knocked back from this attack
 
     [Header("References")]
-    [SerializeField] private Player player;             // The player class
-    [SerializeField] private GameObject self;           // Reference the main gameobject, not the object this script is attached to
+    private Player player;             // The player class
+    private Transform self;           // Reference the main gameobject, not the object this script is attached to
 
+    void Start()
+    {
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        self = this.transform.parent;
+    }
 
     void OnTriggerStay2D(Collider2D other)
     {
