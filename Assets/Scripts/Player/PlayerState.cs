@@ -72,17 +72,14 @@ public class PlayerWalkState : PlayerState
             player.TransitionToState(new PlayerDashState(player));
         }
         if(input.AttackInput() && input.VerticalInput() == 0) //attack state
-        {
-            player.TransitionToState(new PlayerAttackState(player));
-        }
+            player.TransitionToState(new PlayerRegularAttackState(player));
+
         if(input.AttackInput() && input.UpInput()) //up attack state
-        {
             player.TransitionToState(new PlayerUpAttackState(player));
-        }
+
         if(input.AttackInput() && input.DownInput()) //down attack state
-        {
             player.TransitionToState(new PlayerDownAttackState(player));
-        }
+
         if(input.AttackReleaseInput() && input.CanChargeAttack()) //Charge attack state
         {
             player.TransitionToState(new PlayerChargeAttackState(player));
@@ -360,24 +357,33 @@ public class PlayerDashState : PlayerState
 
 
 #region Attack State
-public class PlayerAttackState : PlayerState
-{
+public abstract class PlayerAttackState : PlayerState
+{   
+    protected float startTime = Time.time;    // When did the state start
+    protected float forwardTime = 0.2f;       // How long the player moves forward
+    protected float totalTime = 0.5f;         // Total duration of the attack state
+    protected float comboTime = 0.1f;         // Time window for combos/dashing before state end
+    protected float moveVelocity = 5f;        // How fast the player moves forward
+
     public PlayerAttackState(Player player) : base(player) {}
 
-    readonly float startTime = Time.time;    // When did the state start
-    readonly float forwardTime = 0.2f;       // How long does the player move forward
-    readonly float totalTime = 0.5f;         // How long does the state last
-    readonly float comboTime = 0.1f;         // Time frame for the player to combo attack or dash out before the end of state
-    float moveVelocity = 5f;                 // How fast the player moves forward
+    // Each derived state must provide its own attack collider
+    protected abstract Collider2D GetAttackCollider();
+
+    // Each derived state must set its own animator for entering the state
+    protected abstract void SetAttackAnimator();
+
+    // And each state must reset its animator on exit
+    protected abstract void ResetAttackAnimator();
 
     public override void OnEnter() 
     {
-        player.FlipToInput(input.MoveInput());          // Allows the player to turn during combo
-        player.SetVelocity(new Vector2(0f, 0f));    // Reset player velocity for consistent movement
-        player.SetAttackAnimator();
-        player.Attack(player.attackCollider, 0.2f);
+        player.FlipToInput(input.MoveInput());      // Allows turning during combo
+        player.SetVelocity(new Vector2(0f, 0f));    // Reset velocity for consistent movement
+        player.Attack(GetAttackCollider(), 0.2f);   // Trigger the attack using the provided collider
+        SetAttackAnimator();
 
-        if (!player.facingRight) //moves player left if facing left
+        if (!player.facingRight)    // Adjust movement direction based on facing
         {
             moveVelocity = -moveVelocity;
         }
@@ -390,7 +396,8 @@ public class PlayerAttackState : PlayerState
 
     public override void StateFixedUpdate() 
     {
-        if ((Time.time <= startTime + forwardTime) & !player.EdgeCheck()) //Move player forward, stops on edge
+        // Move forward for forwardTime duration if not at an edge
+        if ((Time.time <= startTime + forwardTime) & !player.EdgeCheck())
         {
             player.SetVelocity(new Vector2(moveVelocity, player.rb.velocity.y));
         }
@@ -402,16 +409,15 @@ public class PlayerAttackState : PlayerState
 
     public override void OnExit() 
     {
-        player.ResetAttackAnimator();
-        player.SetAltAttack();
+        ResetAttackAnimator();
     }
 
     public override void Transitions() 
     {
-        if (Time.time >= startTime + (totalTime - comboTime)) //combo time transitions
+        if (Time.time >= startTime + (totalTime - comboTime)) // When within the combo window, allow chaining of attacks or dashing
         {
             if(input.AttackInput() && input.VerticalInput() == 0) //attack state
-                player.TransitionToState(new PlayerAttackState(player));
+                player.TransitionToState(new PlayerRegularAttackState(player));
             if(input.AttackInput() && input.UpInput()) //up attack state
                 player.TransitionToState(new PlayerUpAttackState(player));
             if(input.AttackInput() && input.DownInput()) //down attack state
@@ -419,215 +425,78 @@ public class PlayerAttackState : PlayerState
             if (input.DashInput() && player.CanDash())    // Allows the player dash out of attack state early
                 player.TransitionToState(new PlayerDashState(player));
         } 
-        if (Time.time >= startTime + totalTime) // To walk state, when state timer is over
+        if (Time.time >= startTime + totalTime) // After totalTime, transition to the walk state
         {
             player.TransitionToState(new PlayerWalkState(player));
         }
+    }
+}
+#endregion
+
+
+#region Regular Attack State
+public class PlayerRegularAttackState : PlayerAttackState
+{
+    public PlayerRegularAttackState(Player player) : base(player) {}
+
+    protected override Collider2D GetAttackCollider() => player.attackCollider;
+
+    protected override void SetAttackAnimator() => player.SetAttackAnimator();
+
+    protected override void ResetAttackAnimator() => player.ResetAttackAnimator();
+
+    public override void OnExit()
+    {
+        // Call base reset logic then perform the alternate attack setup.
+        base.OnExit();
+        player.SetAltAttack();
     }
 }
 #endregion
 
 
 #region Up Attack State
-public class PlayerUpAttackState : PlayerState
+public class PlayerUpAttackState : PlayerAttackState
 {
-    public PlayerUpAttackState(Player player) : base(player) {}
+    public PlayerUpAttackState(Player player) : base(player) { }
 
-    readonly float startTime = Time.time;    // When did the state start
-    readonly float forwardTime = 0.2f;       // How long does the player move forward
-    readonly float totalTime = 0.5f;         // How long does the state last
-    readonly float comboTime = 0.1f;         // Time frame for the player to combo attack or dash out before the end of state
-    float moveVelocity = 5f;                 // How fast the player moves forward
+    protected override Collider2D GetAttackCollider() => player.upAttackCollider;
 
-    public override void OnEnter() 
-    {
-        player.FlipToInput(input.MoveInput());          // Allows the player to turn during combo
-        player.SetVelocity(new Vector2(0f, 0f));    // Reset player velocity for consistent movement
-        player.SetUpAttackAnimator();
-        player.Attack(player.upAttackCollider, 0.2f);
+    protected override void SetAttackAnimator() => player.SetUpAttackAnimator();
 
-        if (!player.facingRight) //moves player left if facing left
-        {
-            moveVelocity = -moveVelocity;
-        }
-    }
-
-    public override void StateUpdate() 
-    {
-        Transitions();  
-    }
-
-    public override void StateFixedUpdate() 
-    {
-        if ((Time.time <= startTime + forwardTime) & !player.EdgeCheck()) //Move player forward, stops on edge
-        {
-            player.SetVelocity(new Vector2(moveVelocity, player.rb.velocity.y));
-        }
-        else //Stops moving
-        {
-            player.SetVelocity(new Vector2(0f, player.rb.velocity.y));
-        }
-    }
-
-    public override void OnExit() 
-    {
-        player.ResetUpAttackAnimator();
-    }
-
-    public override void Transitions() 
-    {
-        if (Time.time >= startTime + (totalTime - comboTime)) //combo time transitions
-        {
-            if(input.AttackInput() && input.VerticalInput() == 0) //attack state
-                player.TransitionToState(new PlayerAttackState(player));
-            if(input.AttackInput() && input.UpInput()) //up attack state
-                player.TransitionToState(new PlayerUpAttackState(player));
-            if(input.AttackInput() && input.DownInput()) //down attack state
-                player.TransitionToState(new PlayerDownAttackState(player));
-            if (input.DashInput() && player.CanDash())    // Allows the player dash out of attack state early
-                player.TransitionToState(new PlayerDashState(player));
-        } 
-        if (Time.time >= startTime + totalTime) // To walk state, when state timer is over
-        {
-            player.TransitionToState(new PlayerWalkState(player));
-        }
-    }
+    protected override void ResetAttackAnimator() => player.ResetUpAttackAnimator();
 }
 #endregion
 
 
 #region Down Attack State
-public class PlayerDownAttackState : PlayerState
+public class PlayerDownAttackState : PlayerAttackState
 {
-    public PlayerDownAttackState(Player player) : base(player) {}
+    public PlayerDownAttackState(Player player) : base(player) { }
 
-    readonly float startTime = Time.time;    // When did the state start
-    readonly float forwardTime = 0.2f;       // How long does the player move forward
-    readonly float totalTime = 0.5f;         // How long does the state last
-    readonly float comboTime = 0.1f;         // Time frame for the player to combo attack or dash out before the end of state
-    float moveVelocity = 5f;                 // How fast the player moves forward
+    protected override Collider2D GetAttackCollider() => player.downAttackCollider;
 
-    public override void OnEnter() 
-    {
-        player.FlipToInput(input.MoveInput());          // Allows the player to turn during combo
-        player.SetVelocity(new Vector2(0f, 0f));    // Reset player velocity for consistent movement
-        player.SetDownAttackAnimator();
-        player.Attack(player.downAttackCollider, 0.2f);
+    protected override void SetAttackAnimator() => player.SetDownAttackAnimator();
 
-        if (!player.facingRight) //moves player left if facing left
-        {
-            moveVelocity = -moveVelocity;
-        }
-    }
-
-    public override void StateUpdate() 
-    {
-        Transitions();  
-    }
-
-    public override void StateFixedUpdate() 
-    {
-        if ((Time.time <= startTime + forwardTime) & !player.EdgeCheck()) //Move player forward, stops on edge
-        {
-            player.SetVelocity(new Vector2(moveVelocity, player.rb.velocity.y));
-        }
-        else //Stops moving
-        {
-            player.SetVelocity(new Vector2(0f, player.rb.velocity.y));
-        }
-    }
-
-    public override void OnExit() 
-    {
-        player.ResetDownAttackAnimator();
-    }
-
-    public override void Transitions() 
-    {
-        if (Time.time >= startTime + (totalTime - comboTime)) //combo time transitions
-        {
-            if(input.AttackInput() && input.VerticalInput() == 0) //attack state
-                player.TransitionToState(new PlayerAttackState(player));
-            if(input.AttackInput() && input.UpInput()) //up attack state
-                player.TransitionToState(new PlayerUpAttackState(player));
-            if(input.AttackInput() && input.DownInput()) //down attack state
-                player.TransitionToState(new PlayerDownAttackState(player));
-            if (input.DashInput() && player.CanDash())    // Allows the player dash out of attack state early
-                player.TransitionToState(new PlayerDashState(player));
-        } 
-        if (Time.time >= startTime + totalTime) // To walk state, when state timer is over
-        {
-            player.TransitionToState(new PlayerWalkState(player));
-        }
-    }
+    protected override void ResetAttackAnimator() => player.ResetDownAttackAnimator();
 }
 #endregion
 
 
 #region Charge Attack State
-public class PlayerChargeAttackState : PlayerState
+public class PlayerChargeAttackState : PlayerAttackState
 {
-    public PlayerChargeAttackState(Player player) : base(player) {}
-
-    readonly float startTime = Time.time;    // When did the state start
-    readonly float forwardTime = 0.2f;       // How long does the player move forward
-    readonly float totalTime = 0.7f;         // How long does the state last
-    readonly float comboTime = 0.1f;         // Time frame for the player to combo attack or dash out before the end of state
-    float moveVelocity = 15f;                // How fast the player moves forward
-
-    public override void OnEnter() 
+    public PlayerChargeAttackState(Player player) : base(player)
     {
-        player.FlipToInput(input.MoveInput());          // Allows the player to turn during combo
-        player.SetVelocity(new Vector2(0f, 0f));    // Reset player velocity for consistent movement
-        player.SetChargeAttackAnimator(true);
-        player.Attack(player.chargeAttackCollider, 0.2f);
-
-        if (!player.facingRight) //moves player left if facing left
-        {
-            moveVelocity = -moveVelocity;
-        }
+        totalTime = 0.7f;  // Longer duration for charge attacks
+        moveVelocity = 15f; // Increased forward speed for charge
     }
 
-    public override void StateUpdate() 
-    {
-        Transitions();
-    }
+    protected override Collider2D GetAttackCollider() => player.chargeAttackCollider;
 
-    public override void StateFixedUpdate() 
-    {
-        if ((Time.time <= startTime + forwardTime) & !player.EdgeCheck()) //Move player forward, stops on edge
-        {
-            player.SetVelocity(new Vector2(moveVelocity, player.rb.velocity.y));
-        }
-        else //Stops moving
-        {
-            player.SetVelocity(new Vector2(0f, player.rb.velocity.y));
-        }
-    }
+    protected override void SetAttackAnimator() => player.SetChargeAttackAnimator(true);
 
-    public override void OnExit() 
-    {
-        player.SetChargeAttackAnimator(false);
-    }
-
-    public override void Transitions() 
-    {
-        if (Time.time >= startTime + (totalTime - comboTime)) //combo time transitions
-        {
-            if(input.AttackInput() && input.VerticalInput() == 0) //attack state
-                player.TransitionToState(new PlayerAttackState(player));
-            if(input.AttackInput() && input.UpInput()) //up attack state
-                player.TransitionToState(new PlayerUpAttackState(player));
-            if(input.AttackInput() && input.DownInput()) //down attack state
-                player.TransitionToState(new PlayerDownAttackState(player));
-            if (input.DashInput() && player.CanDash())    // Allows the player dash out of attack state early
-                player.TransitionToState(new PlayerDashState(player));
-        } 
-        if (Time.time >= startTime + totalTime) // To walk state, when state timer is over
-        {
-            player.TransitionToState(new PlayerWalkState(player));
-        }
-    }
+    protected override void ResetAttackAnimator() => player.SetChargeAttackAnimator(false);
 }
 #endregion
 
