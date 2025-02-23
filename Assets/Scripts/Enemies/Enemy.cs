@@ -19,7 +19,7 @@ public abstract class Enemy : MonoBehaviour
     protected virtual void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;  // Set reference to the player
-        Initialize();
+        InitializeStateMachine();
     }
 
     protected virtual void Update() 
@@ -38,7 +38,7 @@ public abstract class Enemy : MonoBehaviour
 
     #region State Machine Functions
     // Called in Awake/Start on the player script
-    public virtual void Initialize() 
+    public virtual void InitializeStateMachine() 
     {
         TransitionToState(defaultState);
     }

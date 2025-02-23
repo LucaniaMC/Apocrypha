@@ -62,29 +62,32 @@ public class PlayerWalkState : PlayerState
         {
             player.TransitionToState(new PlayerJumpState(player));
         }
-        if (!player.GroundCheck())  //To fall state
+        if (!player.GroundCheck())  //To fall state if not on ground, and starts coyote time
         {
             player.TransitionToState(new PlayerFallState(player));
-            player.SetCoyoteTime();   //Starts coyote time when the player falls from ground
+            player.SetCoyoteTime();
         }
-        if (input.DashInput() && player.CanDash())    //To dash state
+        if (input.DashInput() && player.CanDash()) //To dash state, if dash input is detected and available
         {
             player.TransitionToState(new PlayerDashState(player));
         }
-        if(input.AttackInput() && input.VerticalInput() == 0) //attack state
+        if(input.AttackInput() && input.VerticalInput() == 0) //Regular attack if no vertical input
+        {
             player.TransitionToState(new PlayerRegularAttackState(player));
-
-        if(input.AttackInput() && input.UpInput()) //up attack state
+        }
+        if(input.AttackInput() && input.UpInput()) //Up attack when upward input is active
+        {
             player.TransitionToState(new PlayerUpAttackState(player));
-
-        if(input.AttackInput() && input.DownInput()) //down attack state
+        }
+        if(input.AttackInput() && input.DownInput()) //Down attack when downward input is active
+        {
             player.TransitionToState(new PlayerDownAttackState(player));
-
-        if(input.AttackReleaseInput() && input.CanChargeAttack()) //Charge attack state
+        }
+        if(input.AttackReleaseInput() && input.CanChargeAttack()) //Charge attack when attack is charged up and released
         {
             player.TransitionToState(new PlayerChargeAttackState(player));
         }
-        if(input.SitInput()) //Sit state
+        if(input.SitInput()) //Sit on input
         {
             player.TransitionToState(new PlayerSitState(player));
         }
@@ -100,6 +103,7 @@ public class PlayerJumpState : PlayerState
 
     public override void OnEnter() 
     {
+        // Execute jump, trigger animation and particle effects, and reset jump buffer.
         player.Jump(player.jumpForce);
         player.SetJumpAnimator(true);
         player.SpawnJumpParticle();
@@ -113,7 +117,7 @@ public class PlayerJumpState : PlayerState
 
     public override void StateFixedUpdate() 
     {
-        //Enable air movement
+        // Enable horizontal movement in air
         player.Move(input.MoveInput(), data.runSpeed, data.airMovementSmoothing);
 
         //Jump cut if jump button isn't held down
@@ -130,15 +134,15 @@ public class PlayerJumpState : PlayerState
 
     public override void Transitions() 
     {
-        if (player.rb.velocity.y < 0) //To fall state
+        if (player.rb.velocity.y < 0) // To fall state, when upward momentum is lost
         {
             player.TransitionToState(new PlayerFallState(player));
         }
-        if (player.rb.velocity.y < 0 && player.WallCheck()) //To wall state
+        if (player.rb.velocity.y < 0 && player.WallCheck()) // To wall state, if falling and in contact with a wall
         {
             player.TransitionToState(new PlayerWallState(player));
         }
-        if (input.DashInput() && player.CanDash())    //To dash state
+        if (input.DashInput() && player.CanDash()) // To dash state, if dash input is detected and available
         {
             player.TransitionToState(new PlayerDashState(player));
         }
@@ -164,7 +168,7 @@ public class PlayerFallState : PlayerState
 
     public override void StateFixedUpdate() 
     {
-        //Enable air movement
+        // Enable horizontal movement in air
         player.Move(input.MoveInput(), data.runSpeed, data.airMovementSmoothing);
         player.LimitFallVelocity(data.limitVelocity);
         player.CalculateFallTime();
@@ -173,20 +177,17 @@ public class PlayerFallState : PlayerState
     public override void OnExit() 
     {
         player.SetFallAnimator(false);
-        if (player.GroundCheck()) 
-        {
-            player.SpawnLandingParticle();
-        }
         player.Invoke("ResetFallTime", 0.02f); //Invoke with a delay so the animator can process the value before it resets to 0
     }
 
     public override void Transitions() 
     {
-        if (player.GroundCheck()) //To walk state
+        if (player.GroundCheck()) //To walk state, spawn particles
         {
             player.TransitionToState(new PlayerWalkState(player));
+            player.SpawnLandingParticle();
         }
-        if (player.WallCheck()) //To wall state
+        if (player.WallCheck()) //To wall state, if in contact with a wall
         {
             player.TransitionToState(new PlayerWallState(player));
         }
@@ -198,7 +199,7 @@ public class PlayerFallState : PlayerState
         {
             player.TransitionToState(new PlayerWallJumpState(player));
         }
-        if (input.DashInput() && player.CanDash())    //To dash state
+        if (input.DashInput() && player.CanDash())    //To dash state, if dash input is detected and available
         {
             player.TransitionToState(new PlayerDashState(player));
         }
@@ -243,10 +244,10 @@ public class PlayerWallState : PlayerState
         {
             player.TransitionToState(new PlayerWalkState(player));
         }
-        if (!player.WallCheck()) //To wall state
+        if (!player.WallCheck()) //To wall state, start wall coyote time if falls from wall
         {
             player.TransitionToState(new PlayerFallState(player));
-            player.SetWallCoyoteTime(); //starts wall coyote time when the player falls from the wall
+            player.SetWallCoyoteTime();
         }
         if (input.JumpBuffer()) // To wall jump state
         {
@@ -297,7 +298,7 @@ public class PlayerWallJumpState : PlayerState
         {
             player.TransitionToState(new PlayerFallState(player));
         }
-        if (input.DashInput() && player.CanDash())    //To dash state
+        if (input.DashInput() && player.CanDash()) //To dash state, if dash input is detected and available
         {
             player.TransitionToState(new PlayerDashState(player));
         }
@@ -447,7 +448,7 @@ public class PlayerRegularAttackState : PlayerAttackState
 
     public override void OnExit()
     {
-        // Call base reset logic then perform the alternate attack setup.
+        // Call base reset logic then perform the alternate attack setup
         base.OnExit();
         player.SetAltAttack();
     }
@@ -512,16 +513,6 @@ public class PlayerSitState : PlayerWalkState
         player.SetSitAnimator(true);
     }
 
-    public override void StateUpdate() 
-    {
-        base.StateUpdate();
-    }
-
-    public override void StateFixedUpdate() 
-    {
-        base.StateFixedUpdate();
-    }
-
     public override void OnExit() 
     {
         base.OnExit();
@@ -543,20 +534,21 @@ public class PlayerSitState : PlayerWalkState
 #region Knockback State
 public class PlayerKnockbackState : PlayerState
 {
+    // Constructor includes a specific duration
     public PlayerKnockbackState(Player player, float time) : base(player) 
     {
-        stateTime = time;
+        totalTime = time;
     }
 
     readonly float startTime = Time.time;
-    readonly float stateTime; //How long does the state last, set in constructor
+    readonly float totalTime; // Total duration of the state
 
     public override void OnEnter() 
     {
         player.SetKnockbackAnimator(true);
-        health.SetInvincible(stateTime + data.invincibleTime);    // Give player invincible time after state is over, so the player can reposition
+        health.SetInvincible(totalTime + data.invincibleTime); // Grant invincibility during knockback plus extra time for safe repositioning.
 
-        if(input.CanChargeAttack())     // If the player has charged up attack, cancel it so the player has to recharge
+        if(input.CanChargeAttack())  // If the player has charged up attack, cancel it to enforce a recharge
         {
             input.CancelChargeAttack();
         }
@@ -564,16 +556,10 @@ public class PlayerKnockbackState : PlayerState
 
     public override void StateUpdate() 
     {
-        if (Time.time >= startTime + stateTime || (player.GroundCheck() && player.rb.velocity.y < 0)) // Transition to other states when timer is over
-        {
-            Transitions();
-        }
+        Transitions();
     }
 
-    public override void StateFixedUpdate() 
-    {
-
-    }
+    public override void StateFixedUpdate() {}
 
     public override void OnExit() 
     {
@@ -582,7 +568,16 @@ public class PlayerKnockbackState : PlayerState
 
     public override void Transitions() 
     {
-        player.TransitionToState(new PlayerFallState(player));
+        if (Time.time >= startTime + totalTime) // After totalTime, transition out to fall state
+        {
+            player.TransitionToState(new PlayerFallState(player));
+        }
+        if (player.GroundCheck() && player.rb.velocity.y < 0) // To walk state, if the player landed while descending, spawn particles
+        {
+            player.TransitionToState(new PlayerWalkState(player));
+            player.SpawnLandingParticle();
+        }
+        
     }
 }
 #endregion

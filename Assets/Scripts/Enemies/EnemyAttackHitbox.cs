@@ -1,9 +1,9 @@
 using UnityEngine;
 
-//Attach this script to the hitbox object
+//Attach this script to the enemy hitbox object with a Collider2D component
 [RequireComponent(typeof(Collider2D))]
 
-public class EnemyHitbox : MonoBehaviour
+public class EnemyAttackHitbox : MonoBehaviour
 {
     [Header("Parameters")]
     [SerializeField] private float damage;                //How much damage does this attack deal

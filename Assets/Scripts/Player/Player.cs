@@ -9,22 +9,14 @@ public partial class Player : MonoBehaviour
 
     [HideInInspector] public PlayerState currentState {get; private set;}   
     [HideInInspector] public PlayerState defaultState {get; private set;}
-    
-    [Header("Attack Hitboxes")]     //Used for PlayerCombat
-    public Collider2D attackCollider;
-    public Collider2D chargeAttackCollider;
-    public Collider2D upAttackCollider;
-    public Collider2D downAttackCollider;
 
 
     #region Loop
     void Start() 
     {
         defaultState = new PlayerWalkState(this);
-        Initialize();
-        
-        jumpForce = JumpHeightToImpulse(data.jumpHeight);
-		wallJumpForce = JumpHeightToImpulse(data.wallJumpHeight);
+        InitializeStateMachine();
+        InitializeMovement();
     }
 
 
@@ -47,7 +39,7 @@ public partial class Player : MonoBehaviour
 
     #region State Machine Functions
     // Called in Awake/Start on the player script
-    public void Initialize() 
+    public void InitializeStateMachine() 
     {
         TransitionToState(defaultState);
     }

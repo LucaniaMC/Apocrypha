@@ -5251,12 +5251,12 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: 12ad7e088a614b545815725bc44747c8, type: 2}
   input: {fileID: 8576932691297525288}
   health: {fileID: 8576932691297525281}
+  animator: {fileID: 8576932691645152567}
+  chargeAnimator: {fileID: 8576932690918283125}
   attackCollider: {fileID: 5146440420599747705}
   chargeAttackCollider: {fileID: 50990993590002281}
   upAttackCollider: {fileID: 4588205090603654420}
   downAttackCollider: {fileID: 2326695139759594393}
-  animator: {fileID: 8576932691645152567}
-  chargeAnimator: {fileID: 8576932690918283125}
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -5749,7 +5749,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: 12ad7e088a614b545815725bc44747c8, type: 2}
-  attackModifier: 1
+  attackModifier: 2.5
 --- !u!1 &8576932691811503428
 GameObject:
   m_ObjectHideFlags: 0

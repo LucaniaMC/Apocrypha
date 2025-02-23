@@ -22,7 +22,7 @@ public partial class Player
 
     //Readable variables
     public bool facingRight {get; private set;} = true;		// For determining which way the player is currently facing.	
-	public bool hasAirDashed {get; private set;}				// Keeps the player from dashing in air again if already dashed in air
+	public bool hasAirDashed {get; private set;}			// Prevents dashing in air again if already dashed in air
 
 	//Private variables
 	private Vector3 velocity = Vector3.zero;	// Used as ref for movement smoothdamp
@@ -31,6 +31,14 @@ public partial class Player
 	private float lastDashTime;					// Used to calculate dash cooldown
 	private float lastGroundedTime;	 			// Used for coyote time
 	private float lastOnWallTime;				// Used for wall coyote time
+
+
+	void InitializeMovement() 
+	{
+		jumpForce = JumpHeightToImpulse(data.jumpHeight);
+		wallJumpForce = JumpHeightToImpulse(data.wallJumpHeight);
+		rb.gravityScale = data.gravity;
+	}
 
 
     #region Ground Check

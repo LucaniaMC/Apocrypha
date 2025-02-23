@@ -7,6 +7,12 @@ using UnityEngine;
 
 public partial class Player
 {
+    [Header("Attack Hitboxes")]     //Used for PlayerCombat
+    public Collider2D attackCollider;
+    public Collider2D chargeAttackCollider;
+    public Collider2D upAttackCollider;
+    public Collider2D downAttackCollider;
+    
     private Coroutine activeAttackRoutine;     //Currently active attack coroutine
 
 

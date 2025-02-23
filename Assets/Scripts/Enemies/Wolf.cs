@@ -30,9 +30,9 @@ public class Wolf : GroundEnemy
         Destroy(gameObject);
     }
 
-    public override void Initialize()
+    public override void InitializeStateMachine()
     {
         defaultState = new WolfIdleState(this);
-        base.Initialize();
+        base.InitializeStateMachine();
     }
 }

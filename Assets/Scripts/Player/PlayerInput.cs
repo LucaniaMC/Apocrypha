@@ -94,13 +94,14 @@ public class PlayerInput : MonoBehaviour
 
 
     #region Jump Buffer
-    //Allows the player to input a bit early, and the jump would still register when possible. Returns true if the jump buffer is active
+    // Allows the player to press jump slightly early and still have it register
+    // Returns true if the jump buffer is active
     public bool JumpBuffer()
     {
         return Time.time - lastJumpInputTime <= data.jumpBuffer;
     }
 
-    //prevents jumping multiple times during jump buffer
+    // Prevents multiple jumps during jump buffer
     public void ResetJumpBuffer() 
 	{
 		lastJumpInputTime = float.NaN;
@@ -109,16 +110,16 @@ public class PlayerInput : MonoBehaviour
 
 
     #region Charge Attack
-    // Returns true if the player held down the attack button for long enough
+    // Returns true if the player has held the attack button long enough to enable a charged attack
     public bool CanChargeAttack()
     {
         bool canChargeAttack = false;
-        // When the button is first pressed, set timer start time
+        // When the attack button is first pressed, set the start time
         if (AttackInput())
         {
             attackHoldStartTime = Time.time;
         }
-        // When the button is held, calculate timer
+        // When the attack button is held, calculate timer
         if (AttackHoldInput()) 
         {
             heldTime = Time.time - attackHoldStartTime;

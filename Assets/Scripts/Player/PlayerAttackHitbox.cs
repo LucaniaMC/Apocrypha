@@ -1,11 +1,10 @@
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
-//Attach this script to the hitbox object
+//Attach this script to the player hitbox object with a Collider2D component
 [RequireComponent(typeof(Collider2D))]
 
-public class AttackHitbox : MonoBehaviour
+public class PlayerAttackHitbox : MonoBehaviour
 {
     public PlayerData data;
     [SerializeField] private float attackModifier = 1f; //Damage modifier for individual attack hitboxes
