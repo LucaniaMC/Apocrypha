@@ -23620,5 +23620,9 @@ PrefabInstance:
       propertyPath: OnDamageEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 911568509}
+    - target: {fileID: 8576932691297525287, guid: 5675dcde468b0644981e9f9aead608ce, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5675dcde468b0644981e9f9aead608ce, type: 3}
