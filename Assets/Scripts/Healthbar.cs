@@ -3,8 +3,8 @@ using UnityEngine.UI;
 
 public class Healthbar : MonoBehaviour
 {
-    public Slider slider;           //Main slider
-    public Slider effectSlider;     //A second slider for smooth damage effect
+    [SerializeField] Slider slider;           //Main slider
+    [SerializeField] Slider effectSlider;     //A second slider for smooth damage effect
 
     //Variables for damage effect, an effect that displays how much the player's health has decreased
     readonly float effectTime = 1f;     // How long after not taking damage does the effect start
@@ -12,7 +12,7 @@ public class Healthbar : MonoBehaviour
     readonly float effectSpeedMin = 20f;   //Minimum speed of the decrease effect
     float effectSpeed;                  //Current effect speed
 
-    public HealthSystem health;
+    [SerializeField] protected HealthSystem health;
 
 
     protected virtual void Start()
