@@ -688,8 +688,6 @@ MonoBehaviour:
   damage: 15
   knockbackVelocity: {x: 10, y: 5}
   knockbackTime: 0.25
-  player: {fileID: 0}
-  self: {fileID: 4208033379700011547}
 --- !u!1 &1118839538690902949
 GameObject:
   m_ObjectHideFlags: 0
@@ -740,7 +738,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &425481597503424289
 RectTransform:
   m_ObjectHideFlags: 0
