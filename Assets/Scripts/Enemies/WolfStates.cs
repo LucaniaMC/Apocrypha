@@ -107,15 +107,15 @@ public class WolfPauseState : EnemyState
 {
     protected Wolf wolf;
     readonly float startTime = Time.time;    // When did the state start
-    float stateTime;    //How long does the state last
+    readonly float stateTime;    // How long does the state last
 
     public WolfPauseState(Enemy wolf) : base(wolf) 
     {
         this.wolf = (Wolf)wolf;
+        stateTime = this.wolf.attackPauseTime + Random.Range(0f, 0.5f);
     }
     public override void OnEnter()
     {
-        stateTime = wolf.attackPauseTime;
         wolf.SetVelocity(new Vector2(0f, wolf.rb.velocity.y)); //Stays in place
     }
     
@@ -219,7 +219,7 @@ public class WolfMeleeState : EnemyState
         //Start of anticipation, total 0.6 seconds
         wolf.animator.SetBool("AttackStart", true);
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1f + Random.Range(-0.2f, 0.2f));
 
         //Do not attack if the player is too far away, exit state
         if(!wolf.IsPlayerInAttackRange()) 
