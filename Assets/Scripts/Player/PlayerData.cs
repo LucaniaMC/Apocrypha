@@ -36,8 +36,9 @@ public class PlayerData : ScriptableObject
 
     
     [Header("Others")]
-    public float slideVelocity;		//Vertical velocity during wall slide
-	public float limitVelocity;		//Vertical velocity limit when falling
-	public float gravity;           //Player's RigidBody2D gravity scale
+    public float slideVelocity;		                    // Vertical velocity during wall slide
+	public float limitVelocity;		                    // Vertical velocity limit when falling
+	public float gravity;                               // Player's RigidBody2D gravity scale
+    [Range(1f, 5f)] public float fallGravityModifier;   // Increase player's gravity scale when falling
 
 }

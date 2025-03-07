@@ -159,7 +159,7 @@ public class PlayerFallState : PlayerState
     public override void OnEnter() 
     {
         player.SetFallAnimator(true);
-        player.SetGravity(data.gravity * 1.5f); //Increases gravity scale when falling for faster fall
+        player.SetGravity(data.gravity * data.fallGravityModifier); //Increases gravity scale when falling for faster fall
     }
 
     public override void StateUpdate() 

@@ -30,3 +30,4 @@ MonoBehaviour:
   slideVelocity: -5
   limitVelocity: 25
   gravity: 4
+  fallGravityModifier: 1.5
