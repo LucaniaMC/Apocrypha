@@ -70,6 +70,12 @@ public partial class Player
         }
     }
 
+    public void ResetUpDownAnimator() 
+    {
+        animator.SetBool("LookingUp", false);
+        animator.SetBool("LookingDown", false);
+    }
+
     #region Turn Trigger
     public void SetTurnAnimator()
     {

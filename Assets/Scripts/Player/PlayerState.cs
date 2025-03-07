@@ -53,6 +53,7 @@ public class PlayerWalkState : PlayerState
     public override void OnExit() 
     {
         player.SetWalkBoolAnimator(false);
+        player.ResetUpDownAnimator();
         player.ResetTurnAnimator(); //Prevents turn animator from staying active when the player leaves the state
     }
 
@@ -146,6 +147,10 @@ public class PlayerJumpState : PlayerState
         {
             player.TransitionToState(new PlayerDashState(player));
         }
+        if(input.AttackReleaseInput() && input.CanChargeAttack()) //Charge attack when attack is charged up and released
+        {
+            player.TransitionToState(new PlayerChargeAttackState(player));
+        }
     }
 }
 #endregion
@@ -204,6 +209,10 @@ public class PlayerFallState : PlayerState
         if (input.DashInput() && player.CanDash())    //To dash state, if dash input is detected and available
         {
             player.TransitionToState(new PlayerDashState(player));
+        }
+        if(input.AttackReleaseInput() && input.CanChargeAttack()) //Charge attack when attack is charged up and released
+        {
+            player.TransitionToState(new PlayerChargeAttackState(player));
         }
     }
 }
@@ -430,7 +439,11 @@ public abstract class PlayerAttackState : PlayerState
         } 
         if (Time.time >= startTime + totalTime) // After totalTime, transition to the walk state
         {
-            player.TransitionToState(new PlayerWalkState(player));
+            if(player.IsGrounded())
+                player.TransitionToState(new PlayerWalkState(player));
+            else
+                player.TransitionToState(new PlayerFallState(player));
+            
         }
     }
 }
@@ -492,7 +505,8 @@ public class PlayerChargeAttackState : PlayerAttackState
     public PlayerChargeAttackState(Player player) : base(player)
     {
         totalTime = 0.7f;  // Longer duration for charge attacks
-        moveVelocity = 15f; // Increased forward speed for charge
+        forwardTime = 0.1f; // Shorter forward time
+        moveVelocity = 30f; // Increased forward speed
     }
 
     protected override Collider2D GetAttackCollider() => player.chargeAttackCollider;
@@ -500,6 +514,31 @@ public class PlayerChargeAttackState : PlayerAttackState
     protected override void SetAttackAnimator() => player.SetChargeAttackAnimator(true);
 
     protected override void ResetAttackAnimator() => player.SetChargeAttackAnimator(false);
+
+    public override void OnEnter()
+    {
+        base.OnEnter();
+        player.SetGravity(0f);
+    }
+
+    public override void StateFixedUpdate() 
+    {
+        // Move forward for forwardTime duration if not at an edge, or in air
+        if ((Time.time <= startTime + forwardTime) && (!player.OnEdge() || !player.IsGrounded()))
+        {
+            player.SetVelocity(new Vector2(moveVelocity, player.rb.velocity.y));
+        }
+        else //Stops moving
+        {
+            player.SetVelocity(new Vector2(0f, player.rb.velocity.y));
+        }
+    }
+
+    public override void OnExit()
+    {
+        base.OnExit();
+        player.SetGravity(data.gravity);
+    }
 }
 #endregion
 
